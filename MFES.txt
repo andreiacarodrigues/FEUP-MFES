@@ -1,13 +1,11 @@
 Attendee
 	* Name
 	- Common
-	- Influential(pode ser influential ou influential speaker)
+	- influential(pode ser influential ou influential speaker)
 		* Position
 		* Job
 		* Description
 		* Country
-			- Speaker
-			- Investor
 	
 Conference
 	* Name
@@ -21,7 +19,7 @@ Talk
 	* Date
 	* Time
 	* Duration
-	* Speakers
+	* Speakers: set Influentials
 	* Atendees
 	
 Company
@@ -29,6 +27,7 @@ Company
 	
 Exibit
 	* Startup
+	/* * Investors: set Influentials*/
 	
 Startup 
 	* Name
@@ -47,6 +46,7 @@ WebSummit
 	* Exibits
 	* News
 	* Atendees
+	* Investors: set Influentials
 	
 	getSchedule -> vai a todas as conferencias, todas as talks, ordena por data e tempo e devolve "Nome - Data - Tempo" de cada
 	getSpeakers -> atendees que são speakers em talks
