@@ -1,0 +1,20 @@
+class Common is subclass of Attendee
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public Common : String ==> Common
+		  	Common (attendeeName) == (
+		  		Attendee(attendeeName);	
+		  	)
+		  	pre len attendeeName > 0;
+
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Common

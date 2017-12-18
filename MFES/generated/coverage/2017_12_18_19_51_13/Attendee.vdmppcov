@@ -1,0 +1,35 @@
+class Attendee
+types
+	public String = seq of char;
+	
+values
+
+instance variables
+	private name : String := [];
+
+operations
+	-- constructor of the attendee class 
+		public Attendee : String ==> Attendee
+	  	Attendee (attendeeName) == (
+	  		name := attendeeName;
+	  		return self
+	  	)
+	  	pre len attendeeName > 0;
+	  	
+	  	
+		-- returns the attendee's name
+	  public GetName : () ==> String
+	  	GetName () == (
+	  		return name;
+	  	);
+	  	
+	  public Print : () ==> ()
+	  	Print() == (
+	  	IO`print(self.GetName())
+	  	);
+	  
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Attendee

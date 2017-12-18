@@ -1,0 +1,53 @@
+Attendee
+	* Name
+	- Common
+	- Influential(pode ser influential ou influential speaker)
+		* Position
+		* Job
+		* Description
+		* Country
+			- Speaker
+			- Investor
+	
+Conference
+	* Name
+	* Description
+	* Talks
+	* Companies
+
+Talk
+	* Name
+	* Description
+	* Date
+	* Time
+	* Duration
+	* Speakers
+	* Atendees
+	
+Company
+	* Name
+	
+Exibit
+	* Startup
+	
+Startup 
+	* Name
+	* Website
+	* Description
+	* Country
+	
+New
+	* Title
+	* Date
+	* Time
+	* Description
+	
+WebSummit
+	* Conferences
+	* Exibits
+	* News
+	* Atendees
+	
+	getSchedule -> vai a todas as conferencias, todas as talks, ordena por data e tempo e devolve "Nome - Data - Tempo" de cada
+	getSpeakers -> atendees que são speakers em talks
+	getStartups -> todas as startups em exibits
