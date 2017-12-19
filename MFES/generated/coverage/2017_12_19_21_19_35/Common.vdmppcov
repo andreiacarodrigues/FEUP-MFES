@@ -14,7 +14,7 @@ operations
 	  );
 	  
 	-- constructor of the common attendee class 
-	public Common : Utils`String ==> Common
+	public Common : String ==> Common
 		  	Common (attendeeName) == (
 		  		Attendee(attendeeName);	
 		  	)

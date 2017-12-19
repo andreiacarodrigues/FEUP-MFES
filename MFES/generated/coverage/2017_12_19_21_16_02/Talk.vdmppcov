@@ -1,0 +1,44 @@
+class Talk
+types
+			
+values
+-- TODO Define values here
+
+instance variables
+	private name : Utils`String := [];
+	private description : Utils`String := [];
+	private date : Utils`Date;
+	private time : Utils`Time;
+	private duration : nat1;
+	private speakers : set of Influential;
+	private attendees : set of Attendee;
+	
+operations
+	-- default constructor of the conference class 
+		public Talk :  Utils`String *  Utils`String *  Utils`Date *  Utils`Time * nat1 ==> Talk
+	  	Talk (talkName, talkDescription, talkDate, talkTime, talkDuration) == (
+	  		name := talkName;
+	  		description := talkDescription;
+	  		date := talkDate;
+	  		time := talkTime;
+	  		duration := talkDuration;
+	  		return self
+	  	);
+
+
+  -- prints the talk information
+	  public Print : () ==> ()
+	  	Print() == (
+	  		IO`print(self.name);
+	  		IO`print("\n");
+	  		IO`print(self.description);
+	  		IO`print("\n");
+	  		IO`print(self.date.year); IO`print(self.date.month); IO`print(self.date.day);
+	  		IO`print("\n");
+	  		IO`print(self.time.hour); IO`print(self.time.minute);
+	  	);
+functions
+
+traces
+-- TODO Define Combinatorial Test Traces here
+end Talk

@@ -1,10 +1,11 @@
 class Attendee
 types
-
+	public String = seq of char;
+	
 values
 
 instance variables
-	private name : Utils`String := [];
+	private name : String := [];
 
 operations
 
@@ -16,7 +17,7 @@ operations
 	  	);
   	
 	-- constructor of the attendee class 
-		public Attendee : Utils`String ==> Attendee
+		public Attendee : String ==> Attendee
 	  	Attendee (attendeeName) == (
 	  		name := attendeeName;
 	  		return self
@@ -25,7 +26,7 @@ operations
 	  	
 	  	
 		-- returns the attendee's name
-	  public GetName : () ==> Utils`String
+	  public GetName : () ==> String
 	  	GetName () == (
 	  		return name;
 	  	);

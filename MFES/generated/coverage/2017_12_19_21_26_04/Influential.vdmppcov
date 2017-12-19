@@ -6,7 +6,7 @@ values
 
 instance variables
 	private jobPosition : Utils`String := [];
-	private company : Company;
+	private company : Utils`String := [];
 	private description : Utils`String := [];
 	private country : Utils`String := [];
 
@@ -16,14 +16,14 @@ operations
 	public Influential : () ==> Influential
 		Influential() == (
 				jobPosition := "Undefined";
-	  	  company := new Company("Undefined");
+	  	  company := "Undefined";
 	  	  description := "";
 	  	  country := "Undefined";
 	  		Attendee ();
 	  );
 	  
 	-- constructor of the influential attendee class 
-	 public Influential : Utils`String * Utils`String * Company * Utils`String * Utils`String ==> Influential
+	 public Influential : Utils`String * Utils`String * Utils`String * Utils`String * Utils`String ==> Influential
 	  	Influential (attendeeName, attendeeJobPosition, attendeeCompany, attendeeDescription, attendeeCountry) == (
 	  	  jobPosition := attendeeJobPosition;
 	  	  company := attendeeCompany;
@@ -31,7 +31,7 @@ operations
 	  	  country := attendeeCountry;
 	  		Attendee(attendeeName);	
 	  	)
-	  	pre len attendeeName > 0 and len attendeeJobPosition > 0 and len attendeeCountry > 0;
+	  	pre len attendeeName > 0 and len attendeeJobPosition > 0 and len attendeeCompany > 0 and len attendeeCountry > 0;
 	  	
 	 -- returns the influential attendee's position
 	 public GetJobPosition : () ==> Utils`String
@@ -40,7 +40,7 @@ operations
 	  	);
 	  	
 	 -- returns the influential attendee's job
-	 public GetCompany : () ==> Company
+	 public GetCompany : () ==> Utils`String
 	  	GetCompany () == (
 	  		return company;
 	  	);
@@ -67,7 +67,7 @@ operations
 		  	IO`print(self.GetJobPosition());
 		  	IO`print("\n");
 		  	IO`print("Company: ");
-		  	IO`print(self.GetCompany().GetName());
+		  	IO`print(self.GetCompany());
 		  	IO`print("\n");
 		  	IO`print("Description: ");
 		  	IO`print(self.GetDescription());

@@ -1,0 +1,73 @@
+class Conference
+types
+	
+values
+-- TODO Define values here
+instance variables
+	private name : Utils`String := [];
+	private description : Utils`String := [];
+	private talks : set of Talk := {};
+	private companies : set of Company := {};
+	
+operations
+		-- default constructor of the conference class 
+		public Conference : () ==> Conference
+	  	Conference () == (
+	  		name := "Default";
+	  		description := "";
+	  		return self
+	  	);
+	  	
+	  -- constructor of the conference class 
+		public Conference : Utils`String * Utils`String ==> Conference
+	  	Conference (conferenceName, conferenceDescription) == (
+	  		name := conferenceName;
+	  		description := conferenceDescription;
+	  		return self
+	  	)
+	  	pre len conferenceName > 0 and len conferenceDescription > 0;
+	  	
+	  	
+	 -- returns the conference's name
+	 public GetName : () ==> Utils`String
+	  	GetName () == (
+	  		return name;
+	  	);
+	  	
+	 -- returns the conference's description
+	 public GetDescription : () ==> Utils`String
+	  	GetDescription () == (
+	  		return description;
+	  	);
+	  	
+	 -- returns the conference talks
+	 public GetTalks : () ==> set of Talk
+	  	GetTalks () == (
+	  		return talks;
+	  	);
+	 
+	  -- returns the conference attending companies
+	 public GetCompanies : () ==> set of Company
+	  	GetCompanies () == (
+	  		return companies;
+	  	);
+	  	
+	 -- adds a new talk to the conference
+	 public AddTalk : Talk ==> Talk
+	  	AddTalk (talk) == (
+	  		talks := talks union {talk};
+	  		return talk
+	  	);
+	  	
+	  -- adds a new company attending the conference
+		public AddCompany : Company ==> Company
+	  	AddCompany (company) == (
+	  		companies := companies union {company};
+	  		return company
+	  	);
+	  	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Conference

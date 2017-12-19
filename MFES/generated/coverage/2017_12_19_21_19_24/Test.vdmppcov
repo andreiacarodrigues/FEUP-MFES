@@ -4,18 +4,13 @@ types
 values
  
 instance variables
-
--- TESTES
- 	attendee : Influential := new Influential("Andreia", "CEO", new Company("MFES"), "Sou uma pessoa fixe", "Portugal");
+-- TODO Define instance variables here
+ 	attendee : Influential := new Influential("Andreia", "CEO", "MFES", "Sou uma pessoa fixe", "Portugal");
 	d : Utils`Date := mk_Utils`Date(2001,1,1);
 	t : Utils`Time := mk_Utils`Time(15,40);
  	talk : Talk := new Talk("Talk1", "É a talk 1", d, t, 40);
- 	
- 	s : Influential := talk.AddSpeaker(attendee);
- 	s1 : Influential := talk.AddAttendee(attendee);
- 	
- 	
 operations
+-- TODO Define operations here
 	 public static main: () ==> ()
     main() ==
     (
@@ -25,7 +20,7 @@ operations
     public run: () ==> ()
     run() ==
     (
-        attendee.Print();
+        talk.Print();
     );
 functions
   
