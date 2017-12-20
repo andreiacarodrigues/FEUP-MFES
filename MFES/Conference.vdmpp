@@ -61,8 +61,8 @@ operations
 	  	pre talk in set talks and card talks >= 1
 			post talks = talks~ \ {talk};
 	  	
-	  -- adds a new company attending the conference
-		public AddCompany : Company ==> ()
+	-- adds a new company attending the conference
+  public AddCompany : Company ==> ()
 	  	AddCompany (company) == (
 	  		companies := companies union {company};
 	  	)
@@ -76,6 +76,15 @@ operations
 	  	)
 	  	pre company in set companies and card companies >= 1
 			post companies = companies~ \ {company};
+			
+	 -- returns talks of the day, sorted by time
+	 pure public GetTalks : Utils`Date ==> set of Talk
+	  	GetTalks (date) == (
+	  		dcl result: set of Talk := {};
+	  		-- TODO
+	  		return result
+	  	);
+	  	
 	  	
 functions
 

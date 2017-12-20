@@ -71,6 +71,24 @@ operations
 	  	GetAttendees () == (
 	  		return attendees;
 	  	);
+	  	
+	 -- adds a new speaker to the talk
+   public AddSpeaker : Influential ==> ()
+	  	AddSpeaker (speaker) == (
+	  		speakers := speakers union {speaker};
+	  	)	
+	  	pre speaker not in set speakers
+			post speakers = speakers~ union {speaker};
+	  	
+	 -- adds a new attendee to the talk
+	 public AddAttendee : Attendee ==> ()
+	  	AddAttendee (attendee) == (
+	  		attendees := attendees union {attendee};
+	  	)	
+	  	pre attendee not in set attendees
+			post attendees = attendees~ union {attendee};
+	  	
+	  	
 
   -- prints the talk information
 	  public Print : () ==> ()
@@ -91,21 +109,7 @@ operations
 	  		IO`print("Attendees: "); IO`print(self.GetAttendees());
 	  	);
 	  	
-	  	-- adds a new speaker to the talk
-	  	public AddSpeaker : Influential ==> Influential
-	  	AddSpeaker (speaker) == (
-	  		speakers := speakers union {speaker};
-	  		return speaker
-	  	);
-	  	
-	  	-- adds a new attendee to the talk
-	  	public AddAttendee : Attendee ==> Attendee
-	  	AddAttendee (attendee) == (
-	  		attendees := attendees union {attendee};
-	  		return attendee
-	  	);
-	  	
-	  	
+	 
 functions
 
 traces

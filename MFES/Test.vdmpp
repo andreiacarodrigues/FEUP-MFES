@@ -11,9 +11,7 @@ instance variables
 	d : Utils`Date := mk_Utils`Date(2001,1,1);
 	t : Utils`Time := mk_Utils`Time(15,40);
  	talk : Talk := new Talk("Talk1", "É a talk 1", d, t, 40);
- 	
- 	s : Influential := talk.AddSpeaker(attendee);
- 	s1 : Influential := talk.AddAttendee(attendee);
+
  	
  	
 operations

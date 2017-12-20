@@ -62,3 +62,5 @@ WebSummit
 	
 Notas:
 	- a parte das news ainda nao está feita
+	- ao adicionar uma talk, nao pode ser sobreposta a outras dentro da mesma conferencia !!!
+	- devia ser feito um map [data, time] para ir buscar os da mesma data
