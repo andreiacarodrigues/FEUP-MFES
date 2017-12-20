@@ -53,13 +53,14 @@ operations
 	  	pre talk not in set talks
 			post talks = talks~ union {talk};
 			
-	 -- remove Talk
-	 public RemoveTalk : Talk ==> ()
-	  	RemoveTalk (talk) == (
+	 -- cancel Talk
+	 public CancelTalk : Talk ==> ()
+	  	CancelTalk (talk) == (
 	  		talks := talks \ {talk};
 	  	)
 	  	pre talk in set talks and card talks >= 1
 			post talks = talks~ \ {talk};
+	  	
 	  	
 	  -- adds a new company attending the conference
 		public AddCompany : Company ==> ()
@@ -68,14 +69,6 @@ operations
 	  	)
 	  	pre company not in set companies
 			post companies = companies~ union {company};
-			
-	-- remove company attending
-	public RemoveCompany : Company ==> ()
-	  	RemoveCompany (company) == (
-	  		companies := companies \ {company};
-	  	)
-	  	pre company in set companies and card companies >= 1
-			post companies = companies~ \ {company};
 	  	
 functions
 

@@ -1,0 +1,23 @@
+class Exibit
+types
+
+values
+
+instance variables
+
+	private startups : set of Startup := {};
+	private investors : set of Influential := {};
+	
+operations
+
+ 	-- default constructor of the exibit class 
+		public Exibit : () ==> Exibit
+	  	Exibit () == (
+	  		return self
+	  	);
+	  	
+functions
+
+traces
+
+end Exibit

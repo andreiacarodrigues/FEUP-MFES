@@ -5,7 +5,6 @@ values
 
 instance variables
 	private name : Utils`String := [];
-	private id : nat1;
 
 operations
 
@@ -13,8 +12,6 @@ operations
 		public Attendee : Utils`String ==> Attendee
 	  	Attendee (attendeeName) == (
 	  		name := attendeeName;
-	  		id := Utils`id;
-	  		Utils`id := Utils`id + 1;
 	  		return self
 	  	)
 	  	pre len attendeeName > 0;

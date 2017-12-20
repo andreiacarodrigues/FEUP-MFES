@@ -24,11 +24,7 @@ operations
 	  		time := talkTime;
 	  		duration := talkDuration;
 	  		return self
-	  	)
-	  	pre len talkName > 0 and len talkDescription > 0 
-	  		and talkDate.year > 0 and talkDate.month > 0 and talkDate.day > 0 and talkDate.month <= 12 
-	  		and talkDate.day <= Utils`DaysOfMonth(talkDate.year,talkDate.month) and talkTime.hour >= 0
-	  		and talkTime.hour < 24 and talkTime.minute >=0 and talkTime.minute < 60 and talkDuration > 0;
+	  	);
 	  	
 	 -- returns the talk's name
 	 public GetName : () ==> Utils`String

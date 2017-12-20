@@ -46,36 +46,18 @@ operations
 	  	);
 	  	
 	 -- adds a new talk to the conference
-	 public AddTalk : Talk ==> ()
+	 public AddTalk : Talk ==> Talk
 	  	AddTalk (talk) == (
 	  		talks := talks union {talk};
-	  	)
-	  	pre talk not in set talks
-			post talks = talks~ union {talk};
-			
-	 -- remove Talk
-	 public RemoveTalk : Talk ==> ()
-	  	RemoveTalk (talk) == (
-	  		talks := talks \ {talk};
-	  	)
-	  	pre talk in set talks and card talks >= 1
-			post talks = talks~ \ {talk};
+	  		return talk
+	  	);
 	  	
 	  -- adds a new company attending the conference
-		public AddCompany : Company ==> ()
+		public AddCompany : Company ==> Company
 	  	AddCompany (company) == (
 	  		companies := companies union {company};
-	  	)
-	  	pre company not in set companies
-			post companies = companies~ union {company};
-			
-	-- remove company attending
-	public RemoveCompany : Company ==> ()
-	  	RemoveCompany (company) == (
-	  		companies := companies \ {company};
-	  	)
-	  	pre company in set companies and card companies >= 1
-			post companies = companies~ \ {company};
+	  		return company
+	  	);
 	  	
 functions
 

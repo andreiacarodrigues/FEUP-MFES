@@ -1,0 +1,19 @@
+class Exibit
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	private startups : set of Startup := {};
+	private investors : set of Influential := {};
+operations
+ 	-- default constructor of the attendee class 
+		public Exibit : () ==> Exibit
+	  	Exibit () == (
+	  		return self
+	  	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Exibit

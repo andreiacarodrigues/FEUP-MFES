@@ -24,13 +24,12 @@ operations
 			getInstance() == return websummit;
 	  	
 	-- singleton - reset the instance
-	public static clearInstance: () ==> WebSummit
+	public static clearInstance: () ==> Linkedin
 		clearInstance() == (
 			websummit := new WebSummit();
 			return getInstance();
 		)
-		post RESULT.conferences = {} and RESULT.exibit.GetStartups() = {}
-			 and RESULT.exibit.GetInvestors() = {} and RESULT.attendees = {};
+		post RESULT.conferences = {} and RESULT.exibit = {} and RESULT.attendees = {};
 	  	
 	 -- creates a new conferece
 	 public CreateConference : Conference ==> ()
@@ -47,8 +46,8 @@ operations
 	  	);
 	  	
 	 -- returns a specific conferece by it's name
-	 public pure GetConference : Utils`String ==> set of Conference
-	  	GetConference (conferenceName) == (
+	 public pure GetConferences : Utils`String ==> set of Conference
+	  	GetConferences (conferenceName) == (
 	  		dcl result: set of Conference := {};
 	  		
 	  		for all conference in set conferences do (
@@ -59,8 +58,21 @@ operations
 	  		return result
 	  	)
 		pre len conferenceName > 0
-		post RESULT = {} or card RESULT = 1;
+		post len result = 0 or len result = 1;
 	  	
+	  	
+	  	-- returns all users that have a similar name to the given one
+	public pure searchByName: seq of char ==> set of User
+	searchByName(name) == return {user | user in set users & user.similarName(name)} --(
+	--dcl results: set of User := {};
+	
+	--for all user in set users do (
+	--	if user.similarName(name) then
+	--		results := results union {user};
+	--);
+	
+	--return results)
+	pre len name > 0;
 	  	
 functions
 

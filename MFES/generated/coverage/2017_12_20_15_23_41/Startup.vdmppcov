@@ -1,0 +1,52 @@
+class Startup
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	private name : Utils`String := [];
+	private description : Utils`String := [];
+	private website : Utils`String := [];
+	private country : Utils`String := [];
+
+operations
+	-- constructor of the startup class 
+		public Startup :  Utils`String *  Utils`String *  Utils`String * Utils`String ==> Startup
+	  	Startup (startupName, startupDescription, startupWebsite, startupCountry) == (
+	  		name := startupName;
+	  		description := startupDescription;
+	  		website := startupWebsite;
+	  		country := startupCountry;
+	  		return self
+	  	);
+	  	
+	  -- returns the startup name
+	 public GetName : () ==> Utils`String
+	  	GetName () == (
+	  		return name;
+	  	);
+	  	
+	 -- returns the startup description
+	 public GetDescription : () ==> Utils`String
+	  	GetDescription () == (
+	  		return description;
+	  	);
+	  	
+	  -- returns the startup website
+	 public GetWebsite : () ==> Utils`String
+	  	GetWebsite () == (
+	  		return website;
+	  	);
+	  	
+	  -- returns the startup country
+	 public GetCountry : () ==> Utils`String
+	  	GetCountry () == (
+	  		return country;
+	  	);
+	  	
+	  	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Startup

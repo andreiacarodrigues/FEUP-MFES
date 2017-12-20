@@ -47,19 +47,19 @@ operations
 	  	);
 	  	
 	 -- returns a specific conferece by it's name
-	 public pure GetConference : Utils`String ==> set of Conference
-	  	GetConference (conferenceName) == (
-	  		dcl result: set of Conference := {};
+	 public pure GetConferences : Utils`String ==> seq of Conference
+	  	GetConferences (conferenceName) == (
+	  		dcl result: seq of Conference := [];
 	  		
 	  		for all conference in set conferences do (
 	  			if conference.GetName() = conferenceName
-	  			then result := result union {conference};
+	  			then result := result ^ [conference];
 	  		);
 	  		
 	  		return result
 	  	)
 		pre len conferenceName > 0
-		post RESULT = {} or card RESULT = 1;
+		post RESULT = [] or len RESULT = 1;
 	  	
 	  	
 functions
