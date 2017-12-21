@@ -1,0 +1,111 @@
+class Conference
+types
+	
+values
+
+instance variables
+
+	private name : Utils`String := [];
+	private description : Utils`String := [];
+	private talks : set of Talk := {};
+	private companies : set of Company := {};
+	
+operations
+		
+	  -- constructor of the conference class 
+		public Conference : Utils`String * Utils`String ==> Conference
+	  	Conference (conferenceName, conferenceDescription) == (
+	  		name := conferenceName;
+	  		description := conferenceDescription;
+	  		return self
+	  	)
+	  	pre len conferenceName > 0 and len conferenceDescription > 0;
+	  	
+	 -- returns the conference name
+	 pure public GetName : () ==> Utils`String
+	  	GetName () == (
+	  		return name;
+	  	);
+	  	
+	 -- returns the conference description
+	 pure public GetDescription : () ==> Utils`String
+	  	GetDescription () == (
+	  		return description;
+	  	);
+	  	
+	 -- returns the conference talks
+	 pure public GetTalks : () ==> set of Talk
+	  	GetTalks () == (
+	  		return talks;
+	  	);
+	 
+	  -- returns the conference attending companies
+	 pure public GetCompanies : () ==> set of Company
+	  	GetCompanies () == (
+	  		return companies;
+	  	);
+	  	
+	 -- adds a new talk to the conference
+	 public AddTalk : Talk ==> ()
+	  	AddTalk (talk) == (
+	  		talks := talks union {talk};
+	  	)
+	  	pre talk not in set talks
+			post talks = talks~ union {talk};
+			
+	 -- remove Talk
+	 public RemoveTalk : Talk ==> ()
+	  	RemoveTalk (talk) == (
+	  		talks := talks \ {talk};
+	  	)
+	  	pre talk in set talks and card talks >= 1
+			post talks = talks~ \ {talk};
+	  	
+	-- adds a new company attending the conference
+  public AddCompany : Company ==> ()
+	  	AddCompany (company) == (
+	  		companies := companies union {company};
+	  	)
+	  	pre company not in set companies
+			post companies = companies~ union {company};
+			
+	-- remove company attending
+	public RemoveCompany : Company ==> ()
+	  	RemoveCompany (company) == (
+	  		companies := companies \ {company};
+	  	)
+	  	pre company in set companies and card companies >= 1
+			post companies = companies~ \ {company};
+			
+	 -- returns talks of the day, sorted by time
+	public GetTalks : Utils`Date ==> seq of Utils`Time
+	  	GetTalks (date) == (
+	  		dcl result: set of Talk := {};
+	    	dcl datesMap: map Utils`Date to Utils`Time := {|->};
+	    	dcl times: set of Utils`Time;
+	    	dcl timesSeq: seq of Utils`Time;
+	  	
+	  		for all talk in set talks do (
+	  			datesMap := datesMap munion {talk.GetDate() |-> talk.GetTime()};
+	  		);
+	  	
+		  	-- só datas daquele dia
+		  	datesMap := {date} <-: datesMap;
+		  	times := rng datesMap;
+		  	for all time in set times do (
+		  			timesSeq := timesSeq ^ [time];
+		  		);
+	  		
+	  		timesSeq := Utils`mergesort(timesSeq);
+	  	
+	  	
+	  		-- TODO
+	  		return timesSeq
+	  	);
+	 
+	  	
+functions
+
+traces
+
+end Conference

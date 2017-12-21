@@ -1,0 +1,39 @@
+class Attendee
+types
+
+values
+
+instance variables
+	private name : Utils`String := [];
+	private id : nat1;
+
+operations
+
+	-- constructor of the attendee class 
+		public Attendee : Utils`String ==> Attendee
+	  	Attendee (attendeeName) == (
+	  		name := attendeeName;
+	  		id := Utils`id;
+	  		Utils`id := Utils`id + 1;
+	  		return self
+	  	)
+	  	pre len attendeeName > 0;
+	  	
+	  	
+		-- returns the attendee's name
+	  public GetName : () ==> Utils`String
+	  	GetName () == (
+	  		return name;
+	  	);
+	  	
+	  -- prints the attendee's information
+	  public Print : () ==> ()
+	  	Print() == (
+	  		IO`print(self.GetName())
+	  	);
+	  
+functions
+
+traces
+
+end Attendee

@@ -1,0 +1,69 @@
+class WebSummit
+types
+
+values
+
+instance variables
+
+	private conferences : set of Conference := {};
+	private exibit : Exibit := new Exibit();
+	private attendees : set of Attendee := {};
+	
+	private static websummit: WebSummit := new WebSummit();
+	
+operations
+
+	-- constructor of the websummit class 
+		public WebSummit :  () ==> WebSummit
+	  	WebSummit () == (
+	  		return self
+	  	);
+	  	
+	-- singleton - return the existent instance
+		public pure static getInstance: () ==> WebSummit 
+			getInstance() == return websummit;
+	  	
+	-- singleton - reset the instance
+	public static clearInstance: () ==> WebSummit
+		clearInstance() == (
+			websummit := new WebSummit();
+			return getInstance();
+		)
+		post RESULT.conferences = {} and RESULT.exibit.GetStartups() = {}
+			 and RESULT.exibit.GetInvestors() = {} and RESULT.attendees = {};
+	  	
+	 -- creates a new conferece
+	 public CreateConference : Conference ==> ()
+	  	CreateConference (conference) == (
+	  		conferences := conferences union {conference};
+	  	)
+	  	pre conference not in set conferences
+			post conferences = conferences~ union {conference};
+	  	
+	 -- returns all confereces
+	 public GetConferences : () ==> set of Conference
+	  	GetConferences () == (
+	  		return conferences
+	  	);
+	  	
+	 -- returns a specific conferece by it's name
+	 public pure GetConference : Utils`String ==> set of Conference
+	  	GetConference (conferenceName) == (
+	  		dcl result: set of Conference := {};
+	  		
+	  		for all conference in set conferences do (
+	  			if conference.GetName() = conferenceName
+	  			then result := result union {conference};
+	  		);
+	  		
+	  		return result
+	  	)
+		pre len conferenceName > 0
+		post RESULT = {} or card RESULT = 1;
+	  	
+	  	
+functions
+
+traces
+
+end WebSummit

@@ -1,0 +1,21 @@
+class Common is subclass of Attendee
+types
+
+values
+
+instance variables
+
+operations
+
+	-- constructor of the common attendee class 
+	public Common : Utils`String ==> Common
+		  	Common (attendeeName) == (
+		  		Attendee(attendeeName);	
+		  	)
+		  	pre len attendeeName > 0;
+
+functions
+
+traces
+
+end Common
