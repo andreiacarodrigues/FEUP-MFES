@@ -7,8 +7,8 @@ types
 							   day : nat1
 			inv d == d.month >= 1 and d.month <= 12 and d.day >= 1 and d.day <= DaysOfMonth(d.year,d.month);
 			
-	public Time :: hour : nat1
-								 minute: nat1
+	public Time :: hour : nat
+								 minute: nat
 			inv t == t.hour < 24 and t.minute < 60;
 			
 

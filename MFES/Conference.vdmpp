@@ -27,10 +27,22 @@ operations
 	  		return name;
 	  	);
 	  	
+	-- set the conference name
+	 public SetName : Utils`String ==> ()
+	  	SetName (n) == (
+	  		name := n;
+	  	);
+	  	
 	 -- returns the conference description
 	 pure public GetDescription : () ==> Utils`String
 	  	GetDescription () == (
 	  		return description;
+	  	);
+	  	
+	 -- set the conference description
+	 public SetDescription : Utils`String ==> ()
+	  	SetDescription (d) == (
+	  		description := d;
 	  	);
 	  	
 	 -- returns the conference talks
@@ -54,8 +66,8 @@ operations
 	  	pre len talkName > 0
 			post RESULT = {} or card RESULT = 1;
 			
-	-- returns a conference talk by it's time
-	pure public GetTalk : Utils`Date * Utils`Time ==> seq of Talk
+	-- returns a conference talk by it's time: required for GetSchedule operation
+	pure private GetTalk : Utils`Date * Utils`Time ==> seq of Talk
 	  	GetTalk (talkDate, talkTime) == (
 	  		dcl result: seq of Talk := [];
 	  		
@@ -83,7 +95,7 @@ operations
 	  	AddTalk (talk) == (
 	  		talks := talks union {talk};
 	  	)
-	  	pre talk not in set talks and (DoesntOverlap(talk)) = true
+	  	pre talk not in set talks and notAlreadyExistent(talk) = true and (DoesntOverlap(talk)) = true
 			post talks = talks~ union {talk};
 			
 	 -- remove Talk
@@ -99,7 +111,7 @@ operations
 	  	AddCompany (company) == (
 	  		companies := companies union {company};
 	  	)
-	  	pre company not in set companies
+	  	pre company not in set companies and notAlreadyExistent(company) = true
 			post companies = companies~ union {company};
 			
 	-- remove company attending
@@ -172,6 +184,38 @@ operations
 	  		return doesntOverlap;
 	  	)
 	  	pre newTalk not in set talks;
+	  	
+	 -- checks if a talk with the same name doesn't exist already: for precondition of AddTask
+	   pure private notAlreadyExistent : Talk ==> bool
+	  	notAlreadyExistent (newTalk) == (
+	  	dcl doesntExist : bool := true;
+	  	for all talk in set talks do (
+	  		if(talk.GetName() = newTalk.GetName())
+			  then(
+			  			doesntExist := false;
+			  			return doesntExist
+			  		)
+	  		);
+	  		
+	  		return doesntExist;
+	  	)
+	  	pre newTalk not in set talks;
+	  	
+	  -- checks if a company with the same name doesn't exist already: for precondition of AddCompany
+	   pure private notAlreadyExistent : Company ==> bool
+	  	notAlreadyExistent (newCompany) == (
+	  	dcl doesntExist : bool := true;
+	  	for all company in set companies do (
+	  		if(company.GetName() = newCompany.GetName())
+			  then(
+			  			doesntExist := false;
+			  			return doesntExist
+			  		)
+	  		);
+	  		
+	  		return doesntExist;
+	  	)
+	  	pre newCompany not in set companies;
 			
 	 
 functions

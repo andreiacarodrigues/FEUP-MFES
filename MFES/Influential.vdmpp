@@ -30,10 +30,22 @@ operations
 	  		return jobPosition;
 	  	);
 	  	
+	 -- sets the influential attendee's position
+	 public SetJobPosition : Utils`String ==> ()
+	  	SetJobPosition (j) == (
+	  		jobPosition := j;
+	  	);
+	  	
 	 -- returns the influential attendee's job
 	 public GetCompany : () ==> Company
 	  	GetCompany () == (
 	  		return company;
+	  	);
+	  	
+	  -- sets the influential attendee's company
+	 public SetCompany : Company ==> ()
+	  	SetCompany (c) == (
+	  		company := c;
 	  	);
 	  	
 	 -- returns the influential attendee's description
@@ -42,10 +54,22 @@ operations
 	  		return description;
 	  	);
 	  	
+	  -- sets the influential attendee's description
+	 public SetDescription : Utils`String ==> ()
+	  	SetDescription (d) == (
+	  		description := d;
+	  	);
+	  	
 	  -- returns the influential attendee's country
 	  public GetCountry : () ==> Utils`String
 	  	GetCountry () == (
 	  		return country;
+	  	);
+	  	
+	  -- sets the influential attendee's country
+	 public SetCountry : Utils`String ==> ()
+	  	SetCountry (c) == (
+	  		country := c;
 	  	);
 	  	
 	  -- prints the influential attendee's information

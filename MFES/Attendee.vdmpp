@@ -26,6 +26,12 @@ operations
 	  		return name;
 	  	);
 	  	
+	  -- sets the attendee's name
+	  public SetName : Utils`String ==> ()
+	  	SetName (n) == (
+	  		name := n;
+	  	);
+	  	
 	  -- prints the attendee's information
 	  public Print : () ==> ()
 	  	Print() == (

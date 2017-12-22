@@ -18,9 +18,15 @@ operations
 	  	pre len companyName > 0;
 	  	
 	 -- returns the company's name
-	 public GetName : () ==> Utils`String
+	 pure public GetName : () ==> Utils`String
 	  	GetName () == (
 	  		return name;
+	  	);
+	  	
+	  -- sets the company's name
+	 public SetName : Utils`String ==> ()
+	  	SetName (n) == (
+	  		name := n;
 	  	);
 	  	
 functions

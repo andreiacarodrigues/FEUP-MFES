@@ -60,7 +60,7 @@ operations
 	  	AddConference (conference) == (
 	  		conferences := conferences union {conference};
 	  	)
-	  	pre conference not in set conferences
+	  	pre conference not in set conferences and notAlreadyExistent(conference) = true
 			post conferences = conferences~ union {conference};
 			
 	-- adds a new talk to an existing conference
@@ -91,8 +91,46 @@ operations
 	  	)
 		pre len conferenceName > 0
 		post RESULT = {} or card RESULT = 1;
+		
+		
+		-- returns the full schedule of a conference
+	 public GetSchedule : Conference ==> map Utils`Date to seq of Talk
+	  	GetSchedule (c) == (
+	  		return c.GetSchedule();
+	  	)
+	  	pre c in set conferences;
 	  	
+	 -- returns the daily schedule of a conference
+	 public GetSchedule : Conference * Utils`Date ==> seq of Talk
+	  	GetSchedule (c, d) == (
+	  		return c.GetSchedule(d);
+	  	)
+	  	pre c in set conferences;
 	  	
+	 -- returns the full event schedule
+	 -- NOTA: TODO
+	 public GetSchedule : () ==> ()
+	  	GetSchedule () == (
+	  		return;
+	  	);
+		
+		-- checks if a conference with the same name doesn't exist already: for precondition of AddConference
+	   pure private notAlreadyExistent : Conference ==> bool
+	  	notAlreadyExistent (newConference) == (
+	  	dcl doesntExist : bool := true;
+	  	for all conference in set conferences do (
+	  		if(conference.GetName() = newConference.GetName())
+			  then(
+			  			doesntExist := false;
+			  			return doesntExist
+			  		)
+	  		);
+	  		
+	  		return doesntExist;
+	  	)
+	  	pre newConference not in set conferences;
+	  	
+	  	-- NOTA: tem de ter metodo para ir buscar attendee por id para poder removê-los e outro para listar os attendees e speakers
 functions
 
 traces

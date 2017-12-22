@@ -31,15 +31,29 @@ operations
 	  		and talkTime.hour < 24 and talkTime.minute >=0 and talkTime.minute < 60 and talkDuration > 0;
 	  	
 	 -- returns the talk's name
-	 public GetName : () ==> Utils`String
+	 pure public GetName : () ==> Utils`String
 	  	GetName () == (
 	  		return name;
 	  	);
+	  	
+	  	
+	 -- set the talk name
+	 public SetName : Utils`String ==> ()
+	  	SetName (n) == (
+	  		name := n;
+	  	);
+	  	
 	  	
 	 -- returns the talk's description
 	 public GetDescription : () ==> Utils`String
 	  	GetDescription () == (
 	  		return description;
+	  	);
+	  	
+	 -- set the talk description
+	 public SetDescription : Utils`String ==> ()
+	  	SetDescription (d) == (
+	  		description := d;
 	  	);
 	  	
 	 -- returns the talk's date
@@ -48,16 +62,34 @@ operations
 	  		return date;
 	  	);
 	  	
+	 -- set the talk date
+	 public SetDate : Utils`Date ==> ()
+	  	SetDate (d) == (
+	  		date := d;
+	  	);
+	  	
 	 -- returns the talk's time
 	 pure public GetTime : () ==> Utils`Time
 	  	GetTime () == (
 	  		return time;
 	  	);
 	  	
+	 -- set the talk time
+	 public SetTime : Utils`Time ==> ()
+	  	SetTime (t) == (
+	  		time := t;
+	  	);
+	  	
 	 -- returns the talk's duration
 	 pure public GetDuration : () ==> nat1
 	  	GetDuration () == (
 	  		return duration;
+	  	);
+	  	
+	 -- set the talk duration
+	 public SetDuration : nat1 ==> ()
+	  	SetDuration (d) == (
+	  		duration := d;
 	  	);
 	  	
 	  -- returns the talk's speakers
@@ -79,6 +111,14 @@ operations
 	  	)	
 	  	pre speaker not in set speakers
 			post speakers = speakers~ union {speaker};
+			
+	 -- removes a speaker from the talk
+   public RemoveSpeaker : Influential ==> ()
+	  	RemoveSpeaker (speaker) == (
+	  		speakers := speakers \ {speaker};
+	  	)	
+	  	pre speaker in set speakers
+			post speakers = speakers~ \ {speaker};
 	  	
 	 -- adds a new attendee to the talk
 	 public AddAttendee : Attendee ==> ()
@@ -87,9 +127,15 @@ operations
 	  	)	
 	  	pre attendee not in set attendees
 			post attendees = attendees~ union {attendee};
+	 
+	 -- removes an attendee from the talk
+   public RemoveAttendee : Attendee ==> ()
+	  	RemoveAttendee (attendee) == (
+	  		attendees := attendees \ {attendee};
+	  	)	
+	  	pre attendee in set attendees
+			post attendees = attendees~ \ {attendee};
 	  	
-	  	
-
   -- prints the talk information
 	  public Print : () ==> ()
 	  	Print() == (
