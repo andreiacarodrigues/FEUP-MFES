@@ -35,20 +35,20 @@ operations
 		post RESULT.conferences = {} and RESULT.exibit.GetStartups() = {}
 			 and RESULT.exibit.GetInvestors() = {} and RESULT.attendees = {};
 	  	
-	 -- sets Dates
+	 -- sets websummit dates
 	 public SetDates : Utils`Date * Utils`Date ==> ()
 	  	SetDates (d1, d2) == (
 	  		initialDate := d1;
 	  		finalDate := d2;
 	  	);
 	  	
-	 --  
+	 --  returns websummit initial date
 	 pure public GetInitialDate : () ==> Utils`Date
 	  	GetInitialDate () == (
 	  		return initialDate
 	  	);
 	  	
-	  --  
+	  -- returns websummit final date
 	 pure public GetFinalDate : () ==> Utils`Date
 	  	GetFinalDate () == (
 	  		return finalDate
@@ -56,12 +56,20 @@ operations
 			
 			
 	 -- creates a new conferece
-	 public CreateConference : Conference ==> ()
-	  	CreateConference (conference) == (
+	 public AddConference : Conference ==> ()
+	  	AddConference (conference) == (
 	  		conferences := conferences union {conference};
 	  	)
 	  	pre conference not in set conferences
 			post conferences = conferences~ union {conference};
+			
+	-- adds a new talk to an existing conference
+	 public AddTalk : Conference * Talk ==> ()
+	  	AddTalk (conference, talk) == (
+	  		conference.AddTalk(talk);
+	  	)
+	  	pre conference in set conferences and
+	  			Utils`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
 	  	
 	 -- returns all confereces
 	 public GetConferences : () ==> set of Conference

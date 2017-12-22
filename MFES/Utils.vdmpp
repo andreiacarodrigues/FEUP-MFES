@@ -70,6 +70,17 @@ functions
 		  else
 		  mk_Date(d.year, d.month, d.day + 1)
 		);
+		
+		
+		public isSetBetweenDates: Date * Date * Date -> bool
+		isSetBetweenDates(dToCompare, dinit, dfinal) ==
+		(
+			if(dinit = nextDay(dfinal))
+			then false
+			else if (dToCompare = dinit)
+			then true
+			else isSetBetweenDates(dToCompare, nextDay(dinit), dfinal)
+		);
 			
 			
 	public DoesntOverlap: Time * nat1 * Time * nat1 -> bool
