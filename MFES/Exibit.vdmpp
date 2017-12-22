@@ -9,24 +9,37 @@ instance variables
 	private investors : set of Influential := {};
 	
 operations
+	
 
  	-- default constructor of the exibit class 
-		public Exibit : () ==> Exibit
-	  	Exibit () == (
-	  		return self
-	  	);
+	public Exibit : () ==> Exibit
+		Exibit () == (
+	 		return self
+	  );
 	  	
 	-- returns the exibit startups
-	 pure public GetStartups : () ==> set of Startup
-	  	GetStartups () == (
-	  		return startups;
-	  	);
-	  	
-	 -- returns the exibit investors
-	 pure public GetInvestors : () ==> set of Influential
-	  	GetInvestors () == (
-	  		return investors;
-	  	);
+	pure public GetStartups : () ==> set of Startup
+	 	GetStartups () == (
+  		return startups;
+  	);
+  	
+ 	-- set exibit startups
+	public SetStartups : set of Startup ==> ()
+	 	SetStartups (s) == (
+  		startups := s;
+  	); 	
+	  		
+	-- returns the exibit investors
+	pure public GetInvestors : () ==> set of Influential
+		GetInvestors () == (
+	  	return investors;
+	  );
+	  
+	-- set exibit investors
+	public SetInvestors : set of Influential ==> ()
+	 	SetInvestors (i) == (
+  		investors := i;
+  	);   
 	  	
 functions
 

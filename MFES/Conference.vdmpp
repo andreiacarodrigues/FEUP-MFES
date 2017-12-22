@@ -51,6 +51,12 @@ operations
 	  		return talks;
 	  	);
 	  	
+	 -- set the conference talks
+	 public SetTalks : set of Talk ==> ()
+	  	SetTalks (t) == (
+	  		talks := t;
+	  	);
+	  	
 	  -- returns a conference talk by it's name
 	 public GetTalk : Utils`String ==> set of Talk
 	  	GetTalk (talkName) == (
@@ -90,6 +96,12 @@ operations
 	  		return companies;
 	  	);
 	  	
+	 -- set the conference companies
+	 public SetCompanies : set of Company ==> ()
+	  	SetCompanies (c) == (
+	  		companies := c;
+	  	);
+	  	
 	 -- adds a new talk to the conference
 	 public AddTalk : Talk ==> ()
 	  	AddTalk (talk) == (
@@ -123,7 +135,7 @@ operations
 			post companies = companies~ \ {company};
 			
 	 -- returns schedule of the day, sorted by time
-	 -- NOTE: não sei que pós condições pôr aqui
+	 -- NOTE: nï¿½o sei que pï¿½s condiï¿½ï¿½es pï¿½r aqui
 	pure public GetSchedule : Utils`Date ==> seq of Talk
 	  	GetSchedule (date) == (
 	  		dcl result: seq of Talk := [];

@@ -97,11 +97,23 @@ operations
 	  	GetSpeakers () == (
 	  		return speakers;
 	  	);
+	  	
+	 -- set the talk speakers
+	 public SetSpeakers : set of Influential ==> ()
+	  	SetSpeakers (s) == (
+	  		speakers := s;
+	  	);
 	 
 	  -- returns the talk's attendees
 	 public GetAttendees : () ==> set of Attendee
 	  	GetAttendees () == (
 	  		return attendees;
+	  	);
+	  	
+	 -- set the talk speakers
+	 public SetAttendees : set of Attendee ==> ()
+	  	SetAttendees (a) == (
+	  		attendees := a;
 	  	);
 	  	
 	 -- adds a new speaker to the talk

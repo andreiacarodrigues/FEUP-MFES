@@ -48,14 +48,25 @@ operations
 	  		return initialDate
 	  	);
 	  	
-	  -- returns websummit final date
+	 --  set websummit initial date
+	 public SetInitialDate : Utils`Date ==> ()
+	  	SetInitialDate (d) == (
+	  		initialDate := d;
+	  	); 	
+	  	
+	 -- returns websummit final date
 	 pure public GetFinalDate : () ==> Utils`Date
 	  	GetFinalDate () == (
 	  		return finalDate
-	  	);
+	  	);	
+	  	
+	 -- set websummit final date
+	 public SetFinalDate : Utils`Date ==> ()
+	  	SetFinalDate (f) == (
+	  		finalDate := f;
+	  	); 			
 			
-			
-	 -- creates a new conferece
+	 -- creates a new conference
 	 public AddConference : Conference ==> ()
 	  	AddConference (conference) == (
 	  		conferences := conferences union {conference};
@@ -76,6 +87,12 @@ operations
 	  	GetConferences () == (
 	  		return conferences
 	  	);
+	  	
+	 -- set the websummit conferences
+	 public SetConferences : set of Conference ==> ()
+	  	SetConferences (c) == (
+	  		conferences := c;
+	  	); 	
 	  	
 	 -- returns a specific conferece by it's name
 	 public pure GetConference : Utils`String ==> set of Conference
@@ -130,7 +147,20 @@ operations
 	  	)
 	  	pre newConference not in set conferences;
 	  	
-	  	-- NOTA: tem de ter metodo para ir buscar attendee por id para poder removê-los e outro para listar os attendees e speakers
+	  	-- NOTA: tem de ter metodo para ir buscar attendee por id para poder removï¿½-los e outro para listar os attendees e speakers
+	
+	-- returns all websummit attendees
+	 public GetAttendees : () ==> set of Attendee
+	  	GetAttendees () == (
+	  		return attendees;
+	  	);  	
+	  	
+	-- returns all websummit attendees
+	 public SetAttendees : set of Attendee ==> ()
+	  	SetAttendees (a) == (
+	  		attendees := a;
+	  	); 	  	
+
 functions
 
 traces

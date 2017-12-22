@@ -28,11 +28,23 @@ operations
 	  		return name;
 	  	);
 	  	
-	 -- returns the startup description
+	  -- set the startup name
+	 public SetName : Utils`String ==> ()
+	  	SetName (n) == (
+	  		name := n;
+	  	);
+	  	
+	  -- returns the startup description
 	 public GetDescription : () ==> Utils`String
 	  	GetDescription () == (
 	  		return description;
 	  	);
+	  	
+	  -- set the startup description
+	 public SetDescritpion : Utils`String ==> ()
+	  	SetDescritpion (d) == (
+	  		description := d;
+	  	);	
 	  	
 	  -- returns the startup website
 	 public GetWebsite : () ==> Utils`String
@@ -40,11 +52,23 @@ operations
 	  		return website;
 	  	);
 	  	
+	  -- set the startup website	
+	 public SetWebsite : Utils`String ==> ()
+	  	SetWebsite (w) == (
+	  		website := w;
+	  	);
+	  	
 	  -- returns the startup country
 	 public GetCountry : () ==> Utils`String
 	  	GetCountry () == (
 	  		return country;
 	  	);
+	  	
+	  -- set the startup country
+	 public SetCountry : Utils`String ==> ()
+	  	SetCountry (c) == (
+	  		country := c;
+	  	);	
 	  	
 	  	
 functions
