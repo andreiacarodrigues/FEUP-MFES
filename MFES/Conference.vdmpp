@@ -55,11 +55,13 @@ operations
 			post RESULT = {} or card RESULT = 1;
 			
 	-- returns a conference talk by it's time
-	pure public GetTalk : Utils`Time ==> seq of Talk
-	  	GetTalk (talkTime) == (
+	pure public GetTalk : Utils`Date * Utils`Time ==> seq of Talk
+	  	GetTalk (talkDate, talkTime) == (
 	  		dcl result: seq of Talk := [];
 	  		
 	  		for all talk in set talks do (
+	  		  if talk.GetDate() = talkDate
+	  		  then
 	  			if talk.GetTime() = talkTime
 	  			then result := result ^ [talk];
 	  		);
@@ -108,10 +110,10 @@ operations
 	  	pre company in set companies and card companies >= 1
 			post companies = companies~ \ {company};
 			
-	 -- returns talks of the day, sorted by time
-	 -- FALTAM PRE E POS CONDICOES
-	pure public GetTalks : Utils`Date ==> seq of Talk
-	  	GetTalks (date) == (
+	 -- returns schedule of the day, sorted by time
+	 -- NOTE: não sei que pós condições pôr aqui
+	pure public GetSchedule : Utils`Date ==> seq of Talk
+	  	GetSchedule (date) == (
 	  		dcl result: seq of Talk := [];
 	    	dcl timesSeq: seq of Utils`Time := [];
 	    	dcl timesTotal : nat1;
@@ -125,12 +127,29 @@ operations
 	  		timesTotal := 1;
 	  		
 	  		while ((timesTotal) <= len timesSeq)
-	  		do
-	  			(
+	  		do(
 	  			dcl temp: Utils`Time := timesSeq(timesTotal);
-	  			result := result ^ GetTalk(temp);
-	  			timesTotal := timesTotal+1);
+	  			result := result ^ GetTalk(date, temp);
+	  			timesTotal := timesTotal+1
+	  			);
 	  
+	  		return result
+	  	)
+	  	pre date.month >= 1 and date.month <= 12 and date.day >= 1 and date.day <= Utils`DaysOfMonth(date.year,date.month);
+	  	
+	 -- returns schedule of the conference, sorted
+   pure public GetSchedule : () ==> map Utils`Date to seq of Talk
+	  	GetSchedule () == (
+	  		dcl result: map Utils`Date to seq of Talk := {|->};
+	    	dcl currentDate : Utils`Date := WebSummit`getInstance().GetInitialDate();
+	    	dcl finalDate : Utils`Date := WebSummit`getInstance().GetFinalDate();
+
+	    	while (currentDate <> Utils`nextDay(finalDate))
+	    	do (
+	    		 result := result munion {currentDate |-> GetSchedule(currentDate)};
+	    		 currentDate := Utils`nextDay(currentDate);
+	    		 );
+	  		
 	  		return result
 	  	);
 	  	

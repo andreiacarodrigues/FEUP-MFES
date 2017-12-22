@@ -9,6 +9,9 @@ instance variables
 	private exibit : Exibit := new Exibit();
 	private attendees : set of Attendee := {};
 	
+	private initialDate : Utils`Date := mk_Utils`Date(2001,1,1);
+	private finalDate : Utils`Date := mk_Utils`Date(2001,1,2);
+	
 	private static websummit: WebSummit := new WebSummit();
 	
 operations
@@ -32,6 +35,26 @@ operations
 		post RESULT.conferences = {} and RESULT.exibit.GetStartups() = {}
 			 and RESULT.exibit.GetInvestors() = {} and RESULT.attendees = {};
 	  	
+	 -- sets Dates
+	 public SetDates : Utils`Date * Utils`Date ==> ()
+	  	SetDates (d1, d2) == (
+	  		initialDate := d1;
+	  		finalDate := d2;
+	  	);
+	  	
+	 --  
+	 pure public GetInitialDate : () ==> Utils`Date
+	  	GetInitialDate () == (
+	  		return initialDate
+	  	);
+	  	
+	  --  
+	 pure public GetFinalDate : () ==> Utils`Date
+	  	GetFinalDate () == (
+	  		return finalDate
+	  	);
+			
+			
 	 -- creates a new conferece
 	 public CreateConference : Conference ==> ()
 	  	CreateConference (conference) == (

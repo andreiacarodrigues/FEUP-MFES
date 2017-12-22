@@ -20,10 +20,6 @@ instance variables
 	public static id : nat1 := 1;
 
 operations
-
-		
-		
-		
 	
 functions
 
@@ -62,9 +58,21 @@ functions
 			else false
 		
 		);
+		
+		public nextDay: Date -> Date
+		nextDay(d) ==
+		(
+			if (d.day = DaysOfMonth(d.year,d.month))
+			then if(d.month < 12)
+					 then mk_Date(d.year, d.month + 1, 1)
+					 else
+					 mk_Date(d.year + 1, 1, 1)
+		  else
+		  mk_Date(d.year, d.month, d.day + 1)
+		);
 			
 			
-		public DoesntOverlap: Time * nat1 * Time * nat1 -> bool
+	public DoesntOverlap: Time * nat1 * Time * nat1 -> bool
 		DoesntOverlap(time1, dur1, time2, dur2) ==
 		(
 			if (time1.hour < time2.hour)
@@ -76,11 +84,11 @@ functions
 	
 			elseif  (time1.hour = time2.hour)
 			then if(time1.minute < time2.minute)
-					 then if(time1.minute + dur1 < time2.minute)
+					 then if(time1.minute + dur1 <= time2.minute)
 					 			then true
 					 			else false
 					 elseif(time2.minute < time1.minute)
-					 then if(time2.minute + dur2 < time1.minute)
+					 then if(time2.minute + dur2 <= time1.minute)
 					 			then true
 					 			else false
 					 	else false
