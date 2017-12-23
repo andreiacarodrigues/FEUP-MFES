@@ -23,14 +23,14 @@ operations
 	  	);
 	  	
 	-- singleton - return the existent instance
-		public pure static getInstance: () ==> WebSummit 
-			getInstance() == return websummit;
+		public pure static GetInstance: () ==> WebSummit 
+			GetInstance() == return websummit;
 	  	
 	-- singleton - reset the instance
-	public static clearInstance: () ==> WebSummit
-		clearInstance() == (
+	public static ClearInstance: () ==> WebSummit
+		ClearInstance() == (
 			websummit := new WebSummit();
-			return getInstance();
+			return GetInstance();
 		)
 		post RESULT.conferences = {} and RESULT.exibit.GetStartups() = {}
 			 and RESULT.exibit.GetInvestors() = {} and RESULT.attendees = {};
@@ -65,13 +65,14 @@ operations
 	-- adds a new talk to an existing conference
 	 public AddTalk : Conference * Talk ==> ()
 	  	AddTalk (conference, talk) == (
+	  		talk.SetConference(conference.GetName());
 	  		conference.AddTalk(talk);
 	  	)
 	  	pre conference in set conferences and
 	  			Utils`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
 	  	
 	 -- returns all confereces
-	 public GetConferences : () ==> set of Conference
+	 pure public GetConferences : () ==> set of Conference
 	  	GetConferences () == (
 	  		return conferences
 	  	);
@@ -126,7 +127,7 @@ operations
 	  				);
 	  		);
 	  		
-	  		currentDate := WebSummit`getInstance().GetInitialDate();
+	  		currentDate := WebSummit`GetInstance().GetInitialDate();
 	  		
 	  		-- orders them by time
 	  		

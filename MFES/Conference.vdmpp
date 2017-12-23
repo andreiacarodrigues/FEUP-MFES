@@ -19,7 +19,7 @@ operations
 	  		description := conferenceDescription;
 	  		return self
 	  	)
-	  	pre len conferenceName > 0 and len conferenceDescription > 0;
+	  	pre len conferenceName > 0;
 	  	
 	 -- returns the conference name
 	 pure public GetName : () ==> Utils`String
@@ -141,8 +141,8 @@ operations
    pure public GetSchedule : () ==> map Utils`Date to seq of Talk
 	  	GetSchedule () == (
 	  		dcl result: map Utils`Date to seq of Talk := {|->};
-	    	dcl currentDate : Utils`Date := WebSummit`getInstance().GetInitialDate();
-	    	dcl finalDate : Utils`Date := WebSummit`getInstance().GetFinalDate();
+	    	dcl currentDate : Utils`Date := WebSummit`GetInstance().GetInitialDate();
+	    	dcl finalDate : Utils`Date := WebSummit`GetInstance().GetFinalDate();
 
 	    	while (currentDate <> Utils`nextDay(finalDate))
 	    	do (
