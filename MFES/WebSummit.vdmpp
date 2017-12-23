@@ -48,23 +48,11 @@ operations
 	  		return initialDate
 	  	);
 	  	
-	 --  set websummit initial date
-	 public SetInitialDate : Utils`Date ==> ()
-	  	SetInitialDate (d) == (
-	  		initialDate := d;
-	  	); 	
-	  	
 	 -- returns websummit final date
 	 pure public GetFinalDate : () ==> Utils`Date
 	  	GetFinalDate () == (
 	  		return finalDate
 	  	);	
-	  	
-	 -- set websummit final date
-	 public SetFinalDate : Utils`Date ==> ()
-	  	SetFinalDate (f) == (
-	  		finalDate := f;
-	  	); 			
 			
 	 -- creates a new conference
 	 public AddConference : Conference ==> ()
@@ -87,12 +75,6 @@ operations
 	  	GetConferences () == (
 	  		return conferences
 	  	);
-	  	
-	 -- set the websummit conferences
-	 public SetConferences : set of Conference ==> ()
-	  	SetConferences (c) == (
-	  		conferences := c;
-	  	); 	
 	  	
 	 -- returns a specific conferece by it's name
 	 public pure GetConference : Utils`String ==> set of Conference
@@ -125,11 +107,38 @@ operations
 	  	pre c in set conferences;
 	  	
 	 -- returns the full event schedule
-	 -- NOTA: TODO
-	 public GetSchedule : () ==> ()
+	 public GetSchedule : () ==> map Utils`Date to seq of Talk
 	  	GetSchedule () == (
-	  		return;
-	  	);
+	  		dcl temp: map Utils`Date to seq of Talk := {|->};
+	  		dcl currentDate : Utils`Date := initialDate;
+	  		
+	  		-- joins all the events
+	  		for all conference in set conferences do (
+	  			if(temp = {|->})
+	  				then temp := conference.GetSchedule()
+	  				else 
+	  				(
+	  					while (currentDate <> Utils`nextDay(finalDate))
+						    do (
+						    	  temp(currentDate) := temp(currentDate) ^ conference.GetSchedule(currentDate);
+						    		currentDate := Utils`nextDay(currentDate);
+						    		);
+	  				);
+	  		);
+	  		
+	  		currentDate := WebSummit`getInstance().GetInitialDate();
+	  		
+	  		-- orders them by time
+	  		
+	  		while (currentDate <> Utils`nextDay(finalDate))
+			  do (
+			 
+						temp(currentDate) := Utils`mergeSortTalks(temp(currentDate));
+						currentDate := Utils`nextDay(currentDate);
+				);
+						    
+	  		return temp;
+	  	);	  	
 		
 		-- checks if a conference with the same name doesn't exist already: for precondition of AddConference
 	   pure private notAlreadyExistent : Conference ==> bool
@@ -154,12 +163,6 @@ operations
 	  	GetAttendees () == (
 	  		return attendees;
 	  	);  	
-	  	
-	-- returns all websummit attendees
-	 public SetAttendees : set of Attendee ==> ()
-	  	SetAttendees (a) == (
-	  		attendees := a;
-	  	); 	  	
 
 functions
 

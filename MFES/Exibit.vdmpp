@@ -23,23 +23,11 @@ operations
   		return startups;
   	);
   	
- 	-- set exibit startups
-	public SetStartups : set of Startup ==> ()
-	 	SetStartups (s) == (
-  		startups := s;
-  	); 	
-	  		
 	-- returns the exibit investors
 	pure public GetInvestors : () ==> set of Influential
 		GetInvestors () == (
 	  	return investors;
 	  );
-	  
-	-- set exibit investors
-	public SetInvestors : set of Influential ==> ()
-	 	SetInvestors (i) == (
-  		investors := i;
-  	);   
 	  	
 functions
 

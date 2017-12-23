@@ -51,12 +51,6 @@ operations
 	  		return talks;
 	  	);
 	  	
-	 -- set the conference talks
-	 public SetTalks : set of Talk ==> ()
-	  	SetTalks (t) == (
-	  		talks := t;
-	  	);
-	  	
 	  -- returns a conference talk by it's name
 	 public GetTalk : Utils`String ==> set of Talk
 	  	GetTalk (talkName) == (
@@ -96,12 +90,6 @@ operations
 	  		return companies;
 	  	);
 	  	
-	 -- set the conference companies
-	 public SetCompanies : set of Company ==> ()
-	  	SetCompanies (c) == (
-	  		companies := c;
-	  	);
-	  	
 	 -- adds a new talk to the conference
 	 public AddTalk : Talk ==> ()
 	  	AddTalk (talk) == (
@@ -138,26 +126,14 @@ operations
 	 -- NOTE: n�o sei que p�s condi��es p�r aqui
 	pure public GetSchedule : Utils`Date ==> seq of Talk
 	  	GetSchedule (date) == (
-	  		dcl result: seq of Talk := [];
-	    	dcl timesSeq: seq of Utils`Time := [];
-	    	dcl timesTotal : nat1;
-	  	
+	    	dcl talkSet: seq of Talk := [];
+	    	
 	  		for all talk in set talks do (
 	  		if(talk.GetDate() = date)
-	  			then timesSeq := timesSeq ^ [talk.GetTime()];
+	  			then talkSet := talkSet ^ [talk];
 	  		);
 	
-	  		timesSeq := Utils`mergesort(timesSeq);
-	  		timesTotal := 1;
-	  		
-	  		while ((timesTotal) <= len timesSeq)
-	  		do(
-	  			dcl temp: Utils`Time := timesSeq(timesTotal);
-	  			result := result ^ GetTalk(date, temp);
-	  			timesTotal := timesTotal+1
-	  			);
-	  
-	  		return result
+	  		return Utils`mergeSortTalks(talkSet);
 	  	)
 	  	pre date.month >= 1 and date.month <= 12 and date.day >= 1 and date.day <= Utils`DaysOfMonth(date.year,date.month);
 	  	

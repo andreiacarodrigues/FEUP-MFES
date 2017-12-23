@@ -10,19 +10,21 @@ instance variables
 	private date : Utils`Date;
 	private time : Utils`Time;
 	private duration : nat1;
+	private conference : Utils`String := [];
 	private speakers : set of Influential := {};
 	private attendees : set of Attendee := {};
 	
 operations
 
 	-- constructor of the talk class 
-		public Talk :  Utils`String *  Utils`String *  Utils`Date *  Utils`Time * nat1 ==> Talk
-	  	Talk (talkName, talkDescription, talkDate, talkTime, talkDuration) == (
+		public Talk :  Utils`String *  Utils`String *  Utils`Date *  Utils`Time * nat1 * Utils`String ==> Talk
+	  	Talk (talkName, talkDescription, talkDate, talkTime, talkDuration, talkConference) == (
 	  		name := talkName;
 	  		description := talkDescription;
 	  		date := talkDate;
 	  		time := talkTime;
 	  		duration := talkDuration;
+	  		conference := talkConference;
 	  		return self
 	  	)
 	  	pre len talkName > 0 and len talkDescription > 0 
@@ -98,22 +100,10 @@ operations
 	  		return speakers;
 	  	);
 	  	
-	 -- set the talk speakers
-	 public SetSpeakers : set of Influential ==> ()
-	  	SetSpeakers (s) == (
-	  		speakers := s;
-	  	);
-	 
 	  -- returns the talk's attendees
 	 public GetAttendees : () ==> set of Attendee
 	  	GetAttendees () == (
 	  		return attendees;
-	  	);
-	  	
-	 -- set the talk speakers
-	 public SetAttendees : set of Attendee ==> ()
-	  	SetAttendees (a) == (
-	  		attendees := a;
 	  	);
 	  	
 	 -- adds a new speaker to the talk
