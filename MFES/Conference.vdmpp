@@ -93,6 +93,7 @@ operations
 	 -- adds a new talk to the conference
 	 public AddTalk : Talk ==> ()
 	  	AddTalk (talk) == (
+	  	  talk.SetConference(name);
 	  		talks := talks union {talk};
 	  	)
 	  	pre talk not in set talks and notAlreadyExistent(talk) = true and (DoesntOverlap(talk)) = true
@@ -154,7 +155,7 @@ operations
 	  	);
 	  	
 	  	
-	 -- checks if talk doesnt overlap existing one: for precondition of AddTask
+	 -- checks if talk doesnt overlap existing one: for precondition of AddTalk
 	 pure private DoesntOverlap : Talk ==> bool
 	  	DoesntOverlap (newTalk) == (
 	  	dcl doesntOverlap : bool := true;

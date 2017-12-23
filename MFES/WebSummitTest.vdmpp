@@ -15,8 +15,8 @@ instance variables
 	
 	--C1
 	--D1
-	talk1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, time1, 40);
-	talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time2, 40); -- Error
+	talk1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, time2, 40);
+	talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time1, 20); 
 	talk3 : Talk := new Talk("Talk 3", "Talk 3 description", date1, time3, 20);
 	--D2
 	talk4 : Talk := new Talk("Talk 4", "Talk 4 description", date2, time3, 20);
@@ -46,6 +46,65 @@ public static main: () ==> ()
 		IO`print("testCreateAndAddTalk -> ");
 		webSummitTest.testCreateAndAddTalk();
 		IO`println("Success");
+		
+		IO`print("testSchedules -> ");
+		webSummitTest.testSchedules();
+		IO`println("Success");
+	);
+	
+	
+	-- test if the construction of the schedules is working correctly
+	private testSchedules: () ==> ()
+	testSchedules() == (
+		dcl webSummit: WebSummit := WebSummit`ClearInstance();
+		webSummit.SetDates(date1, date2);
+		
+		AddConference(conference1);
+		AddConference(conference2);
+		
+		AddTalk(conference1, talk1);
+		AddTalk(conference1, talk2);
+		AddTalk(conference1, talk3);
+		AddTalk(conference1, talk4);
+		
+		AddTalk(conference2, talk5);
+		AddTalk(conference2, talk6);
+		AddTalk(conference2, talk7);
+		AddTalk(conference2, talk8);
+		
+		assertEqual(2, card webSummit.GetConferences());
+		assertEqual({conference1, conference2}, webSummit.GetConferences());
+		
+		assertEqual(4, card conference1.GetTalks());
+		assertEqual({talk1, talk2, talk3, talk4}, conference1.GetTalks());
+		
+		assertEqual(4, card conference2.GetTalks());
+		assertEqual({talk5, talk6, talk7, talk8}, conference2.GetTalks());
+		
+		assertEqual(3, len webSummit.GetSchedule(conference1, date1));
+		assertEqual([talk2, talk1, talk3],  webSummit.GetSchedule(conference1, date1));
+		
+		assertEqual(1, len webSummit.GetSchedule(conference1, date2));
+		assertEqual([talk4],  webSummit.GetSchedule(conference1, date2));
+		
+		assertEqual(1, len webSummit.GetSchedule(conference2, date1));
+		assertEqual([talk5],  webSummit.GetSchedule(conference2, date1));
+		
+		assertEqual(3, len webSummit.GetSchedule(conference2, date2));
+		assertEqual([talk8, talk6, talk7],  webSummit.GetSchedule(conference2, date2));
+		
+		assertEqual(3, card dom webSummit.GetSchedule(conference1));
+		assertEqual({date1|->[talk2, talk1, talk3], Utils`nextDay(date1)|->[], date2|->[talk4]}, webSummit.GetSchedule(conference1));
+		
+		assertEqual(3, card dom webSummit.GetSchedule(conference2));
+		assertEqual({date1|->[talk5], Utils`nextDay(date1)|->[], date2|->[talk8, talk6, talk7]}, webSummit.GetSchedule(conference2));
+		
+		assertEqual(3, card dom webSummit.GetSchedule());
+		assertEqual({date1|->[talk2, talk5, talk1, talk3], Utils`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
+		
+		-- this test is supposed to fail (2 first talks badly sorted, talk 2 takes place before talk5)
+		/*assertEqual({date1|->[talk5, talk2, talk1, talk3], Utils`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
+		*/
 	);
 	
 	-- test if the creation of conferences is working correctly
@@ -55,7 +114,7 @@ public static main: () ==> ()
 		dcl c1 : Conference := new Conference("C1", "D1");
 		-- for tests supposed to fail
 		/*dcl c2 : Conference := new Conference("Conference 1", "Conference 2 details");*/
-		
+		webSummit.SetDates(date1, date2);
 		AddConference(c1);
 		assertEqual("C1", c1.GetName());
 		assertEqual("D1", c1.GetDescription());
@@ -136,6 +195,9 @@ public static main: () ==> ()
 		/*t2 := new Talk("", "Talk 2 description", date1, time2, 40);*/
 	);
 	
+	
+	
+	
 	private AddConference: Conference ==> ()
 	AddConference(c) ==	(
 		WebSummit`GetInstance().AddConference(c);
@@ -150,11 +212,15 @@ public static main: () ==> ()
 	/* 
 	TODO:
 		Conference:
-			- testAddTalk
-				- schedule aqui dentro
 			- testAddCompany
 			- testRemoveTalk
 			- testRemoveCompany
+			
+		Talk:
+			- add attendee
+			- remove attendee
+			- add speaker
+			- remove speaker
 			
 	*/
 	

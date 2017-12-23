@@ -65,7 +65,6 @@ operations
 	-- adds a new talk to an existing conference
 	 public AddTalk : Conference * Talk ==> ()
 	  	AddTalk (conference, talk) == (
-	  		talk.SetConference(conference.GetName());
 	  		conference.AddTalk(talk);
 	  	)
 	  	pre conference in set conferences and

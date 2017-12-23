@@ -91,9 +91,9 @@ functions
 		DoesntOverlap(time1, dur1, time2, dur2) ==
 		(
 			if (time1.hour < time2.hour)
-			then if (time1.minute + dur1 < 60)
+			then if (time1.minute + dur1 <= 60)
 					then true
-					else if(time1.minute + dur1 - 60 < time2.minute)
+					else if(time1.minute + dur1 - 60 <= time2.minute)
 							 then true
 							 else false
 	
@@ -109,9 +109,9 @@ functions
 					 	else false
 					 	
 			elseif (time2.hour < time1.hour)
-			then if (time2.minute + dur2 < 60)
+			then if (time2.minute + dur2 <= 60)
 					then true
-					else if(time2.minute + dur2 - 60 < time1.minute)
+					else if(time2.minute + dur2 - 60 <= time1.minute)
 							 then true
 							 else false
 			else false
