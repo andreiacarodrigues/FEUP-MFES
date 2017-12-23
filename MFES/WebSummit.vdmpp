@@ -7,8 +7,9 @@ instance variables
 
 	private conferences : set of Conference := {};
 	private exibit : Exibit := new Exibit();
-	private attendees : set of Attendee := {};
+	private attendees : set of Attendee := {};-- nao sei se isto vai ser apagado
 	
+	-- default dates
 	private initialDate : Utils`Date := mk_Utils`Date(2001,1,1);
 	private finalDate : Utils`Date := mk_Utils`Date(2001,1,2);
 	
@@ -69,6 +70,13 @@ operations
 	  	)
 	  	pre conference in set conferences and
 	  			Utils`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
+	  			
+	 -- adds a new company to an existing conference
+	  public AddCompany : Conference * Company ==> ()
+	  	AddCompany (conference, company) == (
+	  		conference.AddCompany(company);
+	  	)
+	  	pre conference in set conferences;
 	  	
 	 -- returns all confereces
 	 pure public GetConferences : () ==> set of Conference
