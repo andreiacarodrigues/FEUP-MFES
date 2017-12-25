@@ -71,12 +71,27 @@ operations
 	  	pre conference in set conferences and
 	  			Utils`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
 	  			
+	 -- removes a talk from an existing conference
+	  public RemoveTalk : Conference * Talk ==> ()
+	  	RemoveTalk (conference, talk) == (
+	  		conference.RemoveTalk(talk);
+	  	)
+	  	pre conference in set conferences;
+	  			
 	 -- adds a new company to an existing conference
 	  public AddCompany : Conference * Company ==> ()
 	  	AddCompany (conference, company) == (
 	  		conference.AddCompany(company);
 	  	)
 	  	pre conference in set conferences;
+	  	
+	  -- removes a company from an existing conference
+	  public RemoveCompany : Conference * Company ==> ()
+	  	RemoveCompany (conference, company) == (
+	  		conference.RemoveCompany(company);
+	  	)
+	  	pre conference in set conferences;
+	  	
 	  	
 	 -- returns all confereces
 	 pure public GetConferences : () ==> set of Conference
@@ -85,19 +100,19 @@ operations
 	  	);
 	  	
 	 -- returns a specific conferece by it's name
-	 public pure GetConference : Utils`String ==> set of Conference
+	 public pure GetConference : Utils`String ==> seq of Conference
 	  	GetConference (conferenceName) == (
-	  		dcl result: set of Conference := {};
+	  		dcl result: seq of Conference := [];
 	  		
 	  		for all conference in set conferences do (
 	  			if conference.GetName() = conferenceName
-	  			then result := result union {conference};
+	  			then result := result ^ [conference];
 	  		);
 	  		
 	  		return result
 	  	)
 		pre len conferenceName > 0
-		post RESULT = {} or card RESULT = 1;
+		post RESULT = [] or len RESULT = 1;
 		
 		
 		-- returns the full schedule of a conference

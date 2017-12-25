@@ -47,9 +47,22 @@ public static main: () ==> ()
 		webSummitTest.testCreateAndAddTalk();
 		IO`println("Success");
 		
+		IO`print("testRemoveTalk -> ");
+		webSummitTest.testRemoveTalk();
+		IO`println("Success");
+		
 		IO`print("testSchedules -> ");
 		webSummitTest.testSchedules();
 		IO`println("Success");
+		
+		IO`print("testCreateAndAddCompany -> ");
+		webSummitTest.testCreateAndAddCompany();
+		IO`println("Success");
+		
+		IO`print("testRemoveCompany -> ");
+		webSummitTest.testRemoveCompany();
+		IO`println("Success");
+		
 	);
 	
 	-- test if the creation of conferences is working correctly
@@ -195,6 +208,87 @@ public static main: () ==> ()
 		*/
 	);
 	
+  -- test if the creation of companies is working correctly
+	private testCreateAndAddCompany: () ==> ()
+	testCreateAndAddCompany() == (
+		dcl webSummit: WebSummit := WebSummit`ClearInstance();
+		dcl c1 : Conference := new Conference("Conference 1", "Conference 1 details");
+		dcl c2 : Company := new Company("Comp1");
+		-- for tests supposed to fail
+		/*dcl c3 : Company := new Company("Company 1");*/
+		
+		webSummit.SetDates(date1, date2);
+		AddConference(c1);
+		
+		AddCompany(c1,c2);
+		
+		assertEqual("Comp1", c2.GetName());
+	
+		c2.SetName("Company 1");
+		assertEqual("Company 1", c2.GetName());
+		
+		assertEqual(1, card c1.GetCompanies());
+		assertEqual({c2}, c1.GetCompanies());
+		
+		-- this test is supposed to fail (can't create companies with empty name)
+		/*AddCompany(c1,c3);*/
+		
+		-- this test is supposed to fail (there can't be two companies with the same name)
+		/*AddCompany(c1, new Company("Company 1"));*/
+	);
+	
+	-- test if the removal of companies from conferences is working correctly
+	private testRemoveCompany: () ==> ()
+	testRemoveCompany() == (
+		dcl webSummit: WebSummit := WebSummit`ClearInstance();
+		dcl c1 : Conference := new Conference("Conference 1", "Conference 1 details");
+		dcl c2 : Company := new Company("Company 1");
+		-- for tests supposed to fail
+		/*dcl c3 : Company := new Company("Company 2");*/
+		
+		webSummit.SetDates(date1, date2);
+		AddConference(c1);
+		
+		AddCompany(c1,c2);
+		
+		assertEqual(1, card c1.GetCompanies());
+		assertEqual({c2}, c1.GetCompanies());
+		
+		RemoveCompany(c1,c2);
+		
+		assertEqual(0, card c1.GetCompanies());
+		assertEqual({}, c1.GetCompanies());
+		
+		-- this test is supposed to fail (can't remove companies from a conference if they are not attending it)
+		/*RemoveCompany(c1,c3); */
+	);
+	
+		-- test if the removal of talks from conferences is working correctly
+	private testRemoveTalk: () ==> ()
+	testRemoveTalk() == (
+		dcl webSummit: WebSummit := WebSummit`ClearInstance();
+		dcl c1 : Conference := new Conference("Conference 1", "Conference 1 details");
+		dcl t1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, time2, 40);
+		-- for tests supposed to fail
+		dcl t2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time1, 20);
+		
+		webSummit.SetDates(date1, date2);
+		AddConference(c1);
+		
+		AddTalk(c1,t1);
+		
+		assertEqual(1, card c1.GetTalks());
+		assertEqual({t1}, c1.GetTalks());
+		
+		RemoveTalk(c1,t1);
+		
+		assertEqual(0, card c1.GetTalks());
+		assertEqual({}, c1.GetTalks());
+		
+		-- this test is supposed to fail (can't remove companies from a conference if they are not attending it)
+		RemoveTalk(c1,t2); 
+	);
+	
 	private AddConference: Conference ==> ()
 	AddConference(c) ==	(
 		WebSummit`GetInstance().AddConference(c);
@@ -205,18 +299,26 @@ public static main: () ==> ()
 		WebSummit`GetInstance().AddTalk(c, t);
 	);
 	
+	private RemoveTalk: Conference * Talk ==> ()
+	RemoveTalk(c, t) ==	(
+		WebSummit`GetInstance().RemoveTalk(c, t);
+	);
+	
 	private AddCompany: Conference * Company ==> ()
 	AddCompany(conf, c) ==	(
 		WebSummit`GetInstance().AddCompany(conf, c);
+	);
+	
+	private RemoveCompany: Conference * Company ==> ()
+	RemoveCompany(conf, c) ==	(
+		WebSummit`GetInstance().RemoveCompany(conf, c);
 	);
 	
 	
 	/* 
 	TODO:
 		Conference:
-			- testAddCompany
 			- testRemoveTalk
-			- testRemoveCompany
 			
 		Talk:
 			- add attendee
