@@ -96,16 +96,15 @@ operations
 	  		if(speaker not in set attendees)
 	  			then attendees := attendees union {speaker}
 	  	)
-	  	pre talk.GetConference() in set conferences --todas as talks de todas as conferences
-	  	post speaker in set attendees; 	-- todos os influentials inscritos
-	  	
-	  	
+	  	pre hd GetConference(talk.GetConference()) in set conferences	 --todas as talks de todas as conferences
+	  	post speaker in set attendees; 	-- todos os influentials estao inscritos
+  	
 	  -- removes a speaker from an existent conference
 	  public RemoveSpeaker: Talk * Influential ==> ()
 	  	RemoveSpeaker (talk, speaker) == (
 	  		talk.RemoveSpeaker(speaker);
 	  	)
-	  	pre talk.GetConference() in set conferences --todas as talks de todas as conferences
+	  	pre hd GetConference(talk.GetConference()) in set conferences -- todas as talks de todas as conferences 
 	  	post speaker in set attendees;
 	  	
 	 -- returns all confereces
@@ -134,13 +133,6 @@ operations
 	 public GetSchedule : Conference ==> map Utils`Date to seq of Talk
 	  	GetSchedule (c) == (
 	  		return c.GetSchedule();
-	  	)
-	  	pre c in set conferences;
-	  	
-	 -- returns the daily schedule of a conference
-	 public GetSchedule : Conference * Utils`Date ==> seq of Talk
-	  	GetSchedule (c, d) == (
-	  		return c.GetSchedule(d);
 	  	)
 	  	pre c in set conferences;
 	  	
@@ -178,6 +170,32 @@ operations
 	  		return temp;
 	  	);	  
 	  	
+	 -- returns the event schedule by date/time
+	 public GetSchedule : Utils`Date * Utils`Time ==> seq of Talk
+	  	GetSchedule (date, time) == (
+	  		dcl temp: seq of Talk := [];
+	  		
+	  		-- joins all the events from that day
+	  		for all conference in set conferences do (
+	  			for all talk in set elems conference.GetSchedule()(date) do
+	  			(
+	  				if(talk.GetTime().hour = time.hour)
+	  				then temp := temp ^ [talk]
+	  				else
+	  					if(talk.GetTime().hour + 1 = time.hour)
+	  					then if(talk.GetTime().minute + talk.GetDuration() >= 60)
+	  						then if(talk.GetTime().minute + talk.GetDuration() - 60 < 60)
+	  							then temp := temp ^ [talk]
+	  			);
+	  			
+	  		);
+	  		
+	  		-- orders them by time
+				temp := Utils`mergeSortTalks(temp);
+						    
+	  		return temp;
+	  	);	  
+	  	
 	  -- adds a new attendee to an existing talk
 	 public AddAttendee : Talk * Attendee ==> ()
 	  	AddAttendee (talk, attendee) == (
@@ -185,7 +203,7 @@ operations
 	  		if(attendee not in set attendees)
 	  			then attendees := attendees union {attendee}
 	  	)
-	  	pre talk.GetConference() in set conferences
+	  	pre hd GetConference(talk.GetConference()) in set conferences
 	  	post attendee in set attendees;	
 		
 		-- checks if a conference with the same name doesn't exist already: for precondition of AddConference

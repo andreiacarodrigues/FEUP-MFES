@@ -10,7 +10,7 @@ instance variables
 	private date : Utils`Date;
 	private time : Utils`Time;
 	private duration : nat1;
-	private conference : Conference;
+	private conference : Utils`String := [];
 	private speakers : set of Influential := {};
 	private attendees : set of Attendee := {};
 	
@@ -24,7 +24,7 @@ operations
 	  		date := talkDate;
 	  		time := talkTime;
 	  		duration := talkDuration;
-	  		conference := talkConference;
+	  		conference := talkConference.GetName();
 	  		talkConference.AddTalk(self);
 	  		return self
 	  	)
@@ -96,14 +96,14 @@ operations
 	  	);
 	  	
 	  -- returns the talk's conference
-	 pure public GetConference : () ==> Conference
+	 pure public GetConference : () ==> Utils`String
 	  	GetConference () == (
 	  		return conference;
 	  	);
 	  	
 	  	
 	 -- set the talk name
-	 public SetConference : Conference ==> ()
+	 public SetConference : Utils`String ==> ()
 	  	SetConference (c) == (
 	  		conference := c;
 	  	);
