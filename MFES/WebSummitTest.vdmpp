@@ -298,7 +298,7 @@ public static main: () ==> ()
 		/*RemoveTalk(conference1,talk2); */
 	);
 	
-	-- test if the creation of talks is working correctly
+	-- test if the creation of attendees is working correctly
 	private testCreateAndAddAttendee: () ==> ()
 	testCreateAndAddAttendee() == (
 		dcl webSummit: WebSummit := WebSummit`ClearInstance();

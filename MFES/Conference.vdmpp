@@ -10,6 +10,9 @@ instance variables
 	private talks : set of Talk := {};
 	private companies : set of Company := {};
 	
+	inv not exists t1, t2 in set talks & t1 <> t2 and t1.GetName() = t2.GetName();
+	inv not exists c1, c2 in set companies & c1 <> c2 and c1.GetName() = c2.GetName();
+	
 operations
 		
 	  -- constructor of the conference class 
