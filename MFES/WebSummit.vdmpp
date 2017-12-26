@@ -94,7 +94,7 @@ operations
 	  	AddSpeaker (talk, speaker) == (
 	  		talk.AddSpeaker(speaker);
 	  	)
-	  	pre existTalk(talk) = true and	 --todas as talks de todas as conferences
+	  	pre talk.GetConference() in set conferences and	 --todas as talks de todas as conferences
 	  	 speaker in set exhibit.GetInvestors(); 	-- todos os influentials inscritos
 	  	
 	  	
@@ -103,7 +103,7 @@ operations
 	  	RemoveSpeaker (talk, speaker) == (
 	  		talk.RemoveSpeaker(speaker);
 	  	)
-	  	pre existTalk(talk) = true and -- todas as talks de todas as conferences 
+	  	pre talk.GetConference() in set conferences and -- todas as talks de todas as conferences 
 	  		speaker in set exhibit.GetInvestors();	
 	  	
 	 -- returns all confereces
@@ -203,22 +203,6 @@ operations
 	  	pre newConference not in set conferences;
 	  	
 	 -- NOTA: tem de ter metodo para ir buscar attendee por id para poder remov�-los e outro para listar os attendees e speakers
-	
-	--checks if a talk already exists: for precondition addspeaker
-	pure private existTalk : Talk ==> bool
-		existTalk (talk) == (
-		dcl exist : bool := false;
-		for all conference in set conferences do (
-			if(len conference.GetTalk(talk.GetName()) = 1)
-			then(
-				exist := true;
-				return exist
-				)
-			);
-				
-			return exist;
-		)	
-		pre len talk.GetName() > 0;
 	
 	-- returns all websummit attendees
 	 public GetAttendees : () ==> set of Attendee
