@@ -73,12 +73,15 @@ public static main: () ==> ()
 		dcl conference1 : Conference := new Conference("C1", "D1");
 		-- for tests supposed to fail
 		/*dcl conference2 : Conference := new Conference("Conference 1", "Conference 2 details");*/
+		
 		webSummit.SetDates(date1, date2);
 		AddConference(conference1);
 		assertEqual("C1", conference1.GetName());
 		assertEqual("D1", conference1.GetDescription());
 		assertEqual({}, conference1.GetTalks());
 		assertEqual({}, conference1.GetCompanies());
+		
+		assertEqual(conference1, hd webSummit.GetConference(conference1.GetName()));
 		
 		conference1.SetName("Conference 1");
 		assertEqual("Conference 1", conference1.GetName());
@@ -136,6 +139,10 @@ public static main: () ==> ()
 		assertEqual(40, talk1.GetDuration());
 		
 		AddTalk(conference,talk1);
+		
+		assertEqual(talk1, hd conference.GetTalk(talk1.GetName()));
+		
+		assertEqual(talk1, hd conference.GetTalk(talk1.GetDate(), talk1.GetTime()));
 		
 		assertEqual(conference.GetName(), talk1.GetConference());
 		

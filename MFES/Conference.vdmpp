@@ -52,22 +52,22 @@ operations
 	  	);
 	  	
 	  -- returns a conference talk by it's name
-	 public GetTalk : Utils`String ==> set of Talk
+	 public GetTalk : Utils`String ==> seq of Talk
 	  	GetTalk (talkName) == (
-	  		dcl result: set of Talk := {};
+	  		dcl result: seq of Talk := [];
 	  		
 	  		for all talk in set talks do (
-	  			if talk.GetName() = talkName
-	  			then result := result union {talk};
+	  			if (talk.GetName() = talkName)
+	  			then result := result ^ [talk];
 	  		);
 	  		
 	  		return result
 	  	)
 	  	pre len talkName > 0
-			post RESULT = {} or card RESULT = 1;
+			post RESULT = [] or len RESULT = 1;
 			
 	-- returns a conference talk by it's time: required for GetSchedule operation
-	pure private GetTalk : Utils`Date * Utils`Time ==> seq of Talk
+	pure public GetTalk : Utils`Date * Utils`Time ==> seq of Talk
 	  	GetTalk (talkDate, talkTime) == (
 	  		dcl result: seq of Talk := [];
 	  		
