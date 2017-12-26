@@ -26,6 +26,13 @@ operations
 	  		return name;
 	  	);
 	  	
+	  	
+	 	-- returns the attendee's id
+	  pure public GetID : () ==> nat1
+	  	GetID () == (
+	  		return id;
+	  	);
+	  	
 	  -- sets the attendee's name
 	  public SetName : Utils`String ==> ()
 	  	SetName (n) == (

@@ -10,6 +10,9 @@ instance variables
 	private talks : set of Talk := {};
 	private companies : set of Company := {};
 	
+	inv not exists t1, t2 in set talks & t1 <> t2 and t1.GetName() = t2.GetName();
+	inv not exists c1, c2 in set companies & c1 <> c2 and c1.GetName() = c2.GetName();
+	
 operations
 		
 	  -- constructor of the conference class 
@@ -17,6 +20,7 @@ operations
 	  	Conference (conferenceName, conferenceDescription) == (
 	  		name := conferenceName;
 	  		description := conferenceDescription;
+	  		WebSummit`GetInstance().AddConference(self);
 	  		return self
 	  	)
 	  	pre len conferenceName > 0;
@@ -65,24 +69,6 @@ operations
 	  	)
 	  	pre len talkName > 0
 			post RESULT = [] or len RESULT = 1;
-			
-	-- returns a conference talk by it's time: required for GetSchedule operation
-	pure public GetTalk : Utils`Date * Utils`Time ==> seq of Talk
-	  	GetTalk (talkDate, talkTime) == (
-	  		dcl result: seq of Talk := [];
-	  		
-	  		for all talk in set talks do (
-	  		  if talk.GetDate() = talkDate
-	  		  then
-	  			if talk.GetTime() = talkTime
-	  			then result := result ^ [talk];
-	  		);
-	  		
-	  		return result
-	  	)
-	  	pre talkTime.hour >= 0 and talkTime.hour < 24 and talkTime.minute >= 0 and talkTime.minute < 60
-			post RESULT = [] or len RESULT = 1;
-	  	
 	 
 	  -- returns the conference attending companies
 	 pure public GetCompanies : () ==> set of Company
@@ -93,7 +79,6 @@ operations
 	 -- adds a new talk to the conference
 	 public AddTalk : Talk ==> ()
 	  	AddTalk (talk) == (
-	  	  talk.SetConference(name);
 	  		talks := talks union {talk};
 	  	)
 	  	pre talk not in set talks and notAlreadyExistent(talk) = true and (DoesntOverlap(talk)) = true

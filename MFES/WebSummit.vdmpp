@@ -15,6 +15,9 @@ instance variables
 	
 	private static websummit: WebSummit := new WebSummit();
 	
+	inv not exists c1, c2 in set conferences & c1 <> c2 and c1.GetName() = c2.GetName();
+	inv not exists a1, a2 in set attendees & a1 <> a2 and a1.GetID() = a2.GetID();
+	
 operations
 
 	-- constructor of the websummit class 
@@ -63,14 +66,6 @@ operations
 	  	)
 	  	pre conference not in set conferences and notAlreadyExistent(conference) = true
 			post conferences = conferences~ union {conference};
-			
-	-- adds a new talk to an existing conference
-	 public AddTalk : Conference * Talk ==> ()
-	  	AddTalk (conference, talk) == (
-	  		conference.AddTalk(talk);
-	  	)
-	  	pre conference in set conferences and
-	  			Utils`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
 	  			
 	 -- removes a talk from an existing conference
 	  public RemoveTalk : Conference * Talk ==> ()
@@ -179,7 +174,17 @@ operations
 				);
 						    
 	  		return temp;
-	  	);	  	
+	  	);	  
+	  	
+	  -- adds a new attendee to an existing talk
+	 public AddAttendee : Talk * Attendee ==> ()
+	  	AddAttendee (talk, attendee) == (
+	  		talk.AddAttendee(attendee);
+	  		if(attendee not in set attendees)
+	  			then attendees := attendees union {attendee}
+	  	)
+	  	pre talk.GetConference() in set conferences
+	  	post attendee in set attendees;	
 		
 		-- checks if a conference with the same name doesn't exist already: for precondition of AddConference
 	   pure private notAlreadyExistent : Conference ==> bool
