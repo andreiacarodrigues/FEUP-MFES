@@ -52,7 +52,7 @@ operations
 	  	);
 	  	
 	  -- returns a conference talk by it's name
-	 public GetTalk : Utils`String ==> seq of Talk
+	 pure public GetTalk : Utils`String ==> seq of Talk
 	  	GetTalk (talkName) == (
 	  		dcl result: seq of Talk := [];
 	  		

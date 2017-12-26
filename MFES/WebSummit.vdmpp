@@ -6,7 +6,7 @@ values
 instance variables
 
 	private conferences : set of Conference := {};
-	private exibit : Exhibit := new Exhibit();
+	private exhibit : Exhibit := new Exhibit();
 	private attendees : set of Attendee := {};-- nao sei se isto vai ser apagado
 	
 	-- default dates
@@ -33,8 +33,8 @@ operations
 			websummit := new WebSummit();
 			return GetInstance();
 		)
-		post RESULT.conferences = {} and RESULT.exibit.GetStartups() = {}
-			 and RESULT.exibit.GetInvestors() = {} and RESULT.attendees = {};
+		post RESULT.conferences = {} and RESULT.exhibit.GetStartups() = {}
+			 and RESULT.exhibit.GetInvestors() = {} and RESULT.attendees = {};
 	  	
 	 -- sets websummit dates
 	 public SetDates : Utils`Date * Utils`Date ==> ()
@@ -93,6 +93,23 @@ operations
 	  	)
 	  	pre conference in set conferences;
 	  	
+	  	
+	  -- adds a speaker no an existent talk
+	  public AddSpeaker: Talk * Influential ==> ()
+	  	AddSpeaker (talk, speaker) == (
+	  		talk.AddSpeaker(speaker);
+	  	)
+	  	pre existTalk(talk) = true and	 --todas as talks de todas as conferences
+	  	 speaker in set exhibit.GetInvestors(); 	-- todos os influentials inscritos
+	  	
+	  	
+	  -- removes a speaker from an existent conference
+	  public RemoveSpeaker: Talk * Influential ==> ()
+	  	RemoveSpeaker (talk, speaker) == (
+	  		talk.RemoveSpeaker(speaker);
+	  	)
+	  	pre existTalk(talk) = true and -- todas as talks de todas as conferences 
+	  		speaker in set exhibit.GetInvestors();	
 	  	
 	 -- returns all confereces
 	 pure public GetConferences : () ==> set of Conference
@@ -181,6 +198,22 @@ operations
 	  	pre newConference not in set conferences;
 	  	
 	 -- NOTA: tem de ter metodo para ir buscar attendee por id para poder remov�-los e outro para listar os attendees e speakers
+	
+	--checks if a talk already exists: for precondition addspeaker
+	pure private existTalk : Talk ==> bool
+		existTalk (talk) == (
+		dcl exist : bool := false;
+		for all conference in set conferences do (
+			if(len conference.GetTalk(talk.GetName()) = 1)
+			then(
+				exist := true;
+				return exist
+				)
+			);
+				
+			return exist;
+		)	
+		pre len talk.GetName() > 0;
 	
 	-- returns all websummit attendees
 	 public GetAttendees : () ==> set of Attendee

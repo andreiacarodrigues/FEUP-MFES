@@ -62,7 +62,6 @@ public static main: () ==> ()
 		IO`print("testRemoveCompany -> ");
 		webSummitTest.testRemoveCompany();
 		IO`println("Success");
-		
 	);
 	
 	-- test if the creation of conferences is working correctly
@@ -160,6 +159,7 @@ public static main: () ==> ()
 		
 		-- this test is supposed to fail (can't create talks with empty name)
 		/*talk2 := new Talk("", "Talk 2 description", date1, time2, 40);*/
+		
 	);
 	
 	
@@ -351,9 +351,17 @@ public static main: () ==> ()
 		Talk:
 			- add attendee
 			- remove attendee
-			- add speaker
-			- remove speaker
 	*/
+	
+	private AddSpeaker: Talk * Influential ==> ()
+	AddSpeaker(talk, s) ==	(
+		WebSummit`GetInstance().AddSpeaker(talk, s);
+	);
+	
+	private RemoveSpeaker: Talk * Influential ==> ()
+	RemoveSpeaker(talk, s) ==	(
+		WebSummit`GetInstance().RemoveSpeaker(talk, s);
+	);	
 	
 functions
 -- TODO Define functiones here
