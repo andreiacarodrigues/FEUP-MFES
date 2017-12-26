@@ -93,9 +93,11 @@ operations
 	  public AddSpeaker: Talk * Influential ==> ()
 	  	AddSpeaker (talk, speaker) == (
 	  		talk.AddSpeaker(speaker);
+	  		if(speaker not in set attendees)
+	  			then attendees := attendees union {speaker}
 	  	)
-	  	pre talk.GetConference() in set conferences and	 --todas as talks de todas as conferences
-	  	 speaker in set exhibit.GetInvestors(); 	-- todos os influentials inscritos
+	  	pre talk.GetConference() in set conferences --todas as talks de todas as conferences
+	  	post speaker in set attendees; 	-- todos os influentials inscritos
 	  	
 	  	
 	  -- removes a speaker from an existent conference
@@ -103,8 +105,8 @@ operations
 	  	RemoveSpeaker (talk, speaker) == (
 	  		talk.RemoveSpeaker(speaker);
 	  	)
-	  	pre talk.GetConference() in set conferences and -- todas as talks de todas as conferences 
-	  		speaker in set exhibit.GetInvestors();	
+	  	pre talk.GetConference() in set conferences --todas as talks de todas as conferences
+	  	post speaker in set attendees;
 	  	
 	 -- returns all confereces
 	 pure public GetConferences : () ==> set of Conference

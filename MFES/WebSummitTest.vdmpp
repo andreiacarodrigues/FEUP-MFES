@@ -108,6 +108,8 @@ public static main: () ==> ()
 		dcl webSummit: WebSummit := WebSummit`ClearInstance();
 		dcl conference : Conference := new Conference("Conference 1", "Conference 1 details");
 		dcl talk1 : Talk := new Talk(conference, "T1", "D1", date2, time2, 30);
+		dcl company : Company := new Company("Facebook");
+		dcl speaker1 : Influential := new Influential("Mark Zuckerberg","CEO",company,"Speaker Description","EN");
 		
 		-- for tests supposed to fail
 		/*dcl talk2 : Talk;
@@ -147,6 +149,11 @@ public static main: () ==> ()
 		assertEqual(1, card conference.GetTalks());
 		assertEqual({talk1}, conference.GetTalks());
 		
+		--add speaker to talk
+		AddSpeaker(talk1,speaker1);
+		assertEqual({speaker1}, talk1.GetSpeakers());
+		--os restantes gets e sets ja foram testados em testCreateAndAddAttendee
+		
 		-- this test is supposed to fail (can't add a talk that overlaps an already existing one)
 		/*talk2 := new Talk(conference, "Talk 2", "Talk 2 description", date1, time2, 40)*/
 		
@@ -158,6 +165,10 @@ public static main: () ==> ()
 		
 		-- this test is supposed to fail (can't create talks with empty name)
 		/*talk2 := new Talk(conference, "", "Talk 2 description", date1, time2, 40);*/
+	
+		--remove speaker
+		RemoveSpeaker(talk1,speaker1);
+		assertEqual({}, talk1.GetSpeakers());
 	);
 	
 	
