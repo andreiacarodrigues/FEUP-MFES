@@ -6,7 +6,7 @@ values
 instance variables
 
 	private conferences : set of Conference := {};
-	private exibit : Exibit := new Exibit();
+	private exibit : Exhibit := new Exhibit();
 	private attendees : set of Attendee := {};-- nao sei se isto vai ser apagado
 	
 	-- default dates
@@ -41,7 +41,8 @@ operations
 	  	SetDates (d1, d2) == (
 	  		initialDate := d1;
 	  		finalDate := d2;
-	  	);
+	  	)
+	  	post initialDate = d1 and finalDate = d2;
 	  	
 	 --  returns websummit initial date
 	 pure public GetInitialDate : () ==> Utils`Date
@@ -179,7 +180,7 @@ operations
 	  	)
 	  	pre newConference not in set conferences;
 	  	
-	  	-- NOTA: tem de ter metodo para ir buscar attendee por id para poder remov�-los e outro para listar os attendees e speakers
+	 -- NOTA: tem de ter metodo para ir buscar attendee por id para poder remov�-los e outro para listar os attendees e speakers
 	
 	-- returns all websummit attendees
 	 public GetAttendees : () ==> set of Attendee

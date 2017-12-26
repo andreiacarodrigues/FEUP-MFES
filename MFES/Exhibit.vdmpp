@@ -1,4 +1,4 @@
-class Exibit
+class Exhibit
 types
 
 values
@@ -12,8 +12,8 @@ operations
 	
 
  	-- default constructor of the exibit class 
-	public Exibit : () ==> Exibit
-		Exibit () == (
+	public Exhibit : () ==> Exhibit
+		Exhibit () == (
 	 		return self
 	  );
 	  	
@@ -33,4 +33,4 @@ functions
 
 traces
 
-end Exibit
+end Exhibit
