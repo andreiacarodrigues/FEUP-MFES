@@ -71,6 +71,9 @@ public static main: () ==> ()
 		webSummitTest.testStartup();
 		IO`println("Success");
 		
+		IO`print("testInvestors -> ");
+		webSummitTest.testInvestors();
+		IO`println("Success");
 	);
 	
 	-- test if the creation of conferences is working correctly
@@ -387,6 +390,20 @@ public static main: () ==> ()
 		/*RemoveStartup(startup1);*/
 	);
 	
+	private testInvestors : () ==> ()
+	testInvestors() == (
+		dcl webSummit: WebSummit := WebSummit`ClearInstance();
+		dcl investor : Influential := new Influential("Mark Zuckerberg","CEO",new Company("facebook"),"Speaker Description","EN");
+		
+		webSummit.SetDates(date1, date2);
+		
+		assertEqual({}, GetInvestors());
+		AddInvestor(investor);
+		assertEqual({investor}, GetInvestors());
+		
+		--get e sets de influential ja testados
+	);
+	
 	private RemoveTalk: Conference * Talk ==> ()
 	RemoveTalk(c, t) ==	(
 		WebSummit`GetInstance().RemoveTalk(c, t);
@@ -406,7 +423,6 @@ public static main: () ==> ()
 	AddAttendee(t, a) ==	(
 		WebSummit`GetInstance().AddAttendee(t, a);
 	);
-	
 	
 	/* 
 	TODO:
@@ -429,8 +445,6 @@ public static main: () ==> ()
 			/*
 			TODO : Exhibit
 				- get Startup by name ?
-				- add investor
-				- get all investors
 		*/
 		
 	private AddStartup: Startup ==> ()
@@ -446,6 +460,16 @@ public static main: () ==> ()
 	private GetStartups: () ==> set of Startup
 	GetStartups() == (
 		WebSummit`GetInstance().GetStartups();
+	);	
+	
+	private AddInvestor: Influential ==> ()
+	AddInvestor(i) == (
+		WebSummit`GetInstance().AddInvestor(i);
+	);
+	
+	private GetInvestors: () ==> set of Influential
+	GetInvestors() == (
+		WebSummit`GetInstance().GetInvestors();
 	);	
 	
 functions

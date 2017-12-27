@@ -254,9 +254,16 @@ operations
 	  		exhibit.RemoveStartup(s);
 	  	);
 	  	
-	--add investor to exhibit
-
-	--return all starups
+		--add investor to exhibit
+		public AddInvestor: Influential ==> ()
+		AddInvestor(i) == (
+			exhibit.AddInvestor(i);
+		);
+		
+		public GetInvestors: () ==> set of Influential
+		GetInvestors() == (
+			exhibit.GetInvestors();
+		);	
 	
 functions
 

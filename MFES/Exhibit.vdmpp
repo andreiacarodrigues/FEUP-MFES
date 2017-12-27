@@ -57,6 +57,28 @@ operations
 		GetInvestors () == (
 	  	return investors;
 	  );
+	
+	pure public GetInvestor : Utils`String ==> seq of Influential
+	  GetInvestor (name) == (
+	  	dcl result: seq of Influential := [];
+	  		
+	  	for all investor in set investors do (
+	  		if (investor.GetName() = name)
+	  			then result := result ^ [investor];
+	  		);
+	  		
+	  		return result
+	  	)
+	  	pre len name > 0
+			post RESULT = [] or len RESULT = 1;	
+	
+	-- add investor
+	public AddInvestor: Influential ==> ()
+		AddInvestor (investor) == (
+	  	investors := investors union {investor}
+	  )
+	  pre investor not in set investors	and len GetInvestor(investor.GetName()) = 0
+	  post investors = investors~ union {investor};  
 	  	
 functions
 
