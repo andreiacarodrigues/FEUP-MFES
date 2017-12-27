@@ -17,15 +17,13 @@ instance variables
 operations
 
 	-- constructor of the talk class 
-		public Talk :  Conference * Utils`String *  Utils`String *  Utils`Date *  Utils`Time * nat1 ==> Talk
-	  	Talk (talkConference, talkName, talkDescription, talkDate, talkTime, talkDuration) == (
+		public Talk :  Utils`String *  Utils`String *  Utils`Date *  Utils`Time * nat1 ==> Talk
+	  	Talk (talkName, talkDescription, talkDate, talkTime, talkDuration) == (
 	  		name := talkName;
 	  		description := talkDescription;
 	  		date := talkDate;
 	  		time := talkTime;
 	  		duration := talkDuration;
-	  		conference := talkConference.GetName();
-	  		talkConference.AddTalk(self);
 	  		return self
 	  	)
 	  	pre len talkName > 0
@@ -99,6 +97,12 @@ operations
 	 pure public GetConference : () ==> Utils`String
 	  	GetConference () == (
 	  		return conference;
+	  	);
+	  	
+	 -- set the conference name
+	 public SetConference : Utils`String ==> ()
+	  	SetConference (c) == (
+	  		conference := c;
 	  	);
 	  	
 	  -- returns the talk's speakers

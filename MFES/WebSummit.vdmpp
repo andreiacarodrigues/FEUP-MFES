@@ -59,13 +59,21 @@ operations
 	  		return finalDate
 	  	);	
 			
-	 -- creates a new conference
+	  -- creates a new conference
 	 public AddConference : Conference ==> ()
 	  	AddConference (conference) == (
 	  		conferences := conferences union {conference};
 	  	)
 	  	pre conference not in set conferences and notAlreadyExistent(conference) = true
 			post conferences = conferences~ union {conference};
+			
+	 -- adds a new talk to an existing conference
+	 public AddTalk : Conference * Talk ==> ()
+	  	AddTalk (conference, talk) == (
+	  		conference.AddTalk(talk);
+	  	)
+	  	pre conference in set conferences and
+	  			Utils`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
 	  			
 	 -- removes a talk from an existing conference
 	  public RemoveTalk : Conference * Talk ==> ()
@@ -183,8 +191,8 @@ operations
 	  				then temp := temp ^ [talk]
 	  				else
 	  					if(talk.GetTime().hour + 1 = time.hour)
-	  					then if(talk.GetTime().minute + talk.GetDuration() >= 60)
-	  						then if(talk.GetTime().minute + talk.GetDuration() - 60 < 60)
+	  					then if((talk.GetTime().minute + talk.GetDuration()) >= (60 - talk.GetTime().minute))
+	  						then if((talk.GetTime().minute + talk.GetDuration() - 60) <= 60)
 	  							then temp := temp ^ [talk]
 	  			);
 	  			

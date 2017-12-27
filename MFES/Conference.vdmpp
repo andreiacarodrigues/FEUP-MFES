@@ -20,7 +20,6 @@ operations
 	  	Conference (conferenceName, conferenceDescription) == (
 	  		name := conferenceName;
 	  		description := conferenceDescription;
-	  		WebSummit`GetInstance().AddConference(self);
 	  		return self
 	  	)
 	  	pre len conferenceName > 0;
@@ -79,6 +78,7 @@ operations
 	 -- adds a new talk to the conference
 	 public AddTalk : Talk ==> ()
 	  	AddTalk (talk) == (
+	  	  talk.SetConference(name);
 	  		talks := talks union {talk};
 	  	)
 	  	pre talk not in set talks and notAlreadyExistent(talk) = true and (DoesntOverlap(talk)) = true
@@ -109,7 +109,6 @@ operations
 			post companies = companies~ \ {company};
 			
 	 -- returns schedule of the day, sorted by time
-	 -- NOTE: n�o sei que p�s condi��es p�r aqui
 	pure public GetSchedule : Utils`Date ==> seq of Talk
 	  	GetSchedule (date) == (
 	    	dcl talkSet: seq of Talk := [];
@@ -141,7 +140,7 @@ operations
 	  	
 	  	
 	 -- checks if talk doesnt overlap existing one: for precondition of AddTalk
-	 pure private DoesntOverlap : Talk ==> bool
+	 pure public DoesntOverlap : Talk ==> bool
 	  	DoesntOverlap (newTalk) == (
 	  	dcl doesntOverlap : bool := true;
 	  	
