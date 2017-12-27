@@ -293,6 +293,13 @@ operations
 			GetNews() == (
 				return news;
 			);
+			
+		-- get total attendees by talk	
+		public GetTotalAttendeesByTalk : Talk ==> int
+			GetTotalAttendeesByTalk (talk) == (
+				return talk.GetTotalAttendees();
+			);
+			--pre --talk existe		
 		
 functions
 
