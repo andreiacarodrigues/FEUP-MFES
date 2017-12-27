@@ -239,7 +239,7 @@ operations
 	  		return attendees;
 	  	);  
 	  	
-		--returns websummit initial date
+		--returns websummit exibit
 	 	--public GetExhibit : () ==> Exhibit
 	  	--GetExhibit () == (
 	  		--return exhibit;
