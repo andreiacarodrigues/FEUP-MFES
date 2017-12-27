@@ -439,6 +439,12 @@ public static main: () ==> ()
 		assertEqual({investor}, GetInvestors());
 		
 		--get e sets de influential ja testados
+		
+		RemoveInvestor(investor);
+		assertEqual({}, GetInvestors());
+		
+		--test to fail : remove investor that doesn't exist
+		/*RemoveInvestor(investor);*/
 	);
 	
 	private RemoveTalk: Conference * Talk ==> ()
@@ -470,11 +476,6 @@ public static main: () ==> ()
 	RemoveSpeaker(talk, s) ==	(
 		WebSummit`GetInstance().RemoveSpeaker(talk, s);
 	);	
-	
-			/*
-			TODO : Exhibit
-				- get Startup by name ?
-		*/
 		
 	private AddStartup: Startup ==> ()
 	AddStartup(s) == (
@@ -494,6 +495,11 @@ public static main: () ==> ()
 	private AddInvestor: Influential ==> ()
 	AddInvestor(i) == (
 		WebSummit`GetInstance().AddInvestor(i);
+	);
+	
+	private RemoveInvestor: Influential ==> ()
+	RemoveInvestor(i) == (
+		WebSummit`GetInstance().RemoveInvestor(i);
 	);
 	
 	private GetInvestors: () ==> set of Influential
