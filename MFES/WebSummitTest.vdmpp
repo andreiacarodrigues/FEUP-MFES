@@ -66,6 +66,11 @@ public static main: () ==> ()
 		IO`print("testCreateAndAddAttendee -> ");
 		webSummitTest.testCreateAndAddAttendee();
 		IO`println("Success");
+		
+		IO`print("testStartup -> ");
+		webSummitTest.testStartup();
+		IO`println("Success");
+		
 	);
 	
 	-- test if the creation of conferences is working correctly
@@ -339,6 +344,49 @@ public static main: () ==> ()
 		/*AddAttendee(talk,attendee2);*/
 	);
 	
+	--
+	private testStartup : () ==> ()
+	testStartup() == (
+		dcl webSummit: WebSummit := WebSummit`ClearInstance();
+		dcl startup1: Startup := new Startup("Startup Name","Startup Description","www.startup.pt","PT");
+		
+		--dcl startup2: Startup := new Startup("Emitu","Startup Description","www.startup.pt","PT");
+		
+		webSummit.SetDates(date1, date2);
+		
+		--test startup gets and sets
+		assertEqual("Startup Name", startup1.GetName());
+		startup1.SetName("Emitu");
+		assertEqual("Emitu", startup1.GetName());
+		
+		assertEqual("Startup Description", startup1.GetDescription());
+		startup1.SetDescription("New Description");
+		assertEqual("New Description", startup1.GetDescription());
+		
+		assertEqual("www.startup.pt", startup1.GetWebsite());
+		startup1.SetWebsite("www.startup.en");
+		assertEqual("www.startup.en", startup1.GetWebsite());
+		
+		assertEqual("PT", startup1.GetCountry());
+		startup1.SetCountry("EN");
+		assertEqual("EN", startup1.GetCountry());
+		
+		-- test add
+		assertEqual({}, GetStartups());
+		AddStartup(startup1);
+		assertEqual({startup1}, GetStartups());
+		
+		--test to fail : add startup with the same name
+		/*AddStartup(startup2);*/
+		
+		-- test remove
+		RemoveStartup(startup1);
+		assertEqual({}, GetStartups());
+		
+		--test to fail : remove startup that doesn't exist
+		/*RemoveStartup(startup1);*/
+	);
+	
 	private RemoveTalk: Conference * Talk ==> ()
 	RemoveTalk(c, t) ==	(
 		WebSummit`GetInstance().RemoveTalk(c, t);
@@ -376,6 +424,28 @@ public static main: () ==> ()
 	private RemoveSpeaker: Talk * Influential ==> ()
 	RemoveSpeaker(talk, s) ==	(
 		WebSummit`GetInstance().RemoveSpeaker(talk, s);
+	);	
+	
+			/*
+			TODO : Exhibit
+				- get Startup by name ?
+				- add investor
+				- get all investors
+		*/
+		
+	private AddStartup: Startup ==> ()
+	AddStartup(s) == (
+		WebSummit`GetInstance().AddStartup(s);
+	);
+	
+	private RemoveStartup: Startup ==> ()
+	RemoveStartup(s) == (
+		WebSummit`GetInstance().RemoveStartup(s);
+	);	
+	
+	private GetStartups: () ==> set of Startup
+	GetStartups() == (
+		WebSummit`GetInstance().GetStartups();
 	);	
 	
 functions
