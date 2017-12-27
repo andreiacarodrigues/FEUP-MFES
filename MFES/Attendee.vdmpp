@@ -38,12 +38,6 @@ operations
 	  	SetName (n) == (
 	  		name := n;
 	  	);
-	  	
-	  -- prints the attendee's information
-	  public Print : () ==> ()
-	  	Print() == (
-	  		IO`print(self.GetName())
-	  	);
 	  
 functions
 

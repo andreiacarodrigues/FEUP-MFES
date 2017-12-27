@@ -14,6 +14,9 @@ instance variables
 	private speakers : set of Influential := {};
 	private attendees : set of Attendee := {};
 	
+	inv not exists s1, s2 in set speakers & s1 <> s2 and s1.GetID() = s2.GetID();
+	inv not exists a1, a2 in set attendees & a1 <> a2 and a1.GetID() = a2.GetID();
+	
 operations
 
 	-- constructor of the talk class 
@@ -26,10 +29,7 @@ operations
 	  		duration := talkDuration;
 	  		return self
 	  	)
-	  	pre len talkName > 0
-	  		and talkDate.year > 0 and talkDate.month > 0 and talkDate.day > 0 and talkDate.month <= 12 
-	  		and talkDate.day <= Utils`DaysOfMonth(talkDate.year,talkDate.month) and talkTime.hour >= 0
-	  		and talkTime.hour < 24 and talkTime.minute >=0 and talkTime.minute < 60 and talkDuration > 0;
+	  	pre len talkName > 0 and talkDuration > 0;
 	  	
 	 -- returns the talk's name
 	 pure public GetName : () ==> Utils`String
@@ -37,13 +37,11 @@ operations
 	  		return name;
 	  	);
 	  	
-	  	
 	 -- set the talk name
 	 public SetName : Utils`String ==> ()
 	  	SetName (n) == (
 	  		name := n;
 	  	);
-	  	
 	  	
 	 -- returns the talk's description
 	 public GetDescription : () ==> Utils`String
@@ -99,7 +97,7 @@ operations
 	  		return conference;
 	  	);
 	  	
-	 -- set the conference name
+	 -- set the conference conference
 	 public SetConference : Utils`String ==> ()
 	  	SetConference (c) == (
 	  		conference := c;
@@ -141,31 +139,11 @@ operations
 	  	pre attendee not in set attendees
 			post attendees = attendees~ union {attendee};
 			
-	--Get Total Attendees		
+	-- returns the total of attendees		
 	public GetTotalAttendees: () ==> int
 		GetTotalAttendees() == (
 			return card attendees;
 		);
-	 
-  -- prints the talk information
-	  public Print : () ==> ()
-	  	Print() == (
-	  		IO`print("Name: "); IO`print(self.GetName());
-	  		IO`print("\n");
-	  		IO`print("Description: "); IO`print(self.GetDescription());
-	  		IO`print("\n");
-	  		IO`print("Date: "); IO`print(self.GetDate().year); IO`print("-"); 
-	  		IO`print(self.GetDate().month); IO`print("-"); IO`print(self.GetDate().day);
-	  		IO`print("\n");
-	  		IO`print("Time: ");IO`print(self.GetTime().hour); IO`print(":"); IO`print(self.GetTime().minute);
-	  		IO`print("\n");
-	  		IO`print("Duration: "); IO`print(self.GetDuration()); IO`print(" minutes");
-	  		IO`print("\n");
-	  		IO`print("Speakers: "); IO`print(self.GetSpeakers());
-	  		IO`print("\n");
-	  		IO`print("Attendees: "); IO`print(self.GetAttendees());
-	  	);
-	  	
 	 
 functions
 

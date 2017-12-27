@@ -1,8 +1,8 @@
 class New
 types
--- TODO Define types here
+
 values
--- TODO Define values here
+
 instance variables
 
 	private title : Utils`String := [];
@@ -31,7 +31,7 @@ operations
 			title := newTitle;
 	  );	
 	  
-	-- returns the news title
+	-- returns the news body
 	public GetBody : () ==> Utils`String
 		GetBody () == (
 			return body;
@@ -44,7 +44,7 @@ operations
 	  );	  
 
 functions
--- TODO Define functiones here
+
 traces
--- TODO Define Combinatorial Test Traces here
+
 end New

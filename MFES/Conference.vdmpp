@@ -119,8 +119,7 @@ operations
 	  		);
 	
 	  		return Utils`mergeSortTalks(talkSet);
-	  	)
-	  	pre date.month >= 1 and date.month <= 12 and date.day >= 1 and date.day <= Utils`DaysOfMonth(date.year,date.month);
+	  	);
 	  	
 	 -- returns schedule of the conference, sorted
    pure public GetSchedule : () ==> map Utils`Date to seq of Talk
@@ -137,10 +136,9 @@ operations
 	  		
 	  		return result
 	  	);
-	  	
-	  	
+
 	 -- checks if talk doesnt overlap existing one: for precondition of AddTalk
-	 pure public DoesntOverlap : Talk ==> bool
+	 pure private DoesntOverlap : Talk ==> bool
 	  	DoesntOverlap (newTalk) == (
 	  	dcl doesntOverlap : bool := true;
 	  	

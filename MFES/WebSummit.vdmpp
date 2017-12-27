@@ -7,7 +7,7 @@ instance variables
 
 	private conferences : set of Conference := {};
 	private exhibit : Exhibit := new Exhibit();
-	private attendees : set of Attendee := {};-- nao sei se isto vai ser apagado
+	private attendees : set of Attendee := {};
 	private news : set of New := {};
 	
 	-- default dates
@@ -22,13 +22,13 @@ instance variables
 operations
 
 	-- constructor of the websummit class 
-		public WebSummit :  () ==> WebSummit
+	public WebSummit :  () ==> WebSummit
 	  	WebSummit () == (
 	  		return self
 	  	);
 	  	
 	-- singleton - return the existent instance
-		public pure static GetInstance: () ==> WebSummit 
+	public pure static GetInstance: () ==> WebSummit 
 			GetInstance() == return websummit;
 	  	
 	-- singleton - reset the instance
@@ -113,7 +113,8 @@ operations
 	  	RemoveSpeaker (talk, speaker) == (
 	  		talk.RemoveSpeaker(speaker);
 	  	)
-	  	pre hd GetConference(talk.GetConference()) in set conferences -- todas as talks de todas as conferences 
+	  	-- all talks from all conferences 
+	  	pre hd GetConference(talk.GetConference()) in set conferences 
 	  	post speaker in set attendees;
 	  	
 	 -- returns all confereces
@@ -136,7 +137,6 @@ operations
 	  	)
 		pre len conferenceName > 0
 		post RESULT = [] or len RESULT = 1;
-		
 		
 		-- returns the full schedule of a conference
 	 public GetSchedule : Conference ==> map Utils`Date to seq of Talk
@@ -167,11 +167,9 @@ operations
 	  		
 	  		currentDate := WebSummit`GetInstance().GetInitialDate();
 	  		
-	  		-- orders them by time
-	  		
+	  		-- orders talks by time
 	  		while (currentDate <> Utils`nextDay(finalDate))
 			  do (
-			 
 						temp(currentDate) := Utils`mergeSortTalks(temp(currentDate));
 						currentDate := Utils`nextDay(currentDate);
 				);
@@ -184,7 +182,7 @@ operations
 	  	GetSchedule (date, time) == (
 	  		dcl temp: seq of Talk := [];
 	  		
-	  		-- joins all the events from that day
+	  		-- joins all talks from that day starting or occuring at the given time
 	  		for all conference in set conferences do (
 	  			for all talk in set elems conference.GetSchedule()(date) do
 	  			(
@@ -205,7 +203,7 @@ operations
 	  		return temp;
 	  	);	  
 	  	
-	  -- adds a new attendee to an existing talk
+	 -- adds a new attendee to an existing talk
 	 public AddAttendee : Talk * Attendee ==> ()
 	  	AddAttendee (talk, attendee) == (
 	  		talk.AddAttendee(attendee);
@@ -231,8 +229,6 @@ operations
 	  	)
 	  	pre newConference not in set conferences;
 	  	
-	 -- NOTA: tem de ter metodo para ir buscar attendee por id para poder remov�-los e outro para listar os attendees e speakers
-	
 	-- returns all websummit attendees
 	 public GetAttendees : () ==> set of Attendee
 	  	GetAttendees () == (
@@ -240,10 +236,10 @@ operations
 	  	);  
 	  	
 		--returns websummit exibit
-	 	--public GetExhibit : () ==> Exhibit
-	  	--GetExhibit () == (
-	  		--return exhibit;
-	 		--);	 		  		
+	 	/*public GetExhibit : () ==> Exhibit
+	  	GetExhibit () == (
+	  		return exhibit;
+	 		);*/ 		
 	
 		--returns all startups
 		public GetStartups: () ==> set of Startup
@@ -281,6 +277,7 @@ operations
 				exhibit.GetInvestors();
 			);	
 		
+		-- add a new
 		public AddNew: New ==> ()
 			AddNew(n) == (
 				news := news union {n};

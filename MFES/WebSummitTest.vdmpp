@@ -13,26 +13,6 @@ instance variables
 	time3 : Utils`Time := mk_Utils`Time(16,40);
 	time4 : Utils`Time := mk_Utils`Time(15,30);
 	
-	--C1
-	--D1
-	--talk1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, time2, 40);
-	--talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time1, 20); 
-	--talk3 : Talk := new Talk("Talk 3", "Talk 3 description", date1, time3, 20);
-	--D2
-	--talk4 : Talk := new Talk("Talk 4", "Talk 4 description", date2, time3, 20);
-	
-	--C2
-	--D1
-	--talk5 : Talk := new Talk("Talk 5", "Talk 5 description", date1, time4, 20);
-	--D2
-	--talk6 : Talk := new Talk("Talk 6", "Talk 6 description", date2, time2, 60);
-	--talk7 : Talk := new Talk("Talk 7", "Talk 7 description", date2, time3, 20);
-	--talk8 : Talk := new Talk("Talk 8", "Talk 8 description", date2, time1, 20);
-	
-	--conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
-	--conference2 : Conference := new Conference("Conference 2", "Conference 2 details");
-	--conference3 : Conference := new Conference("Conference 1", "Conference 3 details");
-	
 operations
 public static main: () ==> ()
 	main() ==
@@ -91,8 +71,12 @@ public static main: () ==> ()
 		/*dcl conference2 : Conference; */
 		
 		webSummit.SetDates(date1, date2);
+		assertEqual(date1, webSummit.GetInitialDate());
+		assertEqual(date2, webSummit.GetFinalDate());
+		
 		AddConference(conference1);
 
+	  -- tests gets and sets
 		assertEqual("C1", conference1.GetName());
 		assertEqual("D1", conference1.GetDescription());
 		assertEqual({}, conference1.GetTalks());
@@ -131,13 +115,12 @@ public static main: () ==> ()
 		dcl talk4 : Talk := new Talk("Talk 1", "Talk 4 description", date1, time2, 40);*/
 		
 		webSummit.SetDates(date1, date2);
-		assertEqual(date1, webSummit.GetInitialDate());
-		assertEqual(date2, webSummit.GetFinalDate());
 		
 		AddConference(conference);
 		AddTalk(conference,talk1);
 	
-		assertEqual("T1", talk1.GetName());
+	  -- tests gets and sets
+	 	assertEqual("T1", talk1.GetName());
 		assertEqual("D1", talk1.GetDescription());
 		assertEqual(date2, talk1.GetDate());
 		assertEqual(time2, talk1.GetTime());
@@ -168,12 +151,12 @@ public static main: () ==> ()
 		assertEqual(1, card conference.GetTalks());
 		assertEqual({talk1}, conference.GetTalks());
 		
-		--add speaker to talk
+		-- add speaker to talk
 		AddSpeaker(talk1,speaker1);
 		assertEqual({speaker1}, talk1.GetSpeakers());
 		--os restantes gets e sets ja foram testados em testCreateAndAddAttendee
 		
-		--remove speaker from talk
+		-- remove speaker from talk
 		RemoveSpeaker(talk1,speaker1);
 		assertEqual({}, talk1.GetSpeakers());
 		
@@ -188,8 +171,6 @@ public static main: () ==> ()
 		
 		-- this test is supposed to fail (can't create talks with empty name)
 		/*talk2 := new Talk(conference, "", "Talk 2 description", date1, time2, 40);*/
-	
-	
 	);
 	
 	
@@ -274,8 +255,8 @@ public static main: () ==> ()
 		
 		AddCompany(conference1,company1);
 		
+		-- tests gets and sets
 		assertEqual("Comp1", company1.GetName());
-	
 		company1.SetName("Company 1");
 		assertEqual("Company 1", company1.GetName());
 		
@@ -352,14 +333,15 @@ public static main: () ==> ()
 		dcl attendee1 : Common := new Common("Ines");
 		dcl attendee2 : Influential := new Influential("Andreia Rodrigues", "STUDENT", new Company("feup"), "STUDENT AT FEUP", "PT");
 	
+	 -- for tests supposed to fail
 	 /*dcl conference2 : Conference := new Conference("Conference 2", "Conference 2 details");*/
 	
 		webSummit.SetDates(date1, date2);
 		AddConference(conference);
 		AddTalk(conference, talk);
 		
+		-- tests gets and sets
 		assertEqual("Ines", attendee1.GetName());
-		
 		attendee1.SetName("Ines Gomes");
 		assertEqual("Ines Gomes", attendee1.GetName());
 	
@@ -370,6 +352,7 @@ public static main: () ==> ()
 		
 		AddAttendee(talk,attendee2);
 		
+		-- tests gets and sets
 		assertEqual("STUDENT", attendee2.GetJobPosition());
 		attendee2.SetJobPosition("Student");
 		assertEqual("Student", attendee2.GetJobPosition());
@@ -386,7 +369,7 @@ public static main: () ==> ()
 		attendee2.SetCountry("Portugal");
 		assertEqual("Portugal", attendee2.GetCountry());
 		
-		--get total attendees
+		-- get total attendees
 		assertEqual(2, GetTotalAttendeesByTalk(talk));
 		
 		-- this test is supposed to fail (can't add an already existing attendee to a talk)
@@ -398,11 +381,12 @@ public static main: () ==> ()
 		dcl webSummit: WebSummit := WebSummit`ClearInstance();
 		dcl startup1: Startup := new Startup("Startup Name","Startup Description","www.startup.pt","PT");
 		
-		--dcl startup2: Startup := new Startup("Emitu","Startup Description","www.startup.pt","PT");
+		-- for tests supposed to fail
+		/*dcl startup2: Startup := new Startup("Emitu","Startup Description","www.startup.pt","PT");*/
 		
 		webSummit.SetDates(date1, date2);
 		
-		--test startup gets and sets
+		-- tests gets and sets
 		assertEqual("Startup Name", startup1.GetName());
 		startup1.SetName("Emitu");
 		assertEqual("Emitu", startup1.GetName());
@@ -424,14 +408,14 @@ public static main: () ==> ()
 		AddStartup(startup1);
 		assertEqual({startup1}, GetStartups());
 		
-		--test to fail : add startup with the same name
+		-- test to fail : add startup with the same name
 		/*AddStartup(startup2);*/
 		
 		-- test remove
 		RemoveStartup(startup1);
 		assertEqual({}, GetStartups());
 		
-		--test to fail : remove startup that doesn't exist
+		-- test to fail : remove startup that doesn't exist
 		/*RemoveStartup(startup1);*/
 	);
 	
@@ -446,12 +430,10 @@ public static main: () ==> ()
 		AddInvestor(investor);
 		assertEqual({investor}, GetInvestors());
 		
-		--get e sets de influential ja testados
-		
 		RemoveInvestor(investor);
 		assertEqual({}, GetInvestors());
 		
-		--test to fail : remove investor that doesn't exist
+		-- test to fail : remove investor that doesn't exist
 		/*RemoveInvestor(investor);*/
 	);
 	
@@ -462,7 +444,7 @@ public static main: () ==> ()
 		
 		webSummit.SetDates(date1, date2);
 		
-		--test gets and sets
+		-- tests gets and sets
 		assertEqual("Title", new1.GetTitle());
 		new1.SetTitle("New Title");
 		assertEqual("New Title", new1.GetTitle());		
@@ -563,7 +545,7 @@ public static main: () ==> ()
 	); 
 	
 functions
--- TODO Define functiones here
+
 traces
--- TODO Define Combinatorial Test Traces here
+
 end WebSummitTest

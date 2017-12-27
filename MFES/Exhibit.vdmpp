@@ -8,6 +8,9 @@ instance variables
 	private startups : set of Startup := {};
 	private investors : set of Influential := {};
 	
+	inv not exists s1, s2 in set startups & s1 <> s2 and s1.GetName() = s2.GetName();
+	inv not exists i1, i2 in set investors & i1 <> i2 and i1.GetID() = i2.GetID();
+	
 operations
 
  	-- default constructor of the exibit class 
