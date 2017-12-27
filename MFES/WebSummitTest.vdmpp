@@ -383,6 +383,7 @@ public static main: () ==> ()
 	private AddTalk: Conference * Talk ==> ()
 	AddTalk(c, t) ==	(
 		WebSummit`GetInstance().AddTalk(c, t);
+		);
 
 	private testStartup : () ==> ()
 	testStartup() == (
