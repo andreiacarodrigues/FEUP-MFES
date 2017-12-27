@@ -191,7 +191,7 @@ operations
 	  				then temp := temp ^ [talk]
 	  				else
 	  					if(talk.GetTime().hour + 1 = time.hour)
-	  					then if((talk.GetTime().minute + talk.GetDuration()) >= (60 - talk.GetTime().minute))
+	  					then if((talk.GetDuration()) >= (60 - talk.GetTime().minute))
 	  						then if((talk.GetTime().minute + talk.GetDuration() - 60) <= 60)
 	  							then temp := temp ^ [talk]
 	  			);
