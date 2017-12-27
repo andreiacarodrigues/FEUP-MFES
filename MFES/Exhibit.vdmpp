@@ -80,6 +80,14 @@ operations
 	  pre investor not in set investors	and len GetInvestor(investor.GetName()) = 0
 	  post investors = investors~ union {investor};  
 	  	
+	-- remove investor
+	public RemoveInvestor: Influential ==> ()
+  	RemoveInvestor (investor) == (
+  		investors := investors \ {investor};
+	  )
+	  pre investor in set investors and card investors >= 1
+		post investors = investors~ \ {investor};	  	
+	  	
 functions
 
 traces
