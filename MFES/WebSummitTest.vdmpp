@@ -131,6 +131,9 @@ public static main: () ==> ()
 		dcl talk4 : Talk := new Talk("Talk 1", "Talk 4 description", date1, time2, 40);*/
 		
 		webSummit.SetDates(date1, date2);
+		assertEqual(date1, webSummit.GetInitialDate());
+		assertEqual(date2, webSummit.GetFinalDate());
+		
 		AddConference(conference);
 		AddTalk(conference,talk1);
 	
