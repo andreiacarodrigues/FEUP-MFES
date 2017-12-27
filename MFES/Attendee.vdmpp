@@ -21,7 +21,7 @@ operations
 	  	
 	  	
 		-- returns the attendee's name
-	  public GetName : () ==> Utils`String
+	  pure public GetName : () ==> Utils`String
 	  	GetName () == (
 	  		return name;
 	  	);

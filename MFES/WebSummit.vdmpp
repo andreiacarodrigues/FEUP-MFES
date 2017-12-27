@@ -37,7 +37,7 @@ operations
 			return GetInstance();
 		)
 		post RESULT.conferences = {} and RESULT.exhibit.GetStartups() = {}
-			 and RESULT.exhibit.GetInvestors() = {} and RESULT.attendees = {};
+			 and RESULT.exhibit.GetInvestors() = {} and RESULT.attendees = {}; 	
 	  	
 	 -- sets websummit dates
 	 public SetDates : Utils`Date * Utils`Date ==> ()
@@ -236,8 +236,43 @@ operations
 	 public GetAttendees : () ==> set of Attendee
 	  	GetAttendees () == (
 	  		return attendees;
-	  	);  	
-
+	  	);  
+	  	
+		--returns websummit initial date
+	 	--public GetExhibit : () ==> Exhibit
+	  	--GetExhibit () == (
+	  		--return exhibit;
+	 		--);	 		  		
+	
+		--returns all startups
+		public GetStartups: () ==> set of Startup
+	  	GetStartups () == (
+	  		exhibit.GetStartups();
+	  	);
+	
+		--add new startup to exhibit
+		public AddStartup: Startup ==> ()
+	  	AddStartup (s) == (
+	  		exhibit.AddStartup(s);
+	  	);
+	
+		--remove startup from exhibit	  	
+		public RemoveStartup: Startup ==> ()
+	  	RemoveStartup (s) == (
+	  		exhibit.RemoveStartup(s);
+	  	);
+	  	
+		--add investor to exhibit
+		public AddInvestor: Influential ==> ()
+		AddInvestor(i) == (
+			exhibit.AddInvestor(i);
+		);
+		
+		public GetInvestors: () ==> set of Influential
+		GetInvestors() == (
+			exhibit.GetInvestors();
+		);	
+	
 functions
 
 traces
