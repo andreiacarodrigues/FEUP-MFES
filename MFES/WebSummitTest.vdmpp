@@ -154,6 +154,10 @@ public static main: () ==> ()
 		assertEqual({speaker1}, talk1.GetSpeakers());
 		--os restantes gets e sets ja foram testados em testCreateAndAddAttendee
 		
+		--remove speaker from talk
+		RemoveSpeaker(talk1,speaker1);
+		assertEqual({}, talk1.GetSpeakers());
+		
 		-- this test is supposed to fail (can't add a talk that overlaps an already existing one)
 		/*talk2 := new Talk(conference, "Talk 2", "Talk 2 description", date1, time2, 40)*/
 		
@@ -166,9 +170,7 @@ public static main: () ==> ()
 		-- this test is supposed to fail (can't create talks with empty name)
 		/*talk2 := new Talk(conference, "", "Talk 2 description", date1, time2, 40);*/
 	
-		--remove speaker
-		RemoveSpeaker(talk1,speaker1);
-		assertEqual({}, talk1.GetSpeakers());
+	
 	);
 	
 	
@@ -300,17 +302,17 @@ public static main: () ==> ()
 		dcl webSummit: WebSummit := WebSummit`ClearInstance();
 		dcl conference : Conference := new Conference("Conference 1", "Conference 1 details");
 		dcl talk : Talk := new Talk(conference, "Talk 1", "Talk 1 description", date2, time2, 30);
-		dcl attendee1 : Common := new Common("In�s");
+		dcl attendee1 : Common := new Common("Ines");
 		dcl attendee2 : Influential := new Influential("Andreia Rodrigues", "STUDENT", new Company("feup"), "STUDENT AT FEUP", "PT");
 	
 	 /*dcl conference2 : Conference := new Conference("Conference 2", "Conference 2 details");*/
 	
 		webSummit.SetDates(date1, date2);
 		
-		assertEqual("In�s", attendee1.GetName());
+		assertEqual("Ines", attendee1.GetName());
 		
-		attendee1.SetName("In�s Gomes");
-		assertEqual("In�s Gomes", attendee1.GetName());
+		attendee1.SetName("Ines Gomes");
+		assertEqual("Ines Gomes", attendee1.GetName());
 	
 		AddAttendee(talk,attendee1);
 		
@@ -358,16 +360,7 @@ public static main: () ==> ()
 	AddAttendee(t, a) ==	(
 		WebSummit`GetInstance().AddAttendee(t, a);
 	);
-	
-	
-	/* 
-	TODO:
-	
-		Talk:
-			- add attendee
-			- remove attendee
-	*/
-	
+
 	private AddSpeaker: Talk * Influential ==> ()
 	AddSpeaker(talk, s) ==	(
 		WebSummit`GetInstance().AddSpeaker(talk, s);
