@@ -207,8 +207,6 @@ public static main: () ==> ()
 		dcl talk6 : Talk := new Talk("Talk 6", "Talk 6 description", date2, time2, 60);
 		dcl talk7 : Talk := new Talk("Talk 7", "Talk 7 description", date2, time3, 20);
 		dcl talk8 : Talk := new Talk("Talk 8", "Talk 8 description", date2, time1, 20);
-	
-		dcl test : seq of Talk;
 		
 		webSummit.SetDates(date1, date2);
 		
@@ -254,8 +252,8 @@ public static main: () ==> ()
 		*/
 		
 		-- this test is supposed to fail (talk that starts at 15:20 and finishes at 15:40)
-		assertEqual(3, len webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));
-		assertEqual([talk2, talk1, talk3], webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));
+		/*assertEqual(3, len webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));
+		 assertEqual([talk2, talk1, talk3], webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));*/
 	);
 	
   -- test if the creation of companies is working correctly
