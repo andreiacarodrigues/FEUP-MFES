@@ -362,7 +362,7 @@ public static main: () ==> ()
 	
 		AddAttendee(talk,attendee1);
 		
-		assertEqual(1, card talk.GetAttendees());
+		assertEqual(1, GetTotalAttendeesByTalk(talk));
 		assertEqual({attendee1}, talk.GetAttendees());
 		
 		AddAttendee(talk,attendee2);
@@ -383,7 +383,8 @@ public static main: () ==> ()
 		attendee2.SetCountry("Portugal");
 		assertEqual("Portugal", attendee2.GetCountry());
 		
-		--TODO adicionar attendes e saber quantos tem
+		--get total attendees
+		assertEqual(2, GetTotalAttendeesByTalk(talk));
 		
 		-- this test is supposed to fail (can't add an already existing attendee to a talk)
 		/*AddAttendee(talk,attendee2);*/
@@ -552,6 +553,11 @@ public static main: () ==> ()
 	GetNews() == (
 		WebSummit`GetInstance().GetNews();
 	);
+	
+	private GetTotalAttendeesByTalk: Talk ==> int
+	GetTotalAttendeesByTalk(talk) == (
+		WebSummit`GetInstance().GetTotalAttendeesByTalk(talk);
+	); 
 	
 functions
 -- TODO Define functiones here

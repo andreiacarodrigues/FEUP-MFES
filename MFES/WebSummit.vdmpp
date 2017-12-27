@@ -293,8 +293,7 @@ operations
 		public GetTotalAttendeesByTalk : Talk ==> int
 			GetTotalAttendeesByTalk (talk) == (
 				return talk.GetTotalAttendees();
-			);
-			--pre --talk existe		
+			);		
 		
 functions
 
