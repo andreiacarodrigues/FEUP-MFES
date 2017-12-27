@@ -373,6 +373,8 @@ public static main: () ==> ()
 		attendee2.SetCountry("Portugal");
 		assertEqual("Portugal", attendee2.GetCountry());
 		
+		--TODO adicionar attendes e saber quantos tem
+		
 		-- this test is supposed to fail (can't add an already existing attendee to a talk)
 		/*AddAttendee(talk,attendee2);*/
 	);

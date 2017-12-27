@@ -1,0 +1,50 @@
+class New
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+
+	private title : Utils`String := [];
+	private body : Utils`String := [];
+	
+operations
+
+	-- constructor of the new class 
+	public New : Utils`String * Utils`String ==> New
+		New (newTitle, newBody) == (
+			title := newTitle;
+			body := newBody;
+	  	return self
+	  )
+	  pre len newTitle > 0 and len newBody > 0;
+
+	-- returns the news title
+	public GetTitle : () ==> Utils`String
+		GetTitle () == (
+			return title;
+	  );	
+	  
+	-- set the news title
+	public SetTitle : Utils`String ==> ()
+		SetTitle (newTitle) == (
+			title := newTitle;
+	  );	
+	  
+	-- returns the news title
+	public GetBody : () ==> Utils`String
+		GetBody () == (
+			return body;
+	  );	
+	  
+	-- set the news body
+	public SetBody : Utils`String ==> ()
+		SetBody (newBody) == (
+			body := newBody;
+	  );	  
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end New

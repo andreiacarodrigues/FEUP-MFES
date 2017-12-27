@@ -238,12 +238,7 @@ operations
 	  	GetAttendees () == (
 	  		return attendees;
 	  	);  
-	  	
-		--returns websummit initial date
-	 	--public GetExhibit : () ==> Exhibit
-	  	--GetExhibit () == (
-	  		--return exhibit;
-	 		--);	 		  		
+	  	 		  		
 	
 		--returns all startups
 		public GetStartups: () ==> set of Startup
@@ -293,6 +288,13 @@ operations
 			GetNews() == (
 				return news;
 			);
+			
+		-- get total attendees by talk	
+		public GetTotalAttendeesByTalk : Talk ==> int
+			GetTotalAttendeesByTalk (talk) == (
+				return talk.GetTotalAttendees();
+			);
+			--pre --talk existe		
 		
 functions
 

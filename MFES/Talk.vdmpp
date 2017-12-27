@@ -140,6 +140,12 @@ operations
 	  	)	
 	  	pre attendee not in set attendees
 			post attendees = attendees~ union {attendee};
+			
+	--Get Total Attendees		
+	public GetTotalAttendees: () ==> int
+		GetTotalAttendees() == (
+			return card attendees;
+		);
 	 
   -- prints the talk information
 	  public Print : () ==> ()
