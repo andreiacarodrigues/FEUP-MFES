@@ -238,7 +238,12 @@ operations
 	  	GetAttendees () == (
 	  		return attendees;
 	  	);  
-	  	 		  		
+	  	
+		--returns websummit exibit
+	 	--public GetExhibit : () ==> Exhibit
+	  	--GetExhibit () == (
+	  		--return exhibit;
+	 		--);	 		  		
 	
 		--returns all startups
 		public GetStartups: () ==> set of Startup
