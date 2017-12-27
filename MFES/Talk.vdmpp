@@ -101,13 +101,6 @@ operations
 	  		return conference;
 	  	);
 	  	
-	  	
-	 -- set the talk name
-	 public SetConference : Utils`String ==> ()
-	  	SetConference (c) == (
-	  		conference := c;
-	  	);
-	  	
 	  -- returns the talk's speakers
 	 public GetSpeakers : () ==> set of Influential
 	  	GetSpeakers () == (
@@ -144,14 +137,6 @@ operations
 	  	pre attendee not in set attendees
 			post attendees = attendees~ union {attendee};
 	 
-	 -- removes an attendee from the talk
-   public RemoveAttendee : Attendee ==> ()
-	  	RemoveAttendee (attendee) == (
-	  		attendees := attendees \ {attendee};
-	  	)	
-	  	pre attendee in set attendees
-			post attendees = attendees~ \ {attendee};
-	  	
   -- prints the talk information
 	  public Print : () ==> ()
 	  	Print() == (
