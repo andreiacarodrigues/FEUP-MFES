@@ -8,6 +8,7 @@ instance variables
 	private conferences : set of Conference := {};
 	private exhibit : Exhibit := new Exhibit();
 	private attendees : set of Attendee := {};-- nao sei se isto vai ser apagado
+	private news : set of New := {};
 	
 	-- default dates
 	private initialDate : Utils`Date := mk_Utils`Date(2001,1,1);
@@ -264,21 +265,35 @@ operations
 	  	
 		--add investor to exhibit
 		public AddInvestor: Influential ==> ()
-		AddInvestor(i) == (
-			exhibit.AddInvestor(i);
-		);
+			AddInvestor(i) == (
+				exhibit.AddInvestor(i);
+			);
 		
 		--remove investor from exhibit
 		public RemoveInvestor: Influential ==> ()
-		RemoveInvestor(i) == (
-			exhibit.RemoveInvestor(i);
-		);
+			RemoveInvestor(i) == (
+				exhibit.RemoveInvestor(i);
+			);
 		
+		--return all investors
 		public GetInvestors: () ==> set of Influential
-		GetInvestors() == (
-			exhibit.GetInvestors();
-		);	
-	
+			GetInvestors() == (
+				exhibit.GetInvestors();
+			);	
+		
+		public AddNew: New ==> ()
+			AddNew(n) == (
+				news := news union {n};
+		  )
+	  	pre n not in set news
+			post news = news~ union {n};
+		
+		--return all news
+		public GetNews: () ==> set of New
+			GetNews() == (
+				return news;
+			);
+		
 functions
 
 traces

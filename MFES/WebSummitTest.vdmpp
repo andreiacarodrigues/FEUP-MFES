@@ -74,6 +74,10 @@ public static main: () ==> ()
 		IO`print("testInvestors -> ");
 		webSummitTest.testInvestors();
 		IO`println("Success");
+		
+		IO`print("testNews -> ");
+		webSummitTest.testNews();
+		IO`println("Success");
 	);
 	
 	-- test if the creation of conferences is working correctly
@@ -153,8 +157,6 @@ public static main: () ==> ()
 		
 		talk1.SetDuration(40);
 		assertEqual(40, talk1.GetDuration());
-		
-	
 		
 		assertEqual(talk1, hd conference.GetTalk(talk1.GetName()));
 		
@@ -374,16 +376,6 @@ public static main: () ==> ()
 		-- this test is supposed to fail (can't add an already existing attendee to a talk)
 		/*AddAttendee(talk,attendee2);*/
 	);
-	
-	private AddConference: Conference ==> ()
-	AddConference(c) ==	(
-		WebSummit`GetInstance().AddConference(c);
-	);
-	
-	private AddTalk: Conference * Talk ==> ()
-	AddTalk(c, t) ==	(
-		WebSummit`GetInstance().AddTalk(c, t);
-		);
 
 	private testStartup : () ==> ()
 	testStartup() == (
@@ -447,6 +439,38 @@ public static main: () ==> ()
 		/*RemoveInvestor(investor);*/
 	);
 	
+	private testNews: () ==> ()
+	testNews() == (
+		dcl webSummit: WebSummit := WebSummit`ClearInstance();
+		dcl new1: New := new New("Title","Body");
+		
+		webSummit.SetDates(date1, date2);
+		
+		--test gets and sets
+		assertEqual("Title", new1.GetTitle());
+		new1.SetTitle("New Title");
+		assertEqual("New Title", new1.GetTitle());		
+		
+		assertEqual("Body", new1.GetBody());
+		new1.SetBody("New Body");
+		assertEqual("New Body", new1.GetBody());	
+		
+		assertEqual({}, GetNews());
+		AddNew(new1);
+		assertEqual({new1}, GetNews());
+		
+	);
+	
+	private AddConference: Conference ==> ()
+	AddConference(c) ==	(
+		WebSummit`GetInstance().AddConference(c);
+	);
+	
+	private AddTalk: Conference * Talk ==> ()
+	AddTalk(c, t) ==	(
+		WebSummit`GetInstance().AddTalk(c, t);
+		);
+	
 	private RemoveTalk: Conference * Talk ==> ()
 	RemoveTalk(c, t) ==	(
 		WebSummit`GetInstance().RemoveTalk(c, t);
@@ -505,7 +529,17 @@ public static main: () ==> ()
 	private GetInvestors: () ==> set of Influential
 	GetInvestors() == (
 		WebSummit`GetInstance().GetInvestors();
+	);
+	
+	private AddNew: New ==> ()
+	AddNew(n) == (
+		WebSummit`GetInstance().AddNew(n);
 	);	
+	
+	private GetNews: () ==> set of New
+	GetNews() == (
+		WebSummit`GetInstance().GetNews();
+	);
 	
 functions
 -- TODO Define functiones here
