@@ -1,0 +1,211 @@
+\begin{vdmpp}[breaklines=true]
+class Talk
+types
+
+values
+
+instance variables
+
+ private name : Utilities`String := [];
+ private description : Utilities`String := [];
+ private date : Utilities`Date;
+ private time : Utilities`Time;
+ private duration : nat1;
+ private conference : Utilities`String := [];
+ private speakers : set of Influential := {};
+ private attendees : set of Attendee := {};
+ 
+ inv not exists s1, s2 in set speakers & s1 <> s2 and s1.GetID() = s2.GetID();
+ inv not exists a1, a2 in set attendees & a1 <> a2 and a1.GetID() = a2.GetID();
+ 
+operations
+
+ -- constructor of the talk class 
+(*@
+\label{Talk:23}
+@*)
+  public Talk :  Utilities`String *  Utilities`String *  Utilities`Date *  Utilities`Time * nat1 ==> Talk
+    Talk (talkName, talkDescription, talkDate, talkTime, talkDuration) == (
+     name := talkName;
+     description := talkDescription;
+     date := talkDate;
+     time := talkTime;
+     duration := talkDuration;
+     return self
+    )
+    pre len talkName > 0 and talkDuration > 0;
+    
+  -- returns the talk's name
+(*@
+\label{GetName:35}
+@*)
+  pure public GetName : () ==> Utilities`String
+    GetName () == (
+     return name;
+    );
+    
+  -- set the talk name
+(*@
+\label{SetName:41}
+@*)
+  public SetName : Utilities`String ==> ()
+    SetName (n) == (
+     name := n;
+    );
+    
+  -- returns the talk's description
+(*@
+\label{GetDescription:47}
+@*)
+  public GetDescription : () ==> Utilities`String
+    GetDescription () == (
+     return description;
+    );
+    
+  -- set the talk description
+(*@
+\label{SetDescription:53}
+@*)
+  public SetDescription : Utilities`String ==> ()
+    SetDescription (d) == (
+     description := d;
+    );
+    
+  -- returns the talk's date
+(*@
+\label{GetDate:59}
+@*)
+  pure public GetDate : () ==> Utilities`Date
+    GetDate () == (
+     return date;
+    );
+    
+  -- set the talk date
+(*@
+\label{SetDate:65}
+@*)
+  public SetDate : Utilities`Date ==> ()
+    SetDate (d) == (
+     date := d;
+    );
+    
+  -- returns the talk's time
+(*@
+\label{GetTime:71}
+@*)
+  pure public GetTime : () ==> Utilities`Time
+    GetTime () == (
+     return time;
+    );
+    
+  -- set the talk time
+(*@
+\label{SetTime:77}
+@*)
+  public SetTime : Utilities`Time ==> ()
+    SetTime (t) == (
+     time := t;
+    );
+    
+  -- returns the talk's duration
+(*@
+\label{GetDuration:83}
+@*)
+  pure public GetDuration : () ==> nat1
+    GetDuration () == (
+     return duration;
+    );
+    
+  -- set the talk duration
+(*@
+\label{SetDuration:89}
+@*)
+  public SetDuration : nat1 ==> ()
+    SetDuration (d) == (
+     duration := d;
+    );
+    
+   -- returns the talk's conference
+(*@
+\label{GetConference:95}
+@*)
+  pure public GetConference : () ==> Utilities`String
+    GetConference () == (
+     return conference;
+    );
+    
+  -- set the conference conference
+(*@
+\label{SetConference:101}
+@*)
+  public SetConference : Utilities`String ==> ()
+    SetConference (c) == (
+     conference := c;
+    );
+    
+   -- returns the talk's speakers
+(*@
+\label{GetSpeakers:107}
+@*)
+  public GetSpeakers : () ==> set of Influential
+    GetSpeakers () == (
+     return speakers;
+    );
+    
+   -- returns the talk's attendees
+(*@
+\label{GetAttendees:113}
+@*)
+  public GetAttendees : () ==> set of Attendee
+    GetAttendees () == (
+     return attendees;
+    );
+    
+  -- adds a new speaker to the talk
+(*@
+\label{AddSpeaker:119}
+@*)
+   public AddSpeaker : Influential ==> ()
+    AddSpeaker (speaker) == (
+     speakers := speakers union {speaker};
+    ) 
+    pre speaker not in set speakers
+   post speakers = speakers~ union {speaker};
+   
+  -- removes a speaker from the talk
+(*@
+\label{RemoveSpeaker:127}
+@*)
+   public RemoveSpeaker : Influential ==> ()
+    RemoveSpeaker (speaker) == (
+     speakers := speakers \ {speaker};
+    ) 
+    pre speaker in set speakers
+   post speakers = speakers~ \ {speaker};
+    
+  -- adds a new attendee to the talk
+(*@
+\label{AddAttendee:135}
+@*)
+  public AddAttendee : Attendee ==> ()
+    AddAttendee (attendee) == (
+     attendees := attendees union {attendee};
+    ) 
+    pre attendee not in set attendees
+   post attendees = attendees~ union {attendee};
+   
+ -- returns the total of attendees  
+(*@
+\label{GetTotalAttendees:143}
+@*)
+ public GetTotalAttendees: () ==> int
+  GetTotalAttendees() == (
+   return card attendees;
+  );
+  
+functions
+
+traces
+
+end Talk
+\end{vdmpp}

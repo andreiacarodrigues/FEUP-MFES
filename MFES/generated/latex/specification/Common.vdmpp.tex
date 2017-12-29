@@ -1,0 +1,26 @@
+\begin{vdmpp}[breaklines=true]
+class Common is subclass of Attendee
+types
+
+values
+
+instance variables
+
+operations
+
+ -- constructor of the common attendee class 
+(*@
+\label{Common:11}
+@*)
+ public Common : Utilities`String ==> Common
+     Common (attendeeName) == (
+      Attendee(attendeeName); 
+     )
+     pre len attendeeName > 0;
+
+functions
+
+traces
+
+end Common
+\end{vdmpp}

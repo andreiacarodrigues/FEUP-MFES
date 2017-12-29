@@ -1,0 +1,121 @@
+\begin{vdmpp}[breaklines=true]
+class Exhibit
+types
+
+values
+
+instance variables
+
+ private startups : set of Startup := {};
+ private investors : set of Influential := {};
+ 
+ inv not exists s1, s2 in set startups & s1 <> s2 and s1.GetName() = s2.GetName();
+ inv not exists i1, i2 in set investors & i1 <> i2 and i1.GetID() = i2.GetID();
+ 
+operations
+
+  -- default constructor of the exibit class 
+(*@
+\label{Exhibit:17}
+@*)
+ public Exhibit : () ==> Exhibit
+  Exhibit () == (
+    return self
+   );
+    
+ -- returns the exibit startups
+(*@
+\label{GetStartups:23}
+@*)
+ pure public GetStartups : () ==> set of Startup
+   GetStartups () == (
+    return startups;
+   );
+   
+(*@
+\label{GetStartup:28}
+@*)
+  pure public GetStartup : Utilities`String ==> [Startup]
+   GetStartup (name) == (
+    for all startup in set startups do (
+     if (startup.GetName() = name)
+      then return startup
+     );
+     
+     return nil
+    )
+    pre len name > 0; 
+   
+ -- add startup
+(*@
+\label{AddStartup:40}
+@*)
+ public AddStartup: Startup ==> ()
+  AddStartup (startup) == (
+    startups := startups union {startup}
+   )
+   pre startup not in set startups and GetStartup(startup.GetName()) = nil
+   post startups = startups~ union {startup};  
+ 
+ -- remove startup
+(*@
+\label{RemoveStartup:48}
+@*)
+ public RemoveStartup: Startup ==> ()
+   RemoveStartup (startup) == (
+    startups := startups \ {startup};
+   )
+   pre startup in set startups and card startups >= 1
+  post startups = startups~ \ {startup};
+ 
+ -- returns the exibit investors
+(*@
+\label{GetInvestors:56}
+@*)
+ pure public GetInvestors : () ==> set of Influential
+  GetInvestors () == (
+    return investors;
+   );
+ 
+(*@
+\label{GetInvestor:61}
+@*)
+ pure public GetInvestor : Utilities`String ==> [Influential]
+   GetInvestor (name) == (
+    for all investor in set investors do (
+     if (investor.GetName() = name)
+      then return investor
+     );
+     
+     return nil
+    )
+    pre len name > 0; 
+ 
+ -- add investor
+(*@
+\label{AddInvestor:73}
+@*)
+ public AddInvestor: Influential ==> ()
+  AddInvestor (investor) == (
+    investors := investors union {investor}
+   )
+   pre investor not in set investors and GetInvestor(investor.GetName()) = nil
+   post investors = investors~ union {investor};  
+    
+ -- remove investor
+(*@
+\label{RemoveInvestor:81}
+@*)
+ public RemoveInvestor: Influential ==> ()
+   RemoveInvestor (investor) == (
+    investors := investors \ {investor};
+   )
+   pre investor in set investors and card investors >= 1
+  post investors = investors~ \ {investor};    
+    
+functions
+
+traces
+
+end Exhibit
+\end{vdmpp}

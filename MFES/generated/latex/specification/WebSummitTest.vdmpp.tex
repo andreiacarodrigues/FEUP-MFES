@@ -1,0 +1,672 @@
+\begin{vdmpp}[breaklines=true]
+class WebSummitTest is subclass of MyTestCase
+types
+
+values
+
+instance variables
+
+ date1 : Utilities`Date := mk_Utilities`Date(2017,9,1);
+ date2 : Utilities`Date := mk_Utilities`Date(2017,9,3);
+ 
+ time1 : Utilities`Time := mk_Utilities`Time(15,20);
+ time2 : Utilities`Time := mk_Utilities`Time(15,40);
+ time3 : Utilities`Time := mk_Utilities`Time(16,40);
+ time4 : Utilities`Time := mk_Utilities`Time(15,30);
+ 
+operations
+(*@
+\label{main:17}
+@*)
+public static main: () ==> ()
+ main() ==
+ (
+  dcl webSummitTest: WebSummitTest := new WebSummitTest();
+  
+  IO`print("testCreateAndAddConference -> ");
+  webSummitTest.testCreateAndAddConference();
+  IO`println("Success");
+  
+  IO`print("testCreateAndAddTalk -> ");
+  webSummitTest.testCreateAndAddTalk();
+  IO`println("Success");
+  
+  IO`print("testRemoveTalk -> ");
+  webSummitTest.testRemoveTalk();
+  IO`println("Success");
+  
+  IO`print("testSchedules -> ");
+  webSummitTest.testSchedules();
+  IO`println("Success");
+  
+  IO`print("testCreateAndAddCompany -> ");
+  webSummitTest.testCreateAndAddCompany();
+  IO`println("Success");
+  
+  IO`print("testRemoveCompany -> ");
+  webSummitTest.testRemoveCompany();
+  IO`println("Success");
+  
+  IO`print("testCreateAndAddAttendee -> ");
+  webSummitTest.testCreateAndAddAttendee();
+  IO`println("Success");
+  
+  IO`print("testCreateAndAddStartup -> ");
+  webSummitTest.testCreateAndAddStartup();
+  IO`println("Success");
+  
+  IO`print("testRemoveStartup -> ");
+  webSummitTest.testRemoveStartup();
+  IO`println("Success");
+  
+  IO`print("testCreateAndAddInvestors -> ");
+  webSummitTest.testCreateAndAddInvestors();
+  IO`println("Success");
+  
+  IO`print("testRemoveInvestors -> ");
+  webSummitTest.testRemoveInvestors();
+  IO`println("Success");
+  
+  IO`print("testCreateAndAddNews -> ");
+  webSummitTest.testCreateAndAddNews();
+  IO`println("Success");
+ );
+ 
+ -- test if the creation of conferences is working correctly
+(*@
+\label{testCreateAndAddConference:72}
+@*)
+ private testCreateAndAddConference: () ==> ()
+ testCreateAndAddConference() == (
+ 
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl conference1 : Conference := new Conference("C1", "D1");
+  
+  -- for tests supposed to fail
+  /*dcl conference2 : Conference; */
+  
+  webSummit.SetDates(date1, date2);
+  assertEqual(date1, webSummit.GetInitialDate());
+  assertEqual(date2, webSummit.GetFinalDate());
+  
+  AddConference(conference1);
+
+   -- tests gets and sets
+  assertEqual("C1", conference1.GetName());
+  assertEqual("D1", conference1.GetDescription());
+  assertEqual({}, conference1.GetTalks());
+  assertEqual({}, conference1.GetCompanies());
+  
+  assertEqual(conference1, webSummit.GetConference(conference1.GetName()));
+  
+  conference1.SetName("Conference 1");
+  assertEqual("Conference 1", conference1.GetName());
+  
+  conference1.SetDescription("Conference 1 details");
+  assertEqual("Conference 1 details", conference1.GetDescription());
+  
+  assertEqual(1, card webSummit.GetConferences());
+  assertEqual({conference1}, webSummit.GetConferences());
+  
+  -- this test is supposed to fail (there can't be two conferences with the same name)
+  /*AddConference(conference2);*/
+  
+  -- this test is supposed to fail (can't create conferences with empty name)
+  /*conference1 := new Conference("", "Conference 3 details");*/
+ );
+ 
+ -- test if the creation of talks is working correctly
+(*@
+\label{testCreateAndAddTalk:112}
+@*)
+ private testCreateAndAddTalk: () ==> ()
+ testCreateAndAddTalk() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl conference : Conference := new Conference("Conference 1", "Conference 1 details");
+  dcl talk1 : Talk := new Talk("T1", "D1", date2, time2, 30);
+  dcl company : Company := new Company("Facebook");
+  dcl speaker1 : Influential := new Influential("Mark Zuckerberg","CEO",company,"Speaker Description","EN");
+  
+  -- for tests supposed to fail
+  /*dcl talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time2, 40);
+  dcl talk3 : Talk := new Talk("Talk 3", "Talk 3 description", mk_Utils`Date(2017,8,30), time2, 40);
+  dcl talk4 : Talk := new Talk("Talk 1", "Talk 4 description", date1, time2, 40);*/
+  
+  webSummit.SetDates(date1, date2);
+  
+  AddConference(conference);
+  AddTalk(conference,talk1);
+ 
+   -- tests gets and sets
+   assertEqual("T1", talk1.GetName());
+  assertEqual("D1", talk1.GetDescription());
+  assertEqual(date2, talk1.GetDate());
+  assertEqual(time2, talk1.GetTime());
+  assertEqual(30, talk1.GetDuration());
+  assertEqual("Conference 1", talk1.GetConference());
+  assertEqual({}, talk1.GetSpeakers());
+  assertEqual({}, talk1.GetAttendees());
+  
+  talk1.SetName("Talk 1");
+  assertEqual("Talk 1", talk1.GetName());
+  
+  talk1.SetDescription("Talk 1 description");
+  assertEqual("Talk 1 description", talk1.GetDescription());
+  
+  talk1.SetDate(date1);
+  assertEqual(date1, talk1.GetDate());
+  
+  talk1.SetTime(time1);
+  assertEqual(time1, talk1.GetTime());
+  
+  talk1.SetDuration(40);
+  assertEqual(40, talk1.GetDuration());
+  
+  assertEqual(talk1, conference.GetTalk(talk1.GetName()));
+  
+  assertEqual(conference.GetName(), talk1.GetConference());
+  
+  assertEqual(1, card conference.GetTalks());
+  assertEqual({talk1}, conference.GetTalks());
+  
+  -- add speaker to talk
+  AddSpeaker(talk1,speaker1);
+  assertEqual({speaker1}, talk1.GetSpeakers());
+  --os restantes gets e sets ja foram testados em testCreateAndAddAttendee
+  
+  -- remove speaker from talk
+  RemoveSpeaker(talk1,speaker1);
+  assertEqual({}, talk1.GetSpeakers());
+  
+  -- this test is supposed to fail (can't add a talk that overlaps an already existing one)
+  /*AddTalk(conference,talk2);*/
+  
+  -- this test is supposed to fail (can't add a talk with a date before/after the dates when websummit happens)
+  /*AddTalk(conference,talk3);*/
+  
+  -- this test is supposed to fail (there can't be two talks with the same name)
+  /*AddTalk(conference,talk4);*/
+  
+  -- this test is supposed to fail (can't create talks with empty name)
+  /*talk2 := new Talk(conference, "", "Talk 2 description", date1, time2, 40);*/
+ );
+ 
+ 
+ -- test if the construction of the schedules is working correctly
+(*@
+\label{testSchedules:186}
+@*)
+ private testSchedules: () ==> ()
+ testSchedules() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  
+  dcl conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
+  dcl conference2 : Conference := new Conference("Conference 2", "Conference 2 details");
+  
+  dcl talk1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, time2, 40);
+  dcl talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time1, 20); 
+  dcl talk3 : Talk := new Talk("Talk 3", "Talk 3 description", date1, time3, 20);
+  dcl talk4 : Talk := new Talk("Talk 4", "Talk 4 description", date2, time3, 20);
+ 
+  dcl talk5 : Talk := new Talk("Talk 5", "Talk 5 description", date1, time4, 20);
+  dcl talk6 : Talk := new Talk("Talk 6", "Talk 6 description", date2, time2, 60);
+  dcl talk7 : Talk := new Talk("Talk 7", "Talk 7 description", date2, time3, 20);
+  dcl talk8 : Talk := new Talk("Talk 8", "Talk 8 description", date2, time1, 20);
+  
+  webSummit.SetDates(date1, date2);
+  
+  AddConference(conference1);
+  AddConference(conference2);
+  
+  AddTalk(conference1, talk1);
+  AddTalk(conference1, talk2);
+  AddTalk(conference1, talk3);
+  AddTalk(conference1, talk4);
+  
+  AddTalk(conference2, talk5);
+  AddTalk(conference2, talk6);
+  AddTalk(conference2, talk7);
+  AddTalk(conference2, talk8);
+  
+  assertEqual(2, card webSummit.GetConferences());
+  assertEqual({conference1, conference2}, webSummit.GetConferences());
+  
+  assertEqual(4, card conference1.GetTalks());
+  assertEqual({talk1, talk2, talk3, talk4}, conference1.GetTalks());
+  
+  assertEqual(4, card conference2.GetTalks());
+  assertEqual({talk5, talk6, talk7, talk8}, conference2.GetTalks());
+  
+  assertEqual(2, len webSummit.GetSchedule(date1, mk_Utilities`Time(16,00)));
+  assertEqual([talk1, talk3], webSummit.GetSchedule(date1, mk_Utilities`Time(16,00)));
+  
+  assertEqual(3, len webSummit.GetSchedule(date1, mk_Utilities`Time(15,00)));
+  assertEqual([talk2, talk5, talk1], webSummit.GetSchedule(date1, mk_Utilities`Time(15,00)));
+  
+  assertEqual(3, card dom webSummit.GetSchedule(conference1));
+  assertEqual({date1|->[talk2, talk1, talk3], Utilities`nextDay(date1)|->[], date2|->[talk4]}, webSummit.GetSchedule(conference1));
+  
+  assertEqual(3, card dom webSummit.GetSchedule(conference2));
+  assertEqual({date1|->[talk5], Utilities`nextDay(date1)|->[], date2|->[talk8, talk6, talk7]}, webSummit.GetSchedule(conference2));
+  
+  assertEqual(3, card dom webSummit.GetSchedule());
+  assertEqual({date1|->[talk2, talk5, talk1, talk3], Utilities`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
+  
+  -- this test is supposed to fail (2 first talks badly sorted, talk 2 takes place before talk5)
+  /*assertEqual({date1|->[talk5, talk2, talk1, talk3], Utils`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
+  */
+  
+  -- this test is supposed to fail (talk that starts at 15:20 and finishes at 15:40)
+  /*assertEqual(3, len webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));
+   assertEqual([talk2, talk1, talk3], webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));*/
+ );
+ 
+  -- test if the creation of companies is working correctly
+(*@
+\label{testCreateAndAddCompany:252}
+@*)
+ private testCreateAndAddCompany: () ==> ()
+ testCreateAndAddCompany() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
+  dcl company1 : Company := new Company("Comp1");
+  
+  -- for tests supposed to fail
+  /*dcl company2 : Company := new Company("Company 1");*/
+  
+  webSummit.SetDates(date1, date2);
+  AddConference(conference1);
+  
+  AddCompany(conference1,company1);
+  
+  -- tests gets and sets
+  assertEqual("Comp1", company1.GetName());
+  company1.SetName("Company 1");
+  assertEqual("Company 1", company1.GetName());
+  
+  assertEqual(1, card conference1.GetCompanies());
+  assertEqual({company1}, conference1.GetCompanies());
+  
+  -- this test is supposed to fail (can't create companies with empty name)
+  /*AddCompany(conference1,company2);*/
+  
+  -- this test is supposed to fail (there can't be two companies with the same name)
+  /*AddCompany(conference1, new Company("Company 1"));*/
+ );
+ 
+ -- test if the removal of companies from conferences is working correctly
+(*@
+\label{testRemoveCompany:282}
+@*)
+ private testRemoveCompany: () ==> ()
+ testRemoveCompany() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
+  dcl company1 : Company := new Company("Company 1");
+  
+  -- for tests supposed to fail
+  /*dcl company2 : Company := new Company("Company 2");*/
+  
+  webSummit.SetDates(date1, date2);
+  AddConference(conference1);
+
+  AddCompany(conference1,company1);
+  
+  assertEqual(1, card conference1.GetCompanies());
+  assertEqual({company1}, conference1.GetCompanies());
+  
+  RemoveCompany(conference1,company1);
+  
+  assertEqual(0, card conference1.GetCompanies());
+  assertEqual({}, conference1.GetCompanies());
+  
+  -- this test is supposed to fail (can't remove companies from a conference if they are not attending it)
+  /*RemoveCompany(conference1,company2); */
+ );
+ 
+  -- test if the removal of talks from conferences is working correctly
+(*@
+\label{testRemoveTalk:309}
+@*)
+ private testRemoveTalk: () ==> ()
+ testRemoveTalk() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
+  dcl talk1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, time2, 40);
+  
+  -- for tests supposed to fail
+  /*dcl talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time1, 20);*/
+  
+  webSummit.SetDates(date1, date2);
+  AddConference(conference1);
+  
+  AddTalk(conference1,talk1);
+  
+  assertEqual(1, card conference1.GetTalks());
+  assertEqual({talk1}, conference1.GetTalks());
+  
+  RemoveTalk(conference1,talk1);
+  
+  assertEqual(0, card conference1.GetTalks());
+  assertEqual({}, conference1.GetTalks());
+  
+  -- this test is supposed to fail (can't remove talks from a conference if they don't exist)
+  /*RemoveTalk(conference1,talk2); */
+ );
+ 
+ -- test if the creation of attendees is working correctly
+(*@
+\label{testCreateAndAddAttendee:336}
+@*)
+ private testCreateAndAddAttendee: () ==> ()
+ testCreateAndAddAttendee() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl conference : Conference := new Conference("Conference 1", "Conference 1 details");
+  dcl talk : Talk := new Talk("Talk 1", "Talk 1 description", date2, time2, 30);
+  dcl attendee1 : Common := new Common("Ines");
+  dcl attendee2 : Influential := new Influential("Andreia Rodrigues", "STUDENT", new Company("feup"), "STUDENT AT FEUP", "PT");
+ 
+  -- for tests supposed to fail
+  /*dcl conference2 : Conference := new Conference("Conference 2", "Conference 2 details");*/
+ 
+  webSummit.SetDates(date1, date2);
+  AddConference(conference);
+  AddTalk(conference, talk);
+  
+  -- tests gets and sets
+  assertEqual("Ines", attendee1.GetName());
+  attendee1.SetName("Ines Gomes");
+  assertEqual("Ines Gomes", attendee1.GetName());
+ 
+  AddAttendee(talk,attendee1);
+  
+  assertEqual(1, GetTotalAttendeesByTalk(talk));
+  assertEqual({attendee1}, talk.GetAttendees());
+  
+  AddAttendee(talk,attendee2);
+  
+  -- tests gets and sets
+  assertEqual("STUDENT", attendee2.GetJobPosition());
+  attendee2.SetJobPosition("Student");
+  assertEqual("Student", attendee2.GetJobPosition());
+  
+  assertEqual("feup", attendee2.GetCompany().GetName());
+  attendee2.SetCompany(new Company("FEUP"));
+  assertEqual("FEUP", attendee2.GetCompany().GetName());
+  
+  assertEqual("STUDENT AT FEUP", attendee2.GetDescription());
+  attendee2.SetDescription("Student At FEUP");
+  assertEqual("Student At FEUP", attendee2.GetDescription());
+  
+  assertEqual("PT", attendee2.GetCountry());
+  attendee2.SetCountry("Portugal");
+  assertEqual("Portugal", attendee2.GetCountry());
+  
+  -- get total attendees
+  assertEqual(2, GetTotalAttendeesByTalk(talk));
+  
+  -- this test is supposed to fail (can't add an already existing attendee to a talk)
+  /*AddAttendee(talk,attendee2);*/
+ );
+
+(*@
+\label{testCreateAndAddStartup:387}
+@*)
+ private testCreateAndAddStartup : () ==> ()
+ testCreateAndAddStartup() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl startup1: Startup := new Startup("Startup Name","Startup Description","www.startup.pt","PT");
+  
+  -- for tests supposed to fail
+  /*dcl startup2: Startup := new Startup("Emitu","Startup Description","www.startup.pt","PT");*/
+  
+  webSummit.SetDates(date1, date2);
+  
+  -- tests gets and sets
+  assertEqual("Startup Name", startup1.GetName());
+  startup1.SetName("Emitu");
+  assertEqual("Emitu", startup1.GetName());
+  
+  assertEqual("Startup Description", startup1.GetDescription());
+  startup1.SetDescription("New Description");
+  assertEqual("New Description", startup1.GetDescription());
+  
+  assertEqual("www.startup.pt", startup1.GetWebsite());
+  startup1.SetWebsite("www.startup.en");
+  assertEqual("www.startup.en", startup1.GetWebsite());
+  
+  assertEqual("PT", startup1.GetCountry());
+  startup1.SetCountry("EN");
+  assertEqual("EN", startup1.GetCountry());
+  
+  -- test add
+  assertEqual({}, GetStartups());
+  AddStartup(startup1);
+  assertEqual({startup1}, GetStartups());
+  
+  -- test to fail : add startup with the same name
+  /*AddStartup(startup2);*/
+  
+ );
+ 
+(*@
+\label{testRemoveStartup:424}
+@*)
+ private testRemoveStartup : () ==> ()
+ testRemoveStartup() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl startup1: Startup := new Startup("Startup Name","Startup Description","www.startup.pt","PT");
+  
+  --prepare test
+  webSummit.SetDates(date1, date2);
+  AddStartup(startup1);
+  
+  -- test remove
+  RemoveStartup(startup1);
+  assertEqual({}, GetStartups());
+  
+  -- test to fail : remove startup that doesn't exist
+  /*RemoveStartup(startup1);*/
+ );
+ 
+(*@
+\label{testCreateAndAddInvestors:441}
+@*)
+ private testCreateAndAddInvestors : () ==> ()
+ testCreateAndAddInvestors() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl investor : Influential := new Influential("Mark Zuckerberg","CEO",new Company("facebook"),"Speaker Description","EN");
+  
+  webSummit.SetDates(date1, date2);
+  
+  assertEqual({}, GetInvestors());
+  AddInvestor(investor);
+  assertEqual({investor}, GetInvestors());
+ );
+ 
+(*@
+\label{testRemoveInvestors:453}
+@*)
+ private testRemoveInvestors : () ==> ()
+ testRemoveInvestors() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl investor : Influential := new Influential("Mark Zuckerberg","CEO",new Company("facebook"),"Speaker Description","EN");
+  
+  --prepare test
+  webSummit.SetDates(date1, date2);
+  AddInvestor(investor);
+ 
+  --remove investor
+  RemoveInvestor(investor);
+  assertEqual({}, GetInvestors());
+  
+  -- test to fail : remove investor that doesn't exist
+  /*RemoveInvestor(investor);*/
+ );
+ 
+(*@
+\label{testCreateAndAddNews:470}
+@*)
+ private testCreateAndAddNews: () ==> ()
+ testCreateAndAddNews() == (
+  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl new1: New := new New("Title","Body");
+  
+  webSummit.SetDates(date1, date2);
+  
+  -- tests gets and sets
+  assertEqual("Title", new1.GetTitle());
+  new1.SetTitle("New Title");
+  assertEqual("New Title", new1.GetTitle());  
+  
+  assertEqual("Body", new1.GetBody());
+  new1.SetBody("New Body");
+  assertEqual("New Body", new1.GetBody()); 
+  
+  assertEqual({}, GetNews());
+  AddNew(new1);
+  assertEqual({new1}, GetNews());
+ );
+ 
+(*@
+\label{AddConference:491}
+@*)
+ private AddConference: Conference ==> ()
+ AddConference(c) == (
+  WebSummit`GetInstance().AddConference(c);
+ );
+ 
+(*@
+\label{AddTalk:496}
+@*)
+ private AddTalk: Conference * Talk ==> ()
+ AddTalk(c, t) == (
+  WebSummit`GetInstance().AddTalk(c, t);
+  );
+ 
+(*@
+\label{RemoveTalk:501}
+@*)
+ private RemoveTalk: Conference * Talk ==> ()
+ RemoveTalk(c, t) == (
+  WebSummit`GetInstance().RemoveTalk(c, t);
+ );
+ 
+(*@
+\label{AddCompany:506}
+@*)
+ private AddCompany: Conference * Company ==> ()
+ AddCompany(conf, c) == (
+  WebSummit`GetInstance().AddCompany(conf, c);
+ );
+ 
+(*@
+\label{RemoveCompany:511}
+@*)
+ private RemoveCompany: Conference * Company ==> ()
+ RemoveCompany(conf, c) == (
+  WebSummit`GetInstance().RemoveCompany(conf, c);
+ );
+ 
+(*@
+\label{AddAttendee:516}
+@*)
+ private AddAttendee: Talk * Attendee ==> ()
+ AddAttendee(t, a) == (
+  WebSummit`GetInstance().AddAttendee(t, a);
+ );
+
+(*@
+\label{AddSpeaker:521}
+@*)
+ private AddSpeaker: Talk * Influential ==> ()
+ AddSpeaker(talk, s) == (
+  WebSummit`GetInstance().AddSpeaker(talk, s);
+ );
+ 
+(*@
+\label{RemoveSpeaker:526}
+@*)
+ private RemoveSpeaker: Talk * Influential ==> ()
+ RemoveSpeaker(talk, s) == (
+  WebSummit`GetInstance().RemoveSpeaker(talk, s);
+ ); 
+  
+(*@
+\label{AddStartup:531}
+@*)
+ private AddStartup: Startup ==> ()
+ AddStartup(s) == (
+  WebSummit`GetInstance().AddStartup(s);
+ );
+ 
+(*@
+\label{RemoveStartup:536}
+@*)
+ private RemoveStartup: Startup ==> ()
+ RemoveStartup(s) == (
+  WebSummit`GetInstance().RemoveStartup(s);
+ ); 
+ 
+(*@
+\label{GetStartups:541}
+@*)
+ private GetStartups: () ==> set of Startup
+ GetStartups() == (
+  WebSummit`GetInstance().GetStartups();
+ ); 
+ 
+(*@
+\label{AddInvestor:546}
+@*)
+ private AddInvestor: Influential ==> ()
+ AddInvestor(i) == (
+  WebSummit`GetInstance().AddInvestor(i);
+ );
+ 
+(*@
+\label{RemoveInvestor:551}
+@*)
+ private RemoveInvestor: Influential ==> ()
+ RemoveInvestor(i) == (
+  WebSummit`GetInstance().RemoveInvestor(i);
+ );
+ 
+(*@
+\label{GetInvestors:556}
+@*)
+ private GetInvestors: () ==> set of Influential
+ GetInvestors() == (
+  WebSummit`GetInstance().GetInvestors();
+ );
+ 
+(*@
+\label{AddNew:561}
+@*)
+ private AddNew: New ==> ()
+ AddNew(n) == (
+  WebSummit`GetInstance().AddNew(n);
+ ); 
+ 
+(*@
+\label{GetNews:566}
+@*)
+ private GetNews: () ==> set of New
+ GetNews() == (
+  WebSummit`GetInstance().GetNews();
+ );
+ 
+(*@
+\label{GetTotalAttendeesByTalk:571}
+@*)
+ private GetTotalAttendeesByTalk: Talk ==> int
+ GetTotalAttendeesByTalk(talk) == (
+  WebSummit`GetInstance().GetTotalAttendeesByTalk(talk);
+ ); 
+ 
+functions
+
+traces
+
+end WebSummitTest
+\end{vdmpp}

@@ -1,0 +1,107 @@
+\begin{vdmpp}[breaklines=true]
+class Startup
+types
+
+values
+
+instance variables
+
+ private name : Utilities`String := [];
+ private description : Utilities`String := [];
+ private website : Utilities`String := [];
+ private country : Utilities`String := [];
+
+operations
+
+ -- constructor of the startup class 
+(*@
+\label{Startup:16}
+@*)
+  public Startup :  Utilities`String *  Utilities`String *  Utilities`String * Utilities`String ==> Startup
+    Startup (startupName, startupDescription, startupWebsite, startupCountry) == (
+     name := startupName;
+     description := startupDescription;
+     website := startupWebsite;
+     country := startupCountry;
+     return self
+    );
+    
+   -- returns the startup name
+(*@
+\label{GetName:26}
+@*)
+  pure public GetName : () ==> Utilities`String
+    GetName () == (
+     return name;
+    );
+    
+   -- set the startup name
+(*@
+\label{SetName:32}
+@*)
+  public SetName : Utilities`String ==> ()
+    SetName (n) == (
+     name := n;
+    );
+    
+   -- returns the startup description
+(*@
+\label{GetDescription:38}
+@*)
+  public GetDescription : () ==> Utilities`String
+    GetDescription () == (
+     return description;
+    );
+    
+   -- set the startup description
+(*@
+\label{SetDescription:44}
+@*)
+  public SetDescription : Utilities`String ==> ()
+    SetDescription (d) == (
+     description := d;
+    ); 
+    
+   -- returns the startup website
+(*@
+\label{GetWebsite:50}
+@*)
+  public GetWebsite : () ==> Utilities`String
+    GetWebsite () == (
+     return website;
+    );
+    
+   -- set the startup website 
+(*@
+\label{SetWebsite:56}
+@*)
+  public SetWebsite : Utilities`String ==> ()
+    SetWebsite (w) == (
+     website := w;
+    );
+    
+   -- returns the startup country
+(*@
+\label{GetCountry:62}
+@*)
+  public GetCountry : () ==> Utilities`String
+    GetCountry () == (
+     return country;
+    );
+    
+   -- set the startup country
+(*@
+\label{SetCountry:68}
+@*)
+  public SetCountry : Utilities`String ==> ()
+    SetCountry (c) == (
+     country := c;
+    ); 
+    
+    
+functions
+
+traces
+
+end Startup
+\end{vdmpp}

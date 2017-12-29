@@ -1,0 +1,240 @@
+\begin{vdmpp}[breaklines=true]
+class Conference
+types
+ 
+values
+
+instance variables
+
+ private name : Utilities`String := [];
+ private description : Utilities`String := [];
+ private talks : set of Talk := {};
+ private companies : set of Company := {};
+ 
+ inv not exists t1, t2 in set talks & t1 <> t2 and t1.GetName() = t2.GetName();
+ inv not exists c1, c2 in set companies & c1 <> c2 and c1.GetName() = c2.GetName();
+ 
+operations
+  
+   -- constructor of the conference class 
+(*@
+\label{Conference:19}
+@*)
+  public Conference : Utilities`String * Utilities`String ==> Conference
+    Conference (conferenceName, conferenceDescription) == (
+     name := conferenceName;
+     description := conferenceDescription;
+     return self
+    )
+    pre len conferenceName > 0;
+    
+  -- returns the conference name
+(*@
+\label{GetName:28}
+@*)
+  pure public GetName : () ==> Utilities`String
+    GetName () == (
+     return name;
+    );
+    
+ -- set the conference name
+(*@
+\label{SetName:34}
+@*)
+  public SetName : Utilities`String ==> ()
+    SetName (n) == (
+     name := n;
+    );
+    
+  -- returns the conference description
+(*@
+\label{GetDescription:40}
+@*)
+  pure public GetDescription : () ==> Utilities`String
+    GetDescription () == (
+     return description;
+    );
+    
+  -- set the conference description
+(*@
+\label{SetDescription:46}
+@*)
+  public SetDescription : Utilities`String ==> ()
+    SetDescription (d) == (
+     description := d;
+    );
+    
+  -- returns the conference talks
+(*@
+\label{GetTalks:52}
+@*)
+  pure public GetTalks : () ==> set of Talk
+    GetTalks () == (
+     return talks;
+    );
+    
+   -- returns a conference talk by it's name
+(*@
+\label{GetTalk:58}
+@*)
+  pure public GetTalk : Utilities`String ==> [Talk]
+    GetTalk (talkName) == (
+     for all talk in set talks do (
+      if (talk.GetName() = talkName)
+      then return talk;
+     );
+     
+     return nil
+    )
+    pre len talkName > 0;
+  
+   -- returns the conference attending companies
+(*@
+\label{GetCompanies:70}
+@*)
+  pure public GetCompanies : () ==> set of Company
+    GetCompanies () == (
+     return companies;
+    );
+    
+  -- adds a new talk to the conference
+(*@
+\label{AddTalk:76}
+@*)
+  public AddTalk : Talk ==> ()
+    AddTalk (talk) == (
+      talk.SetConference(name);
+     talks := talks union {talk};
+    )
+    pre talk not in set talks and notAlreadyExistent(talk) = true and (DoesntOverlap(talk)) = true
+   post talks = talks~ union {talk};
+   
+  -- remove Talk
+(*@
+\label{RemoveTalk:85}
+@*)
+  public RemoveTalk : Talk ==> ()
+    RemoveTalk (talk) == (
+     talks := talks \ {talk};
+    )
+    pre talk in set talks and card talks >= 1
+   post talks = talks~ \ {talk};
+    
+ -- adds a new company attending the conference
+(*@
+\label{AddCompany:93}
+@*)
+  public AddCompany : Company ==> ()
+    AddCompany (company) == (
+     companies := companies union {company};
+    )
+    pre company not in set companies and notAlreadyExistent(company) = true
+   post companies = companies~ union {company};
+   
+ -- remove company attending
+(*@
+\label{RemoveCompany:101}
+@*)
+ public RemoveCompany : Company ==> ()
+    RemoveCompany (company) == (
+     companies := companies \ {company};
+    )
+    pre company in set companies and card companies >= 1
+   post companies = companies~ \ {company};
+   
+  -- returns schedule of the day, sorted by time
+(*@
+\label{GetSchedule:109}
+@*)
+ pure public GetSchedule : Utilities`Date ==> seq of Talk
+    GetSchedule (date) == (
+      dcl talkSet: seq of Talk := [];
+      
+     for all talk in set talks do (
+     if(talk.GetDate() = date)
+      then talkSet := talkSet ^ [talk];
+     );
+ 
+     return Utilities`mergeSortTalks(talkSet);
+    );
+    
+  -- returns schedule of the conference, sorted
+   pure public GetSchedule : () ==> map Utilities`Date to seq of Talk
+    GetSchedule () == (
+     dcl result: map Utilities`Date to seq of Talk := {|->};
+      dcl currentDate : Utilities`Date := WebSummit`GetInstance().GetInitialDate();
+      dcl finalDate : Utilities`Date := WebSummit`GetInstance().GetFinalDate();
+
+      while (currentDate <> Utilities`nextDay(finalDate))
+      do (
+        result := result munion {currentDate |-> GetSchedule(currentDate)};
+        currentDate := Utilities`nextDay(currentDate);
+        );
+     
+     return result
+    );
+
+  -- checks if talk doesnt overlap existing one: for precondition of AddTalk
+(*@
+\label{DoesntOverlap:138}
+@*)
+  pure private DoesntOverlap : Talk ==> bool
+    DoesntOverlap (newTalk) == (
+    dcl doesntOverlap : bool := true;
+    
+    for all talk in set talks do (
+     if(talk.GetDate() = newTalk.GetDate())
+      then if(Utilities`DoesntOverlap(newTalk.GetTime(), newTalk.GetDuration(), talk.GetTime(), talk.GetDuration()) = false)
+           then 
+           (
+              doesntOverlap := false;
+              return doesntOverlap
+           )
+     );
+     
+     return doesntOverlap;
+    )
+    pre newTalk not in set talks;
+    
+  -- checks if a talk with the same name doesn't exist already: for precondition of AddTask
+(*@
+\label{notAlreadyExistent:157}
+@*)
+    pure private notAlreadyExistent : Talk ==> bool
+    notAlreadyExistent (newTalk) == (
+    dcl doesntExist : bool := true;
+    for all talk in set talks do (
+     if(talk.GetName() = newTalk.GetName())
+     then(
+        doesntExist := false;
+        return doesntExist
+       )
+     );
+     
+     return doesntExist;
+    )
+    pre newTalk not in set talks;
+    
+   -- checks if a company with the same name doesn't exist already: for precondition of AddCompany
+    pure private notAlreadyExistent : Company ==> bool
+    notAlreadyExistent (newCompany) == (
+    dcl doesntExist : bool := true;
+    for all company in set companies do (
+     if(company.GetName() = newCompany.GetName())
+     then(
+        doesntExist := false;
+        return doesntExist
+       )
+     );
+     
+     return doesntExist;
+    )
+    pre newCompany not in set companies;
+   
+  
+functions
+
+traces
+
+end Conference
+\end{vdmpp}

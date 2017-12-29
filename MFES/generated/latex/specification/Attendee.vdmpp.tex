@@ -1,0 +1,60 @@
+\begin{vdmpp}[breaklines=true]
+class Attendee
+types
+
+values
+
+instance variables
+ private name : Utilities`String := [];
+ private id : nat1;
+
+operations
+
+ -- constructor of the attendee class 
+(*@
+\label{Attendee:13}
+@*)
+  public Attendee : Utilities`String ==> Attendee
+    Attendee (attendeeName) == (
+     name := attendeeName;
+     id := Utilities`id;
+     Utilities`id := Utilities`id + 1;
+     return self
+    )
+    pre len attendeeName > 0;
+    
+    
+  -- returns the attendee's name
+(*@
+\label{GetName:24}
+@*)
+   pure public GetName : () ==> Utilities`String
+    GetName () == (
+     return name;
+    );
+    
+    
+   -- returns the attendee's id
+(*@
+\label{GetID:31}
+@*)
+   pure public GetID : () ==> nat1
+    GetID () == (
+     return id;
+    );
+    
+   -- sets the attendee's name
+(*@
+\label{SetName:37}
+@*)
+   public SetName : Utilities`String ==> ()
+    SetName (n) == (
+     name := n;
+    );
+   
+functions
+
+traces
+
+end Attendee
+\end{vdmpp}

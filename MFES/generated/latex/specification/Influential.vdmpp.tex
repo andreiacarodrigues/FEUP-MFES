@@ -1,0 +1,108 @@
+\begin{vdmpp}[breaklines=true]
+class Influential is subclass of Attendee
+types
+
+values
+
+
+instance variables
+
+ private jobPosition : Utilities`String := [];
+ private company : Company;
+ private description : Utilities`String := [];
+ private country : Utilities`String := [];
+
+operations
+
+ -- constructor of the influential attendee class 
+(*@
+\label{Influential:17}
+@*)
+  public Influential : Utilities`String * Utilities`String * Company * Utilities`String * Utilities`String ==> Influential
+    Influential (attendeeName, attendeeJobPosition, attendeeCompany, attendeeDescription, attendeeCountry) == (
+      jobPosition := attendeeJobPosition;
+      company := attendeeCompany;
+      description := attendeeDescription;
+      country := attendeeCountry;
+     Attendee(attendeeName); 
+    )
+    pre len attendeeName > 0 and len attendeeJobPosition > 0 and len attendeeCountry > 0;
+    
+  -- returns the influential attendee's job position
+(*@
+\label{GetJobPosition:28}
+@*)
+  public GetJobPosition : () ==> Utilities`String
+    GetJobPosition () == (
+     return jobPosition;
+    );
+    
+  -- sets the influential attendee's job position
+(*@
+\label{SetJobPosition:34}
+@*)
+  public SetJobPosition : Utilities`String ==> ()
+    SetJobPosition (j) == (
+     jobPosition := j;
+    );
+    
+  -- returns the influential attendee's company
+(*@
+\label{GetCompany:40}
+@*)
+  public GetCompany : () ==> Company
+    GetCompany () == (
+     return company;
+    );
+    
+   -- sets the influential attendee's company
+(*@
+\label{SetCompany:46}
+@*)
+  public SetCompany : Company ==> ()
+    SetCompany (c) == (
+     company := c;
+    );
+    
+  -- returns the influential attendee's description
+(*@
+\label{GetDescription:52}
+@*)
+  public GetDescription : () ==> Utilities`String
+    GetDescription () == (
+     return description;
+    );
+    
+   -- sets the influential attendee's description
+(*@
+\label{SetDescription:58}
+@*)
+  public SetDescription : Utilities`String ==> ()
+    SetDescription (d) == (
+     description := d;
+    );
+    
+   -- returns the influential attendee's country
+(*@
+\label{GetCountry:64}
+@*)
+   public GetCountry : () ==> Utilities`String
+    GetCountry () == (
+     return country;
+    );
+    
+   -- sets the influential attendee's country
+(*@
+\label{SetCountry:70}
+@*)
+  public SetCountry : Utilities`String ==> ()
+    SetCountry (c) == (
+     country := c;
+    );
+    
+functions
+
+traces
+
+end Influential
+\end{vdmpp}

@@ -107,8 +107,8 @@ operations
 	  		if(speaker not in set attendees)
 	  			then attendees := attendees union {speaker}
 	  	)
-	  	pre GetConference(talk.GetConference()) in set conferences	 --todas as talks de todas as conferences
-	  	post speaker in set attendees; 	-- todos os influentials estao inscritos
+	  	pre GetConference(talk.GetConference()) in set conferences	
+	  	post speaker in set attendees; 	
   	
 	  -- removes a speaker from an existent conference
 	  public RemoveSpeaker: Talk * Influential ==> ()

@@ -1,0 +1,47 @@
+\begin{vdmpp}[breaklines=true]
+class Company
+types
+
+values
+
+instance variables
+
+ private name : Utilities`String := [];
+ 
+operations
+
+ -- constructor of the company class 
+(*@
+\label{Company:13}
+@*)
+  public Company :  Utilities`String ==> Company
+    Company (companyName) == (
+     name := companyName;
+     return self
+    )
+    pre len companyName > 0;
+    
+  -- returns the company's name
+(*@
+\label{GetName:21}
+@*)
+  pure public GetName : () ==> Utilities`String
+    GetName () == (
+     return name;
+    );
+    
+   -- sets the company's name
+(*@
+\label{SetName:27}
+@*)
+  public SetName : Utilities`String ==> ()
+    SetName (n) == (
+     name := n;
+    );
+    
+functions
+
+traces
+
+end Company
+\end{vdmpp}

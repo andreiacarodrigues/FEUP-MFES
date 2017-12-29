@@ -1,0 +1,67 @@
+\begin{vdmpp}[breaklines=true]
+class New
+types
+
+values
+
+instance variables
+
+ private title : Utilities`String := [];
+ private body : Utilities`String := [];
+ 
+operations
+
+ -- constructor of the new class 
+(*@
+\label{New:14}
+@*)
+ public New : Utilities`String * Utilities`String ==> New
+  New (newTitle, newBody) == (
+   title := newTitle;
+   body := newBody;
+    return self
+   )
+   pre len newTitle > 0 and len newBody > 0;
+
+ -- returns the news title
+(*@
+\label{GetTitle:23}
+@*)
+ public GetTitle : () ==> Utilities`String
+  GetTitle () == (
+   return title;
+   ); 
+   
+ -- set the news title
+(*@
+\label{SetTitle:29}
+@*)
+ public SetTitle : Utilities`String ==> ()
+  SetTitle (newTitle) == (
+   title := newTitle;
+   ); 
+   
+ -- returns the news body
+(*@
+\label{GetBody:35}
+@*)
+ public GetBody : () ==> Utilities`String
+  GetBody () == (
+   return body;
+   ); 
+   
+ -- set the news body
+(*@
+\label{SetBody:41}
+@*)
+ public SetBody : Utilities`String ==> ()
+  SetBody (newBody) == (
+   body := newBody;
+   );   
+
+functions
+
+traces
+
+end New
+\end{vdmpp}

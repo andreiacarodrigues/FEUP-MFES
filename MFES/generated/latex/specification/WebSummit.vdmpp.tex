@@ -1,0 +1,383 @@
+\begin{vdmpp}[breaklines=true]
+class WebSummit
+types
+
+values
+
+instance variables
+
+ private conferences : set of Conference := {};
+ private exhibit : Exhibit := new Exhibit();
+ private attendees : set of Attendee := {};
+ private news : set of New := {};
+ 
+ -- default dates
+ private initialDate : Utilities`Date := mk_Utilities`Date(2001,1,1);
+ private finalDate : Utilities`Date := mk_Utilities`Date(2001,1,2);
+ 
+ private static websummit: WebSummit := new WebSummit();
+ 
+ inv not exists c1, c2 in set conferences & c1 <> c2 and c1.GetName() = c2.GetName();
+ inv not exists a1, a2 in set attendees & a1 <> a2 and a1.GetID() = a2.GetID();
+ 
+operations
+
+ -- constructor of the websummit class 
+(*@
+\label{WebSummit:25}
+@*)
+ public WebSummit :  () ==> WebSummit
+    WebSummit () == (
+     return self
+    );
+    
+ -- singleton - return the existent instance
+(*@
+\label{GetInstance:31}
+@*)
+ public pure static GetInstance: () ==> WebSummit 
+   GetInstance() == (
+    return websummit;
+   );
+(*@
+\label{ClearInstance:35}
+@*)
+    
+ -- singleton - reset the instance
+ public static ClearInstance: () ==> WebSummit
+  ClearInstance() == (
+   websummit := new WebSummit();
+   return GetInstance();
+  )
+  post RESULT.conferences = {} and RESULT.exhibit.GetStartups() = {}
+    and RESULT.exhibit.GetInvestors() = {} and RESULT.attendees = {};  
+(*@
+\label{SetDates:44}
+@*)
+    
+  -- sets websummit dates
+  public SetDates : Utilities`Date * Utilities`Date ==> ()
+    SetDates (d1, d2) == (
+     initialDate := d1;
+     finalDate := d2;
+    )
+    post initialDate = d1 and finalDate = d2;
+(*@
+\label{GetInitialDate:52}
+@*)
+    
+  --  returns websummit initial date
+  pure public GetInitialDate : () ==> Utilities`Date
+    GetInitialDate () == (
+     return initialDate
+    );
+(*@
+\label{GetFinalDate:58}
+@*)
+    
+  -- returns websummit final date
+  pure public GetFinalDate : () ==> Utilities`Date
+    GetFinalDate () == (
+     return finalDate
+    ); 
+(*@
+\label{AddConference:64}
+@*)
+   
+   -- creates a new conference
+  public AddConference : Conference ==> ()
+    AddConference (conference) == (
+     conferences := conferences union {conference};
+    )
+    pre conference not in set conferences and notAlreadyExistent(conference) = true
+   post conferences = conferences~ union {conference};
+(*@
+\label{AddTalk:72}
+@*)
+   
+  -- adds a new talk to an existing conference
+  public AddTalk : Conference * Talk ==> ()
+    AddTalk (conference, talk) == (
+     conference.AddTalk(talk);
+    )
+    pre conference in set conferences and
+      Utilities`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
+(*@
+\label{RemoveTalk:80}
+@*)
+      
+  -- removes a talk from an existing conference
+   public RemoveTalk : Conference * Talk ==> ()
+    RemoveTalk (conference, talk) == (
+     conference.RemoveTalk(talk);
+    )
+    pre conference in set conferences;
+(*@
+\label{AddCompany:87}
+@*)
+      
+  -- adds a new company to an existing conference
+   public AddCompany : Conference * Company ==> ()
+    AddCompany (conference, company) == (
+     conference.AddCompany(company);
+    )
+    pre conference in set conferences;
+(*@
+\label{RemoveCompany:94}
+@*)
+    
+   -- removes a company from an existing conference
+   public RemoveCompany : Conference * Company ==> ()
+    RemoveCompany (conference, company) == (
+     conference.RemoveCompany(company);
+    )
+    pre conference in set conferences;
+    
+(*@
+\label{AddSpeaker:102}
+@*)
+    
+   -- adds a speaker no an existent talk
+   public AddSpeaker: Talk * Influential ==> ()
+    AddSpeaker (talk, speaker) == (
+     talk.AddSpeaker(speaker);
+     if(speaker not in set attendees)
+      then attendees := attendees union {speaker}
+    )
+    pre GetConference(talk.GetConference()) in set conferences  --todas as talks de todas as conferences
+    post speaker in set attendees;  -- todos os influentials estao inscritos
+(*@
+\label{RemoveSpeaker:112}
+@*)
+   
+   -- removes a speaker from an existent conference
+   public RemoveSpeaker: Talk * Influential ==> ()
+    RemoveSpeaker (talk, speaker) == (
+     talk.RemoveSpeaker(speaker);
+    )
+    -- all talks from all conferences 
+    pre GetConference(talk.GetConference()) in set conferences 
+    post speaker in set attendees;
+(*@
+\label{GetConferences:121}
+@*)
+    
+  -- returns all confereces
+  pure public GetConferences : () ==> set of Conference
+    GetConferences () == (
+     return conferences
+    );
+(*@
+\label{GetConference:127}
+@*)
+    
+  -- returns a specific conferece by it's name
+  public pure GetConference : Utilities`String ==> [Conference]
+    GetConference (conferenceName) == (
+     for all conference in set conferences do (
+      if conference.GetName() = conferenceName
+      then return conference
+     );
+     
+     return nil
+    )
+  pre len conferenceName > 0;
+(*@
+\label{GetSchedule:139}
+@*)
+  
+  -- returns the full schedule of a conference
+  public GetSchedule : Conference ==> map Utilities`Date to seq of Talk
+    GetSchedule (c) == (
+     return c.GetSchedule();
+    )
+    pre c in set conferences;
+    
+  -- returns the full event schedule
+  public GetSchedule : () ==> map Utilities`Date to seq of Talk
+    GetSchedule () == (
+     dcl temp: map Utilities`Date to seq of Talk := {|->};
+     dcl currentDate : Utilities`Date := initialDate;
+     
+     -- joins all the events
+     for all conference in set conferences do (
+      if(temp = {|->})
+       then temp := conference.GetSchedule()
+       else 
+       (
+        while (currentDate <> Utilities`nextDay(finalDate))
+          do (
+             temp(currentDate) := temp(currentDate) ^ conference.GetSchedule(currentDate);
+            currentDate := Utilities`nextDay(currentDate);
+            );
+       );
+     );
+     
+     currentDate := WebSummit`GetInstance().GetInitialDate();
+     
+     -- orders talks by time
+     while (currentDate <> Utilities`nextDay(finalDate))
+     do (
+      temp(currentDate) := Utilities`mergeSortTalks(temp(currentDate));
+      currentDate := Utilities`nextDay(currentDate);
+    );
+          
+     return temp;
+    );   
+    
+  -- returns the event schedule by date/time
+  public GetSchedule : Utilities`Date * Utilities`Time ==> seq of Talk
+    GetSchedule (date, time) == (
+     dcl temp: seq of Talk := [];
+     
+     -- joins all talks from that day starting or occuring at the given time
+     for all conference in set conferences do (
+      for all talk in set elems conference.GetSchedule()(date) do
+      (
+       if(talk.GetTime().hour = time.hour)
+       then temp := temp ^ [talk]
+       else
+        if(talk.GetTime().hour + 1 = time.hour)
+        then if((talk.GetDuration()) >= (60 - talk.GetTime().minute))
+         then if((talk.GetTime().minute + talk.GetDuration() - 60) <= 60)
+          then temp := temp ^ [talk]
+      );
+      
+     );
+     
+     -- orders them by time
+    temp := Utilities`mergeSortTalks(temp);
+          
+     return temp;
+    );   
+(*@
+\label{AddAttendee:204}
+@*)
+    
+  -- adds a new attendee to an existing talk
+  public AddAttendee : Talk * Attendee ==> ()
+    AddAttendee (talk, attendee) == (
+     talk.AddAttendee(attendee);
+     if(attendee not in set attendees)
+      then attendees := attendees union {attendee}
+    )
+    pre GetConference(talk.GetConference()) in set conferences
+    post attendee in set attendees; 
+(*@
+\label{notAlreadyExistent:214}
+@*)
+  
+  -- checks if a conference with the same name doesn't exist already: for precondition of AddConference
+    pure private notAlreadyExistent : Conference ==> bool
+    notAlreadyExistent (newConference) == (
+    dcl doesntExist : bool := true;
+    for all conference in set conferences do (
+     if(conference.GetName() = newConference.GetName())
+     then(
+        doesntExist := false;
+        return doesntExist
+       )
+     );
+     
+     return doesntExist;
+    )
+    pre newConference not in set conferences;
+(*@
+\label{GetAttendees:230}
+@*)
+    
+ -- returns all websummit attendees
+  public GetAttendees : () ==> set of Attendee
+    GetAttendees () == (
+     return attendees;
+    );  
+ 
+  --returns all startups
+  public GetStartups: () ==> set of Startup
+    GetStartups () == (
+     exhibit.GetStartups();
+    );
+(*@
+\label{GetStartups:242}
+@*)
+ 
+  --add new startup to exhibit
+  public AddStartup: Startup ==> ()
+    AddStartup (s) == (
+     exhibit.AddStartup(s);
+    );
+(*@
+\label{AddStartup:248}
+@*)
+ 
+  --remove startup from exhibit    
+  public RemoveStartup: Startup ==> ()
+    RemoveStartup (s) == (
+     exhibit.RemoveStartup(s);
+    );
+(*@
+\label{RemoveStartup:254}
+@*)
+    
+  --add investor to exhibit
+  public AddInvestor: Influential ==> ()
+   AddInvestor(i) == (
+    exhibit.AddInvestor(i);
+   );
+(*@
+\label{AddInvestor:260}
+@*)
+  
+  --remove investor from exhibit
+  public RemoveInvestor: Influential ==> ()
+   RemoveInvestor(i) == (
+    exhibit.RemoveInvestor(i);
+   );
+(*@
+\label{RemoveInvestor:266}
+@*)
+  
+  --return all investors
+  public GetInvestors: () ==> set of Influential
+   GetInvestors() == (
+    exhibit.GetInvestors();
+   ); 
+(*@
+\label{GetInvestors:272}
+@*)
+  
+  -- add a new
+  public AddNew: New ==> ()
+   AddNew(n) == (
+    news := news union {n};
+    )
+(*@
+\label{AddNew:278}
+@*)
+    pre n not in set news
+   post news = news~ union {n};
+  
+  --return all news
+  public GetNews: () ==> set of New
+   GetNews() == (
+    return news;
+   );
+(*@
+\label{GetNews:286}
+@*)
+   
+  -- get total attendees by talk 
+  public GetTotalAttendeesByTalk : Talk ==> int
+   GetTotalAttendeesByTalk (talk) == (
+    return talk.GetTotalAttendees();
+   );  
+(*@
+\label{GetTotalAttendeesByTalk:292}
+@*)
+  
+functions
+
+traces
+
+end WebSummit
+\end{vdmpp}
