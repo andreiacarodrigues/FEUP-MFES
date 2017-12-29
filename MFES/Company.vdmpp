@@ -5,12 +5,12 @@ values
 
 instance variables
 
-	private name : Utils`String := [];
+	private name : Utilities`String := [];
 	
 operations
 
 	-- constructor of the company class 
-		public Company :  Utils`String ==> Company
+		public Company :  Utilities`String ==> Company
 	  	Company (companyName) == (
 	  		name := companyName;
 	  		return self
@@ -18,13 +18,13 @@ operations
 	  	pre len companyName > 0;
 	  	
 	 -- returns the company's name
-	 pure public GetName : () ==> Utils`String
+	 pure public GetName : () ==> Utilities`String
 	  	GetName () == (
 	  		return name;
 	  	);
 	  	
 	  -- sets the company's name
-	 public SetName : Utils`String ==> ()
+	 public SetName : Utilities`String ==> ()
 	  	SetName (n) == (
 	  		name := n;
 	  	);

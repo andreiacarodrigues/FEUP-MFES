@@ -5,8 +5,8 @@ values
 
 instance variables
 
-	private name : Utils`String := [];
-	private description : Utils`String := [];
+	private name : Utilities`String := [];
+	private description : Utilities`String := [];
 	private talks : set of Talk := {};
 	private companies : set of Company := {};
 	
@@ -16,7 +16,7 @@ instance variables
 operations
 		
 	  -- constructor of the conference class 
-		public Conference : Utils`String * Utils`String ==> Conference
+		public Conference : Utilities`String * Utilities`String ==> Conference
 	  	Conference (conferenceName, conferenceDescription) == (
 	  		name := conferenceName;
 	  		description := conferenceDescription;
@@ -25,25 +25,25 @@ operations
 	  	pre len conferenceName > 0;
 	  	
 	 -- returns the conference name
-	 pure public GetName : () ==> Utils`String
+	 pure public GetName : () ==> Utilities`String
 	  	GetName () == (
 	  		return name;
 	  	);
 	  	
 	-- set the conference name
-	 public SetName : Utils`String ==> ()
+	 public SetName : Utilities`String ==> ()
 	  	SetName (n) == (
 	  		name := n;
 	  	);
 	  	
 	 -- returns the conference description
-	 pure public GetDescription : () ==> Utils`String
+	 pure public GetDescription : () ==> Utilities`String
 	  	GetDescription () == (
 	  		return description;
 	  	);
 	  	
 	 -- set the conference description
-	 public SetDescription : Utils`String ==> ()
+	 public SetDescription : Utilities`String ==> ()
 	  	SetDescription (d) == (
 	  		description := d;
 	  	);
@@ -55,7 +55,7 @@ operations
 	  	);
 	  	
 	  -- returns a conference talk by it's name
-	 pure public GetTalk : Utils`String ==> [Talk]
+	 pure public GetTalk : Utilities`String ==> [Talk]
 	  	GetTalk (talkName) == (
 	  		for all talk in set talks do (
 	  			if (talk.GetName() = talkName)
@@ -106,7 +106,7 @@ operations
 			post companies = companies~ \ {company};
 			
 	 -- returns schedule of the day, sorted by time
-	pure public GetSchedule : Utils`Date ==> seq of Talk
+	pure public GetSchedule : Utilities`Date ==> seq of Talk
 	  	GetSchedule (date) == (
 	    	dcl talkSet: seq of Talk := [];
 	    	
@@ -115,20 +115,20 @@ operations
 	  			then talkSet := talkSet ^ [talk];
 	  		);
 	
-	  		return Utils`mergeSortTalks(talkSet);
+	  		return Utilities`mergeSortTalks(talkSet);
 	  	);
 	  	
 	 -- returns schedule of the conference, sorted
-   pure public GetSchedule : () ==> map Utils`Date to seq of Talk
+   pure public GetSchedule : () ==> map Utilities`Date to seq of Talk
 	  	GetSchedule () == (
-	  		dcl result: map Utils`Date to seq of Talk := {|->};
-	    	dcl currentDate : Utils`Date := WebSummit`GetInstance().GetInitialDate();
-	    	dcl finalDate : Utils`Date := WebSummit`GetInstance().GetFinalDate();
+	  		dcl result: map Utilities`Date to seq of Talk := {|->};
+	    	dcl currentDate : Utilities`Date := WebSummit`GetInstance().GetInitialDate();
+	    	dcl finalDate : Utilities`Date := WebSummit`GetInstance().GetFinalDate();
 
-	    	while (currentDate <> Utils`nextDay(finalDate))
+	    	while (currentDate <> Utilities`nextDay(finalDate))
 	    	do (
 	    		 result := result munion {currentDate |-> GetSchedule(currentDate)};
-	    		 currentDate := Utils`nextDay(currentDate);
+	    		 currentDate := Utilities`nextDay(currentDate);
 	    		 );
 	  		
 	  		return result
@@ -141,7 +141,7 @@ operations
 	  	
 	  	for all talk in set talks do (
 	  		if(talk.GetDate() = newTalk.GetDate())
-	  			then if(Utils`DoesntOverlap(newTalk.GetTime(), newTalk.GetDuration(), talk.GetTime(), talk.GetDuration()) = false)
+	  			then if(Utilities`DoesntOverlap(newTalk.GetTime(), newTalk.GetDuration(), talk.GetTime(), talk.GetDuration()) = false)
 			  					 then 
 			  					 (
 			  					 			doesntOverlap := false;

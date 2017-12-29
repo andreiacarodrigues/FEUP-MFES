@@ -25,7 +25,7 @@ operations
   		return startups;
   	);
   	
-  pure public GetStartup : Utils`String ==> [Startup]
+  pure public GetStartup : Utilities`String ==> [Startup]
 	  GetStartup (name) == (
 	  	for all startup in set startups do (
 	  		if (startup.GetName() = name)
@@ -58,7 +58,7 @@ operations
 	  	return investors;
 	  );
 	
-	pure public GetInvestor : Utils`String ==> [Influential]
+	pure public GetInvestor : Utilities`String ==> [Influential]
 	  GetInvestor (name) == (
 	  	for all investor in set investors do (
 	  		if (investor.GetName() = name)

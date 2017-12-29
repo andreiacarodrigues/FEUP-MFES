@@ -5,13 +5,13 @@ values
 
 instance variables
 
-	private title : Utils`String := [];
-	private body : Utils`String := [];
+	private title : Utilities`String := [];
+	private body : Utilities`String := [];
 	
 operations
 
 	-- constructor of the new class 
-	public New : Utils`String * Utils`String ==> New
+	public New : Utilities`String * Utilities`String ==> New
 		New (newTitle, newBody) == (
 			title := newTitle;
 			body := newBody;
@@ -20,25 +20,25 @@ operations
 	  pre len newTitle > 0 and len newBody > 0;
 
 	-- returns the news title
-	public GetTitle : () ==> Utils`String
+	public GetTitle : () ==> Utilities`String
 		GetTitle () == (
 			return title;
 	  );	
 	  
 	-- set the news title
-	public SetTitle : Utils`String ==> ()
+	public SetTitle : Utilities`String ==> ()
 		SetTitle (newTitle) == (
 			title := newTitle;
 	  );	
 	  
 	-- returns the news body
-	public GetBody : () ==> Utils`String
+	public GetBody : () ==> Utilities`String
 		GetBody () == (
 			return body;
 	  );	
 	  
 	-- set the news body
-	public SetBody : Utils`String ==> ()
+	public SetBody : Utilities`String ==> ()
 		SetBody (newBody) == (
 			body := newBody;
 	  );	  

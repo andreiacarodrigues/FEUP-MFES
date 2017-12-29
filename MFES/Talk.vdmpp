@@ -5,12 +5,12 @@ values
 
 instance variables
 
-	private name : Utils`String := [];
-	private description : Utils`String := [];
-	private date : Utils`Date;
-	private time : Utils`Time;
+	private name : Utilities`String := [];
+	private description : Utilities`String := [];
+	private date : Utilities`Date;
+	private time : Utilities`Time;
 	private duration : nat1;
-	private conference : Utils`String := [];
+	private conference : Utilities`String := [];
 	private speakers : set of Influential := {};
 	private attendees : set of Attendee := {};
 	
@@ -20,7 +20,7 @@ instance variables
 operations
 
 	-- constructor of the talk class 
-		public Talk :  Utils`String *  Utils`String *  Utils`Date *  Utils`Time * nat1 ==> Talk
+		public Talk :  Utilities`String *  Utilities`String *  Utilities`Date *  Utilities`Time * nat1 ==> Talk
 	  	Talk (talkName, talkDescription, talkDate, talkTime, talkDuration) == (
 	  		name := talkName;
 	  		description := talkDescription;
@@ -32,49 +32,49 @@ operations
 	  	pre len talkName > 0 and talkDuration > 0;
 	  	
 	 -- returns the talk's name
-	 pure public GetName : () ==> Utils`String
+	 pure public GetName : () ==> Utilities`String
 	  	GetName () == (
 	  		return name;
 	  	);
 	  	
 	 -- set the talk name
-	 public SetName : Utils`String ==> ()
+	 public SetName : Utilities`String ==> ()
 	  	SetName (n) == (
 	  		name := n;
 	  	);
 	  	
 	 -- returns the talk's description
-	 public GetDescription : () ==> Utils`String
+	 public GetDescription : () ==> Utilities`String
 	  	GetDescription () == (
 	  		return description;
 	  	);
 	  	
 	 -- set the talk description
-	 public SetDescription : Utils`String ==> ()
+	 public SetDescription : Utilities`String ==> ()
 	  	SetDescription (d) == (
 	  		description := d;
 	  	);
 	  	
 	 -- returns the talk's date
-	 pure public GetDate : () ==> Utils`Date
+	 pure public GetDate : () ==> Utilities`Date
 	  	GetDate () == (
 	  		return date;
 	  	);
 	  	
 	 -- set the talk date
-	 public SetDate : Utils`Date ==> ()
+	 public SetDate : Utilities`Date ==> ()
 	  	SetDate (d) == (
 	  		date := d;
 	  	);
 	  	
 	 -- returns the talk's time
-	 pure public GetTime : () ==> Utils`Time
+	 pure public GetTime : () ==> Utilities`Time
 	  	GetTime () == (
 	  		return time;
 	  	);
 	  	
 	 -- set the talk time
-	 public SetTime : Utils`Time ==> ()
+	 public SetTime : Utilities`Time ==> ()
 	  	SetTime (t) == (
 	  		time := t;
 	  	);
@@ -92,13 +92,13 @@ operations
 	  	);
 	  	
 	  -- returns the talk's conference
-	 pure public GetConference : () ==> Utils`String
+	 pure public GetConference : () ==> Utilities`String
 	  	GetConference () == (
 	  		return conference;
 	  	);
 	  	
 	 -- set the conference conference
-	 public SetConference : Utils`String ==> ()
+	 public SetConference : Utilities`String ==> ()
 	  	SetConference (c) == (
 	  		conference := c;
 	  	);

@@ -11,8 +11,8 @@ instance variables
 	private news : set of New := {};
 	
 	-- default dates
-	private initialDate : Utils`Date := mk_Utils`Date(2001,1,1);
-	private finalDate : Utils`Date := mk_Utils`Date(2001,1,2);
+	private initialDate : Utilities`Date := mk_Utilities`Date(2001,1,1);
+	private finalDate : Utilities`Date := mk_Utilities`Date(2001,1,2);
 	
 	private static websummit: WebSummit := new WebSummit();
 	
@@ -29,7 +29,9 @@ operations
 	  	
 	-- singleton - return the existent instance
 	public pure static GetInstance: () ==> WebSummit 
-			GetInstance() == return websummit;
+			GetInstance() == (
+				return websummit;
+			);
 	  	
 	-- singleton - reset the instance
 	public static ClearInstance: () ==> WebSummit
@@ -41,7 +43,7 @@ operations
 			 and RESULT.exhibit.GetInvestors() = {} and RESULT.attendees = {}; 	
 	  	
 	 -- sets websummit dates
-	 public SetDates : Utils`Date * Utils`Date ==> ()
+	 public SetDates : Utilities`Date * Utilities`Date ==> ()
 	  	SetDates (d1, d2) == (
 	  		initialDate := d1;
 	  		finalDate := d2;
@@ -49,13 +51,13 @@ operations
 	  	post initialDate = d1 and finalDate = d2;
 	  	
 	 --  returns websummit initial date
-	 pure public GetInitialDate : () ==> Utils`Date
+	 pure public GetInitialDate : () ==> Utilities`Date
 	  	GetInitialDate () == (
 	  		return initialDate
 	  	);
 	  	
 	 -- returns websummit final date
-	 pure public GetFinalDate : () ==> Utils`Date
+	 pure public GetFinalDate : () ==> Utilities`Date
 	  	GetFinalDate () == (
 	  		return finalDate
 	  	);	
@@ -74,7 +76,7 @@ operations
 	  		conference.AddTalk(talk);
 	  	)
 	  	pre conference in set conferences and
-	  			Utils`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
+	  			Utilities`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
 	  			
 	 -- removes a talk from an existing conference
 	  public RemoveTalk : Conference * Talk ==> ()
@@ -124,7 +126,7 @@ operations
 	  	);
 	  	
 	 -- returns a specific conferece by it's name
-	 public pure GetConference : Utils`String ==> [Conference]
+	 public pure GetConference : Utilities`String ==> [Conference]
 	  	GetConference (conferenceName) == (
 	  		for all conference in set conferences do (
 	  			if conference.GetName() = conferenceName
@@ -136,17 +138,17 @@ operations
 		pre len conferenceName > 0;
 		
 		-- returns the full schedule of a conference
-	 public GetSchedule : Conference ==> map Utils`Date to seq of Talk
+	 public GetSchedule : Conference ==> map Utilities`Date to seq of Talk
 	  	GetSchedule (c) == (
 	  		return c.GetSchedule();
 	  	)
 	  	pre c in set conferences;
 	  	
 	 -- returns the full event schedule
-	 public GetSchedule : () ==> map Utils`Date to seq of Talk
+	 public GetSchedule : () ==> map Utilities`Date to seq of Talk
 	  	GetSchedule () == (
-	  		dcl temp: map Utils`Date to seq of Talk := {|->};
-	  		dcl currentDate : Utils`Date := initialDate;
+	  		dcl temp: map Utilities`Date to seq of Talk := {|->};
+	  		dcl currentDate : Utilities`Date := initialDate;
 	  		
 	  		-- joins all the events
 	  		for all conference in set conferences do (
@@ -154,10 +156,10 @@ operations
 	  				then temp := conference.GetSchedule()
 	  				else 
 	  				(
-	  					while (currentDate <> Utils`nextDay(finalDate))
+	  					while (currentDate <> Utilities`nextDay(finalDate))
 						    do (
 						    	  temp(currentDate) := temp(currentDate) ^ conference.GetSchedule(currentDate);
-						    		currentDate := Utils`nextDay(currentDate);
+						    		currentDate := Utilities`nextDay(currentDate);
 						    		);
 	  				);
 	  		);
@@ -165,17 +167,17 @@ operations
 	  		currentDate := WebSummit`GetInstance().GetInitialDate();
 	  		
 	  		-- orders talks by time
-	  		while (currentDate <> Utils`nextDay(finalDate))
+	  		while (currentDate <> Utilities`nextDay(finalDate))
 			  do (
-						temp(currentDate) := Utils`mergeSortTalks(temp(currentDate));
-						currentDate := Utils`nextDay(currentDate);
+						temp(currentDate) := Utilities`mergeSortTalks(temp(currentDate));
+						currentDate := Utilities`nextDay(currentDate);
 				);
 						    
 	  		return temp;
 	  	);	  
 	  	
 	 -- returns the event schedule by date/time
-	 public GetSchedule : Utils`Date * Utils`Time ==> seq of Talk
+	 public GetSchedule : Utilities`Date * Utilities`Time ==> seq of Talk
 	  	GetSchedule (date, time) == (
 	  		dcl temp: seq of Talk := [];
 	  		
@@ -195,7 +197,7 @@ operations
 	  		);
 	  		
 	  		-- orders them by time
-				temp := Utils`mergeSortTalks(temp);
+				temp := Utilities`mergeSortTalks(temp);
 						    
 	  		return temp;
 	  	);	  
@@ -231,12 +233,6 @@ operations
 	  	GetAttendees () == (
 	  		return attendees;
 	  	);  
-	  	
-		--returns websummit exibit
-	 	/*public GetExhibit : () ==> Exhibit
-	  	GetExhibit () == (
-	  		return exhibit;
-	 		);*/ 		
 	
 		--returns all startups
 		public GetStartups: () ==> set of Startup

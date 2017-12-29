@@ -5,13 +5,13 @@ values
 
 instance variables
 
-	date1 : Utils`Date := mk_Utils`Date(2017,9,1);
-	date2 : Utils`Date := mk_Utils`Date(2017,9,3);
+	date1 : Utilities`Date := mk_Utilities`Date(2017,9,1);
+	date2 : Utilities`Date := mk_Utilities`Date(2017,9,3);
 	
-	time1 : Utils`Time := mk_Utils`Time(15,20);
-	time2 : Utils`Time := mk_Utils`Time(15,40);
-	time3 : Utils`Time := mk_Utils`Time(16,40);
-	time4 : Utils`Time := mk_Utils`Time(15,30);
+	time1 : Utilities`Time := mk_Utilities`Time(15,20);
+	time2 : Utilities`Time := mk_Utilities`Time(15,40);
+	time3 : Utilities`Time := mk_Utilities`Time(16,40);
+	time4 : Utilities`Time := mk_Utilities`Time(15,30);
 	
 operations
 public static main: () ==> ()
@@ -224,20 +224,20 @@ public static main: () ==> ()
 		assertEqual(4, card conference2.GetTalks());
 		assertEqual({talk5, talk6, talk7, talk8}, conference2.GetTalks());
 		
-		assertEqual(2, len webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));
-		assertEqual([talk1, talk3], webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));
+		assertEqual(2, len webSummit.GetSchedule(date1, mk_Utilities`Time(16,00)));
+		assertEqual([talk1, talk3], webSummit.GetSchedule(date1, mk_Utilities`Time(16,00)));
 		
-		assertEqual(3, len webSummit.GetSchedule(date1, mk_Utils`Time(15,00)));
-		assertEqual([talk2, talk5, talk1], webSummit.GetSchedule(date1, mk_Utils`Time(15,00)));
+		assertEqual(3, len webSummit.GetSchedule(date1, mk_Utilities`Time(15,00)));
+		assertEqual([talk2, talk5, talk1], webSummit.GetSchedule(date1, mk_Utilities`Time(15,00)));
 		
 		assertEqual(3, card dom webSummit.GetSchedule(conference1));
-		assertEqual({date1|->[talk2, talk1, talk3], Utils`nextDay(date1)|->[], date2|->[talk4]}, webSummit.GetSchedule(conference1));
+		assertEqual({date1|->[talk2, talk1, talk3], Utilities`nextDay(date1)|->[], date2|->[talk4]}, webSummit.GetSchedule(conference1));
 		
 		assertEqual(3, card dom webSummit.GetSchedule(conference2));
-		assertEqual({date1|->[talk5], Utils`nextDay(date1)|->[], date2|->[talk8, talk6, talk7]}, webSummit.GetSchedule(conference2));
+		assertEqual({date1|->[talk5], Utilities`nextDay(date1)|->[], date2|->[talk8, talk6, talk7]}, webSummit.GetSchedule(conference2));
 		
 		assertEqual(3, card dom webSummit.GetSchedule());
-		assertEqual({date1|->[talk2, talk5, talk1, talk3], Utils`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
+		assertEqual({date1|->[talk2, talk5, talk1, talk3], Utilities`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
 		
 		-- this test is supposed to fail (2 first talks badly sorted, talk 2 takes place before talk5)
 		/*assertEqual({date1|->[talk5, talk2, talk1, talk3], Utils`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());

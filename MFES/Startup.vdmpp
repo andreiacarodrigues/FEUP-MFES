@@ -5,15 +5,15 @@ values
 
 instance variables
 
-	private name : Utils`String := [];
-	private description : Utils`String := [];
-	private website : Utils`String := [];
-	private country : Utils`String := [];
+	private name : Utilities`String := [];
+	private description : Utilities`String := [];
+	private website : Utilities`String := [];
+	private country : Utilities`String := [];
 
 operations
 
 	-- constructor of the startup class 
-		public Startup :  Utils`String *  Utils`String *  Utils`String * Utils`String ==> Startup
+		public Startup :  Utilities`String *  Utilities`String *  Utilities`String * Utilities`String ==> Startup
 	  	Startup (startupName, startupDescription, startupWebsite, startupCountry) == (
 	  		name := startupName;
 	  		description := startupDescription;
@@ -23,49 +23,49 @@ operations
 	  	);
 	  	
 	  -- returns the startup name
-	 pure public GetName : () ==> Utils`String
+	 pure public GetName : () ==> Utilities`String
 	  	GetName () == (
 	  		return name;
 	  	);
 	  	
 	  -- set the startup name
-	 public SetName : Utils`String ==> ()
+	 public SetName : Utilities`String ==> ()
 	  	SetName (n) == (
 	  		name := n;
 	  	);
 	  	
 	  -- returns the startup description
-	 public GetDescription : () ==> Utils`String
+	 public GetDescription : () ==> Utilities`String
 	  	GetDescription () == (
 	  		return description;
 	  	);
 	  	
 	  -- set the startup description
-	 public SetDescription : Utils`String ==> ()
+	 public SetDescription : Utilities`String ==> ()
 	  	SetDescription (d) == (
 	  		description := d;
 	  	);	
 	  	
 	  -- returns the startup website
-	 public GetWebsite : () ==> Utils`String
+	 public GetWebsite : () ==> Utilities`String
 	  	GetWebsite () == (
 	  		return website;
 	  	);
 	  	
 	  -- set the startup website	
-	 public SetWebsite : Utils`String ==> ()
+	 public SetWebsite : Utilities`String ==> ()
 	  	SetWebsite (w) == (
 	  		website := w;
 	  	);
 	  	
 	  -- returns the startup country
-	 public GetCountry : () ==> Utils`String
+	 public GetCountry : () ==> Utilities`String
 	  	GetCountry () == (
 	  		return country;
 	  	);
 	  	
 	  -- set the startup country
-	 public SetCountry : Utils`String ==> ()
+	 public SetCountry : Utilities`String ==> ()
 	  	SetCountry (c) == (
 	  		country := c;
 	  	);	

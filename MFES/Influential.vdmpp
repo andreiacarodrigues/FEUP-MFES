@@ -6,15 +6,15 @@ values
 
 instance variables
 
-	private jobPosition : Utils`String := [];
+	private jobPosition : Utilities`String := [];
 	private company : Company;
-	private description : Utils`String := [];
-	private country : Utils`String := [];
+	private description : Utilities`String := [];
+	private country : Utilities`String := [];
 
 operations
 
 	-- constructor of the influential attendee class 
-	 public Influential : Utils`String * Utils`String * Company * Utils`String * Utils`String ==> Influential
+	 public Influential : Utilities`String * Utilities`String * Company * Utilities`String * Utilities`String ==> Influential
 	  	Influential (attendeeName, attendeeJobPosition, attendeeCompany, attendeeDescription, attendeeCountry) == (
 	  	  jobPosition := attendeeJobPosition;
 	  	  company := attendeeCompany;
@@ -25,13 +25,13 @@ operations
 	  	pre len attendeeName > 0 and len attendeeJobPosition > 0 and len attendeeCountry > 0;
 	  	
 	 -- returns the influential attendee's job position
-	 public GetJobPosition : () ==> Utils`String
+	 public GetJobPosition : () ==> Utilities`String
 	  	GetJobPosition () == (
 	  		return jobPosition;
 	  	);
 	  	
 	 -- sets the influential attendee's job position
-	 public SetJobPosition : Utils`String ==> ()
+	 public SetJobPosition : Utilities`String ==> ()
 	  	SetJobPosition (j) == (
 	  		jobPosition := j;
 	  	);
@@ -49,25 +49,25 @@ operations
 	  	);
 	  	
 	 -- returns the influential attendee's description
-	 public GetDescription : () ==> Utils`String
+	 public GetDescription : () ==> Utilities`String
 	  	GetDescription () == (
 	  		return description;
 	  	);
 	  	
 	  -- sets the influential attendee's description
-	 public SetDescription : Utils`String ==> ()
+	 public SetDescription : Utilities`String ==> ()
 	  	SetDescription (d) == (
 	  		description := d;
 	  	);
 	  	
 	  -- returns the influential attendee's country
-	  public GetCountry : () ==> Utils`String
+	  public GetCountry : () ==> Utilities`String
 	  	GetCountry () == (
 	  		return country;
 	  	);
 	  	
 	  -- sets the influential attendee's country
-	 public SetCountry : Utils`String ==> ()
+	 public SetCountry : Utilities`String ==> ()
 	  	SetCountry (c) == (
 	  		country := c;
 	  	);
