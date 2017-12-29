@@ -55,19 +55,16 @@ operations
 	  	);
 	  	
 	  -- returns a conference talk by it's name
-	 pure public GetTalk : Utils`String ==> seq of Talk
+	 pure public GetTalk : Utils`String ==> [Talk]
 	  	GetTalk (talkName) == (
-	  		dcl result: seq of Talk := [];
-	  		
 	  		for all talk in set talks do (
 	  			if (talk.GetName() = talkName)
-	  			then result := result ^ [talk];
+	  			then return talk;
 	  		);
 	  		
-	  		return result
+	  		return nil
 	  	)
-	  	pre len talkName > 0
-			post RESULT = [] or len RESULT = 1;
+	  	pre len talkName > 0;
 	 
 	  -- returns the conference attending companies
 	 pure public GetCompanies : () ==> set of Company

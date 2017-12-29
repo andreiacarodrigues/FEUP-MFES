@@ -82,7 +82,7 @@ public static main: () ==> ()
 		assertEqual({}, conference1.GetTalks());
 		assertEqual({}, conference1.GetCompanies());
 		
-		assertEqual(conference1, hd webSummit.GetConference(conference1.GetName()));
+		assertEqual(conference1, webSummit.GetConference(conference1.GetName()));
 		
 		conference1.SetName("Conference 1");
 		assertEqual("Conference 1", conference1.GetName());
@@ -144,7 +144,7 @@ public static main: () ==> ()
 		talk1.SetDuration(40);
 		assertEqual(40, talk1.GetDuration());
 		
-		assertEqual(talk1, hd conference.GetTalk(talk1.GetName()));
+		assertEqual(talk1, conference.GetTalk(talk1.GetName()));
 		
 		assertEqual(conference.GetName(), talk1.GetConference());
 		

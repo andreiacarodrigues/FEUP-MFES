@@ -35,7 +35,7 @@ operations
 		);
 		
 		
-	pure public static lmergeSort : seq of Talk * seq of Talk ==> seq of Talk
+	pure private static lmergeSort : seq of Talk * seq of Talk ==> seq of Talk
 			lmergeSort (s1,s2) ==
 			(if s1 = []
 			then return s2

@@ -25,26 +25,23 @@ operations
   		return startups;
   	);
   	
-  pure public GetStartup : Utils`String ==> seq of Startup
+  pure public GetStartup : Utils`String ==> [Startup]
 	  GetStartup (name) == (
-	  	dcl result: seq of Startup := [];
-	  		
 	  	for all startup in set startups do (
 	  		if (startup.GetName() = name)
-	  			then result := result ^ [startup];
+	  			then return startup
 	  		);
 	  		
-	  		return result
+	  		return nil
 	  	)
-	  	pre len name > 0
-			post RESULT = [] or len RESULT = 1;	
+	  	pre len name > 0;	
 	  
 	-- add startup
 	public AddStartup: Startup ==> ()
 		AddStartup (startup) == (
 	  	startups := startups union {startup}
 	  )
-	  pre startup not in set startups	and len GetStartup(startup.GetName()) = 0
+	  pre startup not in set startups	and GetStartup(startup.GetName()) = nil
 	  post startups = startups~ union {startup};  
 	
 	-- remove startup
@@ -61,26 +58,23 @@ operations
 	  	return investors;
 	  );
 	
-	pure public GetInvestor : Utils`String ==> seq of Influential
+	pure public GetInvestor : Utils`String ==> [Influential]
 	  GetInvestor (name) == (
-	  	dcl result: seq of Influential := [];
-	  		
 	  	for all investor in set investors do (
 	  		if (investor.GetName() = name)
-	  			then result := result ^ [investor];
+	  			then return investor
 	  		);
 	  		
-	  		return result
+	  		return nil
 	  	)
-	  	pre len name > 0
-			post RESULT = [] or len RESULT = 1;	
+	  	pre len name > 0;	
 	
 	-- add investor
 	public AddInvestor: Influential ==> ()
 		AddInvestor (investor) == (
 	  	investors := investors union {investor}
 	  )
-	  pre investor not in set investors	and len GetInvestor(investor.GetName()) = 0
+	  pre investor not in set investors	and GetInvestor(investor.GetName()) = nil
 	  post investors = investors~ union {investor};  
 	  	
 	-- remove investor
