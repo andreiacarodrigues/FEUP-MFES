@@ -200,7 +200,8 @@ operations
 				temp := Utilities`mergeSortTalks(temp);
 						    
 	  		return temp;
-	  	);	  
+	  	)
+	  	pre forall conference in set conferences & date in set (dom (conference.GetSchedule)()) ;	  
 	  	
 	 -- adds a new attendee to an existing talk
 	 public AddAttendee : Talk * Attendee ==> ()
