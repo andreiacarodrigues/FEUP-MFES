@@ -51,15 +51,15 @@ public class Utilities {
 
     Boolean orResult_1 = false;
 
-    Boolean andResult_20 = false;
+    Boolean andResult_13 = false;
 
     if (Utils.equals(Utils.mod(year.longValue(), 4L), 0L)) {
       if (!(Utils.equals(Utils.mod(year.longValue(), 100L), 0L))) {
-        andResult_20 = true;
+        andResult_13 = true;
       }
     }
 
-    if (andResult_20) {
+    if (andResult_13) {
       orResult_1 = true;
     } else {
       orResult_1 = Utils.equals(Utils.mod(year.longValue(), 400L), 0L);
@@ -339,31 +339,31 @@ public class Utilities {
 
   public static Boolean inv_Date(final Date d) {
 
-    Boolean andResult_22 = false;
+    Boolean andResult_15 = false;
 
     if (d.month.longValue() >= 1L) {
-      Boolean andResult_23 = false;
+      Boolean andResult_16 = false;
 
       if (d.month.longValue() <= 12L) {
-        Boolean andResult_24 = false;
+        Boolean andResult_17 = false;
 
         if (d.day.longValue() >= 1L) {
           if (d.day.longValue() <= DaysOfMonth(d.year, d.month).longValue()) {
-            andResult_24 = true;
+            andResult_17 = true;
           }
         }
 
-        if (andResult_24) {
-          andResult_23 = true;
+        if (andResult_17) {
+          andResult_16 = true;
         }
       }
 
-      if (andResult_23) {
-        andResult_22 = true;
+      if (andResult_16) {
+        andResult_15 = true;
       }
     }
 
-    return andResult_22;
+    return andResult_15;
   }
 
   public static class Time implements Record {
@@ -405,14 +405,14 @@ public class Utilities {
 
   public static Boolean inv_Time(final Time t) {
 
-    Boolean andResult_28 = false;
+    Boolean andResult_21 = false;
 
     if (t.hour.longValue() < 24L) {
       if (t.minute.longValue() < 60L) {
-        andResult_28 = true;
+        andResult_21 = true;
       }
     }
 
-    return andResult_28;
+    return andResult_21;
   }
 }

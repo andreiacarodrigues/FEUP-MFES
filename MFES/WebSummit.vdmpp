@@ -22,8 +22,10 @@ instance variables
 operations
 
 	-- constructor of the websummit class 
-	public WebSummit :  () ==> WebSummit
-	  	WebSummit () == (
+	public WebSummit :  Utilities`Date * Utilities`Date ==> WebSummit
+	  	WebSummit (initDate, endDate) == (
+	  		initialDate := initDate;
+	  		finalDate := endDate;
 	  		return self
 	  	);
 	  	
@@ -34,9 +36,9 @@ operations
 			);
 	  	
 	-- singleton - reset the instance
-	public static ClearInstance: () ==> WebSummit
-		ClearInstance() == (
-			websummit := new WebSummit();
+	public static ClearInstance: Utilities`Date * Utilities`Date ==> WebSummit
+		ClearInstance(initDate, endDate) == (
+			websummit := new WebSummit(initDate, endDate);
 			return GetInstance();
 		)
 		post RESULT.conferences = {} and RESULT.exhibit.GetStartups() = {}
@@ -203,6 +205,14 @@ operations
 	  	)
 	  	pre forall conference in set conferences & date in set (dom (conference.GetSchedule)()) ;	  
 	  	
+	 -- adds a new attendee to event
+	 public AddAttendee : Attendee ==> ()
+	  	AddAttendee (attendee) == (
+	  		attendees := attendees union {attendee}
+	  	)
+	  	pre attendee not in set attendees
+	  	post attendee in set attendees;	 	
+	  	
 	 -- adds a new attendee to an existing talk
 	 public AddAttendee : Talk * Attendee ==> ()
 	  	AddAttendee (talk, attendee) == (
@@ -229,16 +239,33 @@ operations
 	  	)
 	  	pre newConference not in set conferences;
 	  	
-	-- returns all websummit attendees
+	 -- returns all websummit attendees
 	 public GetAttendees : () ==> set of Attendee
 	  	GetAttendees () == (
 	  		return attendees;
 	  	);  
+	  	
+	  -- returns all websummit attendees
+	  public GetAttendee : Utilities`String ==> [Attendee]
+	  	GetAttendee (name) == (
+	  		for all a in set attendees do (
+	  		if (a.GetName() = name)
+	  			then return a
+	  		);
+	  		return nil
+	  	)
+	  	pre len name > 0;	
 	
 		--returns all startups
 		public GetStartups: () ==> set of Startup
 	  	GetStartups () == (
 	  		exhibit.GetStartups();
+	  	);
+	  	
+	  --get startup by name  	
+		public GetStartup: Utilities`String ==> Startup
+	  	GetStartup (name) == (
+	  		return exhibit.GetStartup(name);
 	  	);
 	
 		--add new startup to exhibit
@@ -257,12 +284,6 @@ operations
 		public AddInvestor: Influential ==> ()
 			AddInvestor(i) == (
 				exhibit.AddInvestor(i);
-			);
-		
-		--remove investor from exhibit
-		public RemoveInvestor: Influential ==> ()
-			RemoveInvestor(i) == (
-				exhibit.RemoveInvestor(i);
 			);
 		
 		--return all investors
@@ -290,6 +311,12 @@ operations
 			GetTotalAttendeesByTalk (talk) == (
 				return talk.GetTotalAttendees();
 			);		
+			
+		-- get total attendees at the event	
+		public GetTotalAttendees : () ==> int
+			GetTotalAttendees () == (
+				return card attendees;
+			);
 		
 functions
 

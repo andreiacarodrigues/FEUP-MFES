@@ -75,15 +75,7 @@ operations
 	  	investors := investors union {investor}
 	  )
 	  pre investor not in set investors	and GetInvestor(investor.GetName()) = nil
-	  post investors = investors~ union {investor};  
-	  	
-	-- remove investor
-	public RemoveInvestor: Influential ==> ()
-  	RemoveInvestor (investor) == (
-  		investors := investors \ {investor};
-	  )
-	  pre investor in set investors and card investors >= 1
-		post investors = investors~ \ {investor};	  	
+	  post investors = investors~ union {investor};  	
 	  	
 functions
 

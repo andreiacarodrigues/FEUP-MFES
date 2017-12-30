@@ -13,14 +13,16 @@ public class WebSummit {
   private Utilities.Date finalDate = new Utilities.Date(2001L, 1L, 2L);
   private static WebSummit websummit = new WebSummit();
 
-  public void cg_init_WebSummit_1() {
+  public void cg_init_WebSummit_1(final Utilities.Date initDate, final Utilities.Date endDate) {
 
+    initialDate = Utils.copy(initDate);
+    finalDate = Utils.copy(endDate);
     return;
   }
 
-  public WebSummit() {
+  public WebSummit(final Utilities.Date initDate, final Utilities.Date endDate) {
 
-    cg_init_WebSummit_1();
+    cg_init_WebSummit_1(Utils.copy(initDate), Utils.copy(endDate));
   }
 
   public static WebSummit GetInstance() {
@@ -28,9 +30,10 @@ public class WebSummit {
     return WebSummit.websummit;
   }
 
-  public static WebSummit ClearInstance() {
+  public static WebSummit ClearInstance(
+      final Utilities.Date initDate, final Utilities.Date endDate) {
 
-    websummit = new WebSummit();
+    websummit = new WebSummit(Utils.copy(initDate), Utils.copy(endDate));
     return GetInstance();
   }
 
@@ -95,8 +98,8 @@ public class WebSummit {
 
   public Conference GetConference(final String conferenceName) {
 
-    for (Iterator iterator_8 = conferences.iterator(); iterator_8.hasNext(); ) {
-      Conference conference = (Conference) iterator_8.next();
+    for (Iterator iterator_9 = conferences.iterator(); iterator_9.hasNext(); ) {
+      Conference conference = (Conference) iterator_9.next();
       if (Utils.equals(conference.GetName(), conferenceName)) {
         return conference;
       }
@@ -113,8 +116,8 @@ public class WebSummit {
 
     VDMMap temp = MapUtil.map();
     Utilities.Date currentDate = Utils.copy(initialDate);
-    for (Iterator iterator_9 = conferences.iterator(); iterator_9.hasNext(); ) {
-      Conference conference = (Conference) iterator_9.next();
+    for (Iterator iterator_10 = conferences.iterator(); iterator_10.hasNext(); ) {
+      Conference conference = (Conference) iterator_10.next();
       if (Utils.empty(temp)) {
         temp = conference.GetSchedule();
       } else {
@@ -160,14 +163,14 @@ public class WebSummit {
   public VDMSeq GetSchedule(final Utilities.Date date, final Utilities.Time time) {
 
     VDMSeq temp = SeqUtil.seq();
-    for (Iterator iterator_10 = conferences.iterator(); iterator_10.hasNext(); ) {
-      Conference conference = (Conference) iterator_10.next();
-      for (Iterator iterator_11 =
+    for (Iterator iterator_11 = conferences.iterator(); iterator_11.hasNext(); ) {
+      Conference conference = (Conference) iterator_11.next();
+      for (Iterator iterator_12 =
               SeqUtil.elems(Utils.copy(((VDMSeq) Utils.get(conference.GetSchedule(), date))))
                   .iterator();
-          iterator_11.hasNext();
+          iterator_12.hasNext();
           ) {
-        Talk talk = (Talk) iterator_11.next();
+        Talk talk = (Talk) iterator_12.next();
         if (Utils.equals(talk.GetTime().hour, time.hour)) {
           temp = SeqUtil.conc(Utils.copy(temp), SeqUtil.seq(talk));
         } else {
@@ -185,6 +188,11 @@ public class WebSummit {
     return Utils.copy(temp);
   }
 
+  public void AddAttendee(final Attendee attendee) {
+
+    attendees = SetUtil.union(Utils.copy(attendees), SetUtil.set(attendee));
+  }
+
   public void AddAttendee(final Talk talk, final Attendee attendee) {
 
     talk.AddAttendee(attendee);
@@ -196,8 +204,8 @@ public class WebSummit {
   private Boolean notAlreadyExistent(final Conference newConference) {
 
     Boolean doesntExist = true;
-    for (Iterator iterator_12 = conferences.iterator(); iterator_12.hasNext(); ) {
-      Conference conference = (Conference) iterator_12.next();
+    for (Iterator iterator_13 = conferences.iterator(); iterator_13.hasNext(); ) {
+      Conference conference = (Conference) iterator_13.next();
       if (Utils.equals(conference.GetName(), newConference.GetName())) {
         doesntExist = false;
         return doesntExist;
@@ -211,9 +219,25 @@ public class WebSummit {
     return Utils.copy(attendees);
   }
 
+  public Attendee GetAttendee(final String name) {
+
+    for (Iterator iterator_14 = attendees.iterator(); iterator_14.hasNext(); ) {
+      Attendee a = (Attendee) iterator_14.next();
+      if (Utils.equals(a.GetName(), name)) {
+        return a;
+      }
+    }
+    return null;
+  }
+
   public VDMSet GetStartups() {
 
     return exhibit.GetStartups();
+  }
+
+  public Startup GetStartup(final String name) {
+
+    return exhibit.GetStartup(name);
   }
 
   public void AddStartup(final Startup s) {
@@ -229,11 +253,6 @@ public class WebSummit {
   public void AddInvestor(final Influential i) {
 
     exhibit.AddInvestor(i);
-  }
-
-  public void RemoveInvestor(final Influential i) {
-
-    exhibit.RemoveInvestor(i);
   }
 
   public VDMSet GetInvestors() {
@@ -255,6 +274,13 @@ public class WebSummit {
 
     return talk.GetTotalAttendees();
   }
+
+  public Number GetTotalAttendees() {
+
+    return attendees.size();
+  }
+
+  public WebSummit() {}
 
   public String toString() {
 

@@ -45,9 +45,6 @@ public class WebSummitTest extends MyTestCase {
     IO.print("testCreateAndAddInvestors -> ");
     webSummitTest.testCreateAndAddInvestors();
     IO.println("Success");
-    IO.print("testRemoveInvestors -> ");
-    webSummitTest.testRemoveInvestors();
-    IO.println("Success");
     IO.print("testCreateAndAddNews -> ");
     webSummitTest.testCreateAndAddNews();
     IO.println("Success");
@@ -55,9 +52,8 @@ public class WebSummitTest extends MyTestCase {
 
   private void testCreateAndAddConference() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Conference conference1 = new Conference("C1", "D1");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     assertEqual(Utils.copy(date1), webSummit.GetInitialDate());
     assertEqual(Utils.copy(date2), webSummit.GetFinalDate());
     AddConference(conference1);
@@ -76,13 +72,12 @@ public class WebSummitTest extends MyTestCase {
 
   private void testCreateAndAddTalk() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Conference conference = new Conference("Conference 1", "Conference 1 details");
     Talk talk1 = new Talk("T1", "D1", Utils.copy(date2), Utils.copy(time2), 30L);
     Company company = new Company("Facebook");
     Influential speaker1 =
         new Influential("Mark Zuckerberg", "CEO", company, "Speaker Description", "EN");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     AddConference(conference);
     AddTalk(conference, talk1);
     assertEqual("T1", talk1.GetName());
@@ -115,7 +110,7 @@ public class WebSummitTest extends MyTestCase {
 
   private void testSchedules() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Conference conference1 = new Conference("Conference 1", "Conference 1 details");
     Conference conference2 = new Conference("Conference 2", "Conference 2 details");
     Talk talk1 =
@@ -134,7 +129,6 @@ public class WebSummitTest extends MyTestCase {
         new Talk("Talk 7", "Talk 7 description", Utils.copy(date2), Utils.copy(time3), 20L);
     Talk talk8 =
         new Talk("Talk 8", "Talk 8 description", Utils.copy(date2), Utils.copy(time1), 20L);
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     AddConference(conference1);
     AddConference(conference2);
     AddTalk(conference1, talk1);
@@ -184,10 +178,9 @@ public class WebSummitTest extends MyTestCase {
 
   private void testCreateAndAddCompany() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Conference conference1 = new Conference("Conference 1", "Conference 1 details");
     Company company1 = new Company("Comp1");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     AddConference(conference1);
     AddCompany(conference1, company1);
     assertEqual("Comp1", company1.GetName());
@@ -199,10 +192,9 @@ public class WebSummitTest extends MyTestCase {
 
   private void testRemoveCompany() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Conference conference1 = new Conference("Conference 1", "Conference 1 details");
     Company company1 = new Company("Company 1");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     AddConference(conference1);
     AddCompany(conference1, company1);
     assertEqual(1L, conference1.GetCompanies().size());
@@ -214,11 +206,10 @@ public class WebSummitTest extends MyTestCase {
 
   private void testRemoveTalk() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Conference conference1 = new Conference("Conference 1", "Conference 1 details");
     Talk talk1 =
         new Talk("Talk 1", "Talk 1 description", Utils.copy(date1), Utils.copy(time2), 40L);
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     AddConference(conference1);
     AddTalk(conference1, talk1);
     assertEqual(1L, conference1.GetTalks().size());
@@ -230,23 +221,19 @@ public class WebSummitTest extends MyTestCase {
 
   private void testCreateAndAddAttendee() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
-    Conference conference = new Conference("Conference 1", "Conference 1 details");
-    Talk talk = new Talk("Talk 1", "Talk 1 description", Utils.copy(date2), Utils.copy(time2), 30L);
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Common attendee1 = new Common("Ines");
     Influential attendee2 =
         new Influential(
             "Andreia Rodrigues", "STUDENT", new Company("feup"), "STUDENT AT FEUP", "PT");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
-    AddConference(conference);
-    AddTalk(conference, talk);
     assertEqual("Ines", attendee1.GetName());
     attendee1.SetName("Ines Gomes");
     assertEqual("Ines Gomes", attendee1.GetName());
-    AddAttendee(talk, attendee1);
-    assertEqual(1L, GetTotalAttendeesByTalk(talk));
-    assertEqual(SetUtil.set(attendee1), talk.GetAttendees());
-    AddAttendee(talk, attendee2);
+    AddAttendee(attendee1);
+    assertEqual(1L, GetTotalAttendees());
+    assertEqual(SetUtil.set(attendee1), webSummit.GetAttendees());
+    assertEqual(attendee1, webSummit.GetAttendee("Ines Gomes"));
+    AddAttendee(attendee2);
     assertEqual("STUDENT", attendee2.GetJobPosition());
     attendee2.SetJobPosition("Student");
     assertEqual("Student", attendee2.GetJobPosition());
@@ -259,14 +246,13 @@ public class WebSummitTest extends MyTestCase {
     assertEqual("PT", attendee2.GetCountry());
     attendee2.SetCountry("Portugal");
     assertEqual("Portugal", attendee2.GetCountry());
-    assertEqual(2L, GetTotalAttendeesByTalk(talk));
+    assertEqual(2L, GetTotalAttendees());
   }
 
   private void testCreateAndAddStartup() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Startup startup1 = new Startup("Startup Name", "Startup Description", "www.startup.pt", "PT");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     assertEqual("Startup Name", startup1.GetName());
     startup1.SetName("Emitu");
     assertEqual("Emitu", startup1.GetName());
@@ -282,13 +268,13 @@ public class WebSummitTest extends MyTestCase {
     assertEqual(SetUtil.set(), GetStartups());
     AddStartup(startup1);
     assertEqual(SetUtil.set(startup1), GetStartups());
+    assertEqual(startup1, webSummit.GetStartup("Emitu"));
   }
 
   private void testRemoveStartup() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Startup startup1 = new Startup("Startup Name", "Startup Description", "www.startup.pt", "PT");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     AddStartup(startup1);
     RemoveStartup(startup1);
     assertEqual(SetUtil.set(), GetStartups());
@@ -296,33 +282,19 @@ public class WebSummitTest extends MyTestCase {
 
   private void testCreateAndAddInvestors() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     Influential investor =
         new Influential(
             "Mark Zuckerberg", "CEO", new Company("facebook"), "Speaker Description", "EN");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     assertEqual(SetUtil.set(), GetInvestors());
     AddInvestor(investor);
     assertEqual(SetUtil.set(investor), GetInvestors());
   }
 
-  private void testRemoveInvestors() {
-
-    WebSummit webSummit = WebSummit.ClearInstance();
-    Influential investor =
-        new Influential(
-            "Mark Zuckerberg", "CEO", new Company("facebook"), "Speaker Description", "EN");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
-    AddInvestor(investor);
-    RemoveInvestor(investor);
-    assertEqual(SetUtil.set(), GetInvestors());
-  }
-
   private void testCreateAndAddNews() {
 
-    WebSummit webSummit = WebSummit.ClearInstance();
+    WebSummit webSummit = WebSummit.ClearInstance(Utils.copy(date1), Utils.copy(date2));
     New new1 = new New("Title", "Body");
-    webSummit.SetDates(Utils.copy(date1), Utils.copy(date2));
     assertEqual("Title", new1.GetTitle());
     new1.SetTitle("New Title");
     assertEqual("New Title", new1.GetTitle());
@@ -357,6 +329,11 @@ public class WebSummitTest extends MyTestCase {
   private void RemoveCompany(final Conference conf, final Company c) {
 
     WebSummit.GetInstance().RemoveCompany(conf, c);
+  }
+
+  private void AddAttendee(final Attendee a) {
+
+    WebSummit.GetInstance().AddAttendee(a);
   }
 
   private void AddAttendee(final Talk t, final Attendee a) {
@@ -394,11 +371,6 @@ public class WebSummitTest extends MyTestCase {
     WebSummit.GetInstance().AddInvestor(i);
   }
 
-  private void RemoveInvestor(final Influential i) {
-
-    WebSummit.GetInstance().RemoveInvestor(i);
-  }
-
   private VDMSet GetInvestors() {
 
     return WebSummit.GetInstance().GetInvestors();
@@ -412,6 +384,11 @@ public class WebSummitTest extends MyTestCase {
   private VDMSet GetNews() {
 
     return WebSummit.GetInstance().GetNews();
+  }
+
+  private Number GetTotalAttendees() {
+
+    return WebSummit.GetInstance().GetTotalAttendees();
   }
 
   private Number GetTotalAttendeesByTalk(final Talk talk) {

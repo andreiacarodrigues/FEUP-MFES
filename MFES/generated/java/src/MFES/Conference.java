@@ -50,8 +50,8 @@ public class Conference {
 
   public Talk GetTalk(final String talkName) {
 
-    for (Iterator iterator_1 = talks.iterator(); iterator_1.hasNext(); ) {
-      Talk talk = (Talk) iterator_1.next();
+    for (Iterator iterator_2 = talks.iterator(); iterator_2.hasNext(); ) {
+      Talk talk = (Talk) iterator_2.next();
       if (Utils.equals(talk.GetName(), talkName)) {
         return talk;
       }
@@ -88,8 +88,8 @@ public class Conference {
   public VDMSeq GetSchedule(final Utilities.Date date) {
 
     VDMSeq talkSet = SeqUtil.seq();
-    for (Iterator iterator_2 = talks.iterator(); iterator_2.hasNext(); ) {
-      Talk talk = (Talk) iterator_2.next();
+    for (Iterator iterator_3 = talks.iterator(); iterator_3.hasNext(); ) {
+      Talk talk = (Talk) iterator_3.next();
       if (Utils.equals(talk.GetDate(), date)) {
         talkSet = SeqUtil.conc(Utils.copy(talkSet), SeqUtil.seq(talk));
       }
@@ -125,8 +125,8 @@ public class Conference {
   private Boolean DoesntOverlap(final Talk newTalk) {
 
     Boolean doesntOverlap = true;
-    for (Iterator iterator_3 = talks.iterator(); iterator_3.hasNext(); ) {
-      Talk talk = (Talk) iterator_3.next();
+    for (Iterator iterator_4 = talks.iterator(); iterator_4.hasNext(); ) {
+      Talk talk = (Talk) iterator_4.next();
       if (Utils.equals(talk.GetDate(), newTalk.GetDate())) {
         if (Utils.equals(
             Utilities.DoesntOverlap(
@@ -143,8 +143,8 @@ public class Conference {
   private Boolean notAlreadyExistent(final Talk newTalk) {
 
     Boolean doesntExist = true;
-    for (Iterator iterator_4 = talks.iterator(); iterator_4.hasNext(); ) {
-      Talk talk = (Talk) iterator_4.next();
+    for (Iterator iterator_5 = talks.iterator(); iterator_5.hasNext(); ) {
+      Talk talk = (Talk) iterator_5.next();
       if (Utils.equals(talk.GetName(), newTalk.GetName())) {
         doesntExist = false;
         return doesntExist;
@@ -156,8 +156,8 @@ public class Conference {
   private Boolean notAlreadyExistent(final Company newCompany) {
 
     Boolean doesntExist = true;
-    for (Iterator iterator_5 = companies.iterator(); iterator_5.hasNext(); ) {
-      Company company = (Company) iterator_5.next();
+    for (Iterator iterator_6 = companies.iterator(); iterator_6.hasNext(); ) {
+      Company company = (Company) iterator_6.next();
       if (Utils.equals(company.GetName(), newCompany.GetName())) {
         doesntExist = false;
         return doesntExist;

@@ -20,5 +20,6 @@ public class Main {
   public static void main(String[] args) {
     Run();
     IO.println(Utils.toString(Utils.VOID_VALUE));
+    new Interface()
   }
 }

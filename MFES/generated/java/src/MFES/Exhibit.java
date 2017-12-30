@@ -25,8 +25,8 @@ public class Exhibit {
 
   public Startup GetStartup(final String name) {
 
-    for (Iterator iterator_6 = startups.iterator(); iterator_6.hasNext(); ) {
-      Startup startup = (Startup) iterator_6.next();
+    for (Iterator iterator_7 = startups.iterator(); iterator_7.hasNext(); ) {
+      Startup startup = (Startup) iterator_7.next();
       if (Utils.equals(startup.GetName(), name)) {
         return startup;
       }
@@ -51,8 +51,8 @@ public class Exhibit {
 
   public Influential GetInvestor(final String name) {
 
-    for (Iterator iterator_7 = investors.iterator(); iterator_7.hasNext(); ) {
-      Influential investor = (Influential) iterator_7.next();
+    for (Iterator iterator_8 = investors.iterator(); iterator_8.hasNext(); ) {
+      Influential investor = (Influential) iterator_8.next();
       if (Utils.equals(investor.GetName(), name)) {
         return investor;
       }
@@ -63,11 +63,6 @@ public class Exhibit {
   public void AddInvestor(final Influential investor) {
 
     investors = SetUtil.union(Utils.copy(investors), SetUtil.set(investor));
-  }
-
-  public void RemoveInvestor(final Influential investor) {
-
-    investors = SetUtil.diff(Utils.copy(investors), SetUtil.set(investor));
   }
 
   public String toString() {
