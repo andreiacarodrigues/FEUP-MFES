@@ -50,7 +50,7 @@ public class Interface {
 		options.add("Administration");
 		options.add("Register Common Attendee");
 		options.add("Register Influential Attendee");
-		options.add("Attend Conferences");
+		options.add("Attend Event");
 		options.add("Startups");
 		options.add("EXIT");
 
@@ -415,6 +415,7 @@ public class Interface {
 		options.add("Add New Speaker");
 		options.add("Remove Speaker");
 		options.add("Get Total Attendees");
+		options.add("Remove Talk");
 		options.add("BACK");
 
 		//display menu
@@ -437,6 +438,9 @@ public class Interface {
 			printTotalAttendees(talk);
 			break;
 		case 4:
+			printRemoveTalk(talk);
+			break;
+		case 5:
 			Conference c = websummit.GetConference(talk.GetConference());
 			printConferenceMenu(c);
 			break;
@@ -524,6 +528,18 @@ public class Interface {
 		//back
 		waitOk();
 		printTalkMenu(talk);
+	}
+	
+	public void printRemoveTalk(Talk talk)
+	{
+		System.out.println(" === ADMINISTRATION / CONFERENCES / ORGANIZE CONFERENCE / ORGANIZE TALKS / REMOVE TALK === \n");
+		
+		Conference c = websummit.GetConference(talk.GetConference());
+		websummit.RemoveTalk(c, talk);
+		
+		//back
+		waitOk();
+		printConferenceMenu(c);
 	}
 
 	// --- COMPANY ---
