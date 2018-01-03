@@ -12,7 +12,7 @@ instance variables
  private companies : set of Company := {};
  
  inv not exists t1, t2 in set talks & t1 <> t2 and t1.GetName() = t2.GetName();
- inv not exists c1, c2 in set companies & c1 <> c2 and c1.GetName() = c2.GetName();
+ inv not exists c1, c2 in set companies & c1 <> c2 and c1.GetName() = c2.(*@\vdmnotcovered{GetName}@*)();
  
 operations
   
@@ -84,7 +84,7 @@ operations
       then return talk;
      );
      
-     return nil
+     return (*@\vdmnotcovered{nil}@*)
     )
     pre len talkName > 0;
   
@@ -186,9 +186,9 @@ operations
      if(talk.GetDate() = newTalk.GetDate())
       then if(Utilities`DoesntOverlap(newTalk.GetTime(), newTalk.GetDuration(), talk.GetTime(), talk.GetDuration()) = false)
            then 
-           (
-              doesntOverlap := false;
-              return doesntOverlap
+           (*@\vdmnotcovered{(}@*)
+              doesntOverlap := (*@\vdmnotcovered{false}@*);
+              return (*@\vdmnotcovered{doesntOverlap}@*)
            )
      );
      
@@ -205,9 +205,9 @@ operations
     dcl doesntExist : bool := true;
     for all talk in set talks do (
      if(talk.GetName() = newTalk.GetName())
-     then(
-        doesntExist := false;
-        return doesntExist
+     then(*@\vdmnotcovered{(}@*)
+        doesntExist := (*@\vdmnotcovered{false}@*);
+        (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{doesntExist}@*)
        )
      );
      
@@ -219,11 +219,11 @@ operations
     pure private notAlreadyExistent : Company ==> bool
     notAlreadyExistent (newCompany) == (
     dcl doesntExist : bool := true;
-    for all company in set companies do (
-     if(company.GetName() = newCompany.GetName())
-     then(
-        doesntExist := false;
-        return doesntExist
+    for all company in set companies do (*@\vdmnotcovered{(}@*)
+     if(company.(*@\vdmnotcovered{GetName}@*)() = (*@\vdmnotcovered{newCompany}@*).(*@\vdmnotcovered{GetName}@*)())
+     then(*@\vdmnotcovered{(}@*)
+        doesntExist := (*@\vdmnotcovered{false}@*);
+        return (*@\vdmnotcovered{doesntExist}@*)
        )
      );
      
@@ -238,3 +238,44 @@ traces
 
 end Conference
 \end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[AddCompany:93]{AddCompany} & 93&100.0\% & 6 \\
+\hline
+\hyperref[AddTalk:76]{AddTalk} & 76&100.0\% & 30 \\
+\hline
+\hyperref[Conference:19]{Conference} & 19&100.0\% & 21 \\
+\hline
+\hyperref[DoesntOverlap:138]{DoesntOverlap} & 138&84.8\% & 36 \\
+\hline
+\hyperref[GetCompanies:70]{GetCompanies} & 70&100.0\% & 21 \\
+\hline
+\hyperref[GetDescription:40]{GetDescription} & 40&100.0\% & 6 \\
+\hline
+\hyperref[GetName:28]{GetName} & 28&100.0\% & 136 \\
+\hline
+\hyperref[GetSchedule:109]{GetSchedule} & 109&100.0\% & 66 \\
+\hline
+\hyperref[GetTalk:58]{GetTalk} & 58&88.2\% & 3 \\
+\hline
+\hyperref[GetTalks:52]{GetTalks} & 52&100.0\% & 33 \\
+\hline
+\hyperref[RemoveCompany:101]{RemoveCompany} & 101&100.0\% & 3 \\
+\hline
+\hyperref[RemoveTalk:85]{RemoveTalk} & 85&100.0\% & 3 \\
+\hline
+\hyperref[SetDescription:46]{SetDescription} & 46&100.0\% & 3 \\
+\hline
+\hyperref[SetName:34]{SetName} & 34&100.0\% & 3 \\
+\hline
+\hyperref[notAlreadyExistent:157]{notAlreadyExistent} & 157&42.8\% & 6 \\
+\hline
+\hline
+Conference.vdmpp & & 90.2\% & 376 \\
+\hline
+\end{longtable}
+

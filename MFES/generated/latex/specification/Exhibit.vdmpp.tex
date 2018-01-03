@@ -9,8 +9,8 @@ instance variables
  private startups : set of Startup := {};
  private investors : set of Influential := {};
  
- inv not exists s1, s2 in set startups & s1 <> s2 and s1.GetName() = s2.GetName();
- inv not exists i1, i2 in set investors & i1 <> i2 and i1.GetID() = i2.GetID();
+ inv not exists s1, s2 in set startups & s1 <> s2 and s1.GetName() (*@\vdmnotcovered{=}@*) s2.(*@\vdmnotcovered{GetName}@*)();
+ inv not exists i1, i2 in set investors & i1 <> i2 and i1.GetID() = i2.(*@\vdmnotcovered{GetID}@*)();
  
 operations
 
@@ -82,9 +82,9 @@ operations
 @*)
  pure public GetInvestor : Utilities`String ==> [Influential]
    GetInvestor (name) == (
-    for all investor in set investors do (
-     if (investor.GetName() = name)
-      then return investor
+    for all investor in set investors do (*@\vdmnotcovered{(}@*)
+     (*@\vdmnotcovered{if}@*) (investor.GetName() = (*@\vdmnotcovered{name}@*))
+      then return (*@\vdmnotcovered{investor}@*)
      );
      
      return nil
@@ -100,18 +100,7 @@ operations
     investors := investors union {investor}
    )
    pre investor not in set investors and GetInvestor(investor.GetName()) = nil
-   post investors = investors~ union {investor};  
-    
- -- remove investor
-(*@
-\label{RemoveInvestor:81}
-@*)
- public RemoveInvestor: Influential ==> ()
-   RemoveInvestor (investor) == (
-    investors := investors \ {investor};
-   )
-   pre investor in set investors and card investors >= 1
-  post investors = investors~ \ {investor};    
+   post investors = investors~ union {investor};   
     
 functions
 
@@ -119,3 +108,30 @@ traces
 
 end Exhibit
 \end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[AddInvestor:73]{AddInvestor} & 73&100.0\% & 3 \\
+\hline
+\hyperref[AddStartup:40]{AddStartup} & 40&100.0\% & 6 \\
+\hline
+\hyperref[Exhibit:17]{Exhibit} & 17&100.0\% & 36 \\
+\hline
+\hyperref[GetInvestor:61]{GetInvestor} & 61&52.9\% & 3 \\
+\hline
+\hyperref[GetInvestors:56]{GetInvestors} & 56&100.0\% & 39 \\
+\hline
+\hyperref[GetStartup:28]{GetStartup} & 28&100.0\% & 9 \\
+\hline
+\hyperref[GetStartups:23]{GetStartups} & 23&100.0\% & 42 \\
+\hline
+\hyperref[RemoveStartup:48]{RemoveStartup} & 48&100.0\% & 3 \\
+\hline
+\hline
+Exhibit.vdmpp & & 89.3\% & 141 \\
+\hline
+\end{longtable}
+

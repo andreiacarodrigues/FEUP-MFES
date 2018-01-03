@@ -63,10 +63,6 @@ public static main: () ==> ()
   webSummitTest.testCreateAndAddInvestors();
   IO`println("Success");
   
-  IO`print("testRemoveInvestors -> ");
-  webSummitTest.testRemoveInvestors();
-  IO`println("Success");
-  
   IO`print("testCreateAndAddNews -> ");
   webSummitTest.testCreateAndAddNews();
   IO`println("Success");
@@ -74,18 +70,17 @@ public static main: () ==> ()
  
  -- test if the creation of conferences is working correctly
 (*@
-\label{testCreateAndAddConference:72}
+\label{testCreateAndAddConference:68}
 @*)
  private testCreateAndAddConference: () ==> ()
  testCreateAndAddConference() == (
  
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl webSummit: WebSummit := WebSummit`ClearInstance(date1,date2);
   dcl conference1 : Conference := new Conference("C1", "D1");
   
   -- for tests supposed to fail
   /*dcl conference2 : Conference; */
   
-  webSummit.SetDates(date1, date2);
   assertEqual(date1, webSummit.GetInitialDate());
   assertEqual(date2, webSummit.GetFinalDate());
   
@@ -117,22 +112,21 @@ public static main: () ==> ()
  
  -- test if the creation of talks is working correctly
 (*@
-\label{testCreateAndAddTalk:112}
+\label{testCreateAndAddTalk:107}
 @*)
  private testCreateAndAddTalk: () ==> ()
  testCreateAndAddTalk() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+  dcl webSummit: WebSummit := WebSummit`ClearInstance(date1,date2);
   dcl conference : Conference := new Conference("Conference 1", "Conference 1 details");
   dcl talk1 : Talk := new Talk("T1", "D1", date2, time2, 30);
   dcl company : Company := new Company("Facebook");
   dcl speaker1 : Influential := new Influential("Mark Zuckerberg","CEO",company,"Speaker Description","EN");
+  dcl attendee1 : Common := new Common("Ines");
   
   -- for tests supposed to fail
   /*dcl talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time2, 40);
-  dcl talk3 : Talk := new Talk("Talk 3", "Talk 3 description", mk_Utils`Date(2017,8,30), time2, 40);
+  dcl talk3 : Talk := new Talk("Talk 3", "Talk 3 description", mk_Utilities`Date(2017,8,30), time2, 40);
   dcl talk4 : Talk := new Talk("Talk 1", "Talk 4 description", date1, time2, 40);*/
-  
-  webSummit.SetDates(date1, date2);
   
   AddConference(conference);
   AddTalk(conference,talk1);
@@ -172,11 +166,16 @@ public static main: () ==> ()
   -- add speaker to talk
   AddSpeaker(talk1,speaker1);
   assertEqual({speaker1}, talk1.GetSpeakers());
+  
+  -- add attendee to talk
+  AddAttendee((*@\vdmnotcovered{talk1}@*),(*@\vdmnotcovered{attendee1}@*));
+  assertEqual({attendee1}, (*@\vdmnotcovered{talk1}@*).(*@\vdmnotcovered{GetAttendees}@*)());
+  (*@\vdmnotcovered{assertEqual}@*)(1, webSummit.GetTotalAttendeesByTalk((*@\vdmnotcovered{talk1}@*)));
   --os restantes gets e sets ja foram testados em testCreateAndAddAttendee
   
   -- remove speaker from talk
-  RemoveSpeaker(talk1,speaker1);
-  assertEqual({}, talk1.GetSpeakers());
+  RemoveSpeaker((*@\vdmnotcovered{talk1}@*),(*@\vdmnotcovered{speaker1}@*));
+  assertEqual({}, (*@\vdmnotcovered{talk1}@*).(*@\vdmnotcovered{GetSpeakers}@*)());
   
   -- this test is supposed to fail (can't add a talk that overlaps an already existing one)
   /*AddTalk(conference,talk2);*/
@@ -187,481 +186,447 @@ public static main: () ==> ()
   -- this test is supposed to fail (there can't be two talks with the same name)
   /*AddTalk(conference,talk4);*/
   
+(*@
+\label{testSchedules:179}
+@*)
   -- this test is supposed to fail (can't create talks with empty name)
   /*talk2 := new Talk(conference, "", "Talk 2 description", date1, time2, 40);*/
  );
  
  
  -- test if the construction of the schedules is working correctly
-(*@
-\label{testSchedules:186}
-@*)
  private testSchedules: () ==> ()
- testSchedules() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
+ testSchedules() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := (*@\vdmnotcovered{WebSummit`ClearInstance}@*)(date1,(*@\vdmnotcovered{date2}@*));
   
   dcl conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
-  dcl conference2 : Conference := new Conference("Conference 2", "Conference 2 details");
+  dcl conference2 : Conference := (*@\vdmnotcovered{new}@*) (*@\vdmnotcovered{Conference}@*)((*@\vdmnotcovered{"Conference 2"}@*), (*@\vdmnotcovered{"Conference 2 details"}@*));
   
   dcl talk1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, time2, 40);
   dcl talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time1, 20); 
   dcl talk3 : Talk := new Talk("Talk 3", "Talk 3 description", date1, time3, 20);
-  dcl talk4 : Talk := new Talk("Talk 4", "Talk 4 description", date2, time3, 20);
+  dcl talk4 : Talk := new (*@\vdmnotcovered{Talk}@*)((*@\vdmnotcovered{"Talk 4"}@*), (*@\vdmnotcovered{"Talk 4 description"}@*), (*@\vdmnotcovered{date2}@*), (*@\vdmnotcovered{time3}@*), (*@\vdmnotcovered{20}@*));
  
   dcl talk5 : Talk := new Talk("Talk 5", "Talk 5 description", date1, time4, 20);
   dcl talk6 : Talk := new Talk("Talk 6", "Talk 6 description", date2, time2, 60);
   dcl talk7 : Talk := new Talk("Talk 7", "Talk 7 description", date2, time3, 20);
-  dcl talk8 : Talk := new Talk("Talk 8", "Talk 8 description", date2, time1, 20);
-  
-  webSummit.SetDates(date1, date2);
+  dcl talk8 : Talk := new (*@\vdmnotcovered{Talk}@*)("Talk 8", (*@\vdmnotcovered{"Talk 8 description"}@*), date2, (*@\vdmnotcovered{time1}@*), (*@\vdmnotcovered{20}@*));
   
   AddConference(conference1);
-  AddConference(conference2);
+  AddConference((*@\vdmnotcovered{conference2}@*));
   
   AddTalk(conference1, talk1);
   AddTalk(conference1, talk2);
   AddTalk(conference1, talk3);
-  AddTalk(conference1, talk4);
+  AddTalk((*@\vdmnotcovered{conference1}@*), (*@\vdmnotcovered{talk4}@*));
   
   AddTalk(conference2, talk5);
   AddTalk(conference2, talk6);
   AddTalk(conference2, talk7);
-  AddTalk(conference2, talk8);
+  AddTalk(conference2, (*@\vdmnotcovered{talk8}@*));
   
-  assertEqual(2, card webSummit.GetConferences());
-  assertEqual({conference1, conference2}, webSummit.GetConferences());
+  assertEqual(2, card (*@\vdmnotcovered{webSummit}@*).(*@\vdmnotcovered{GetConferences}@*)());
+  assertEqual({(*@\vdmnotcovered{conference1}@*), (*@\vdmnotcovered{conference2}@*)}, (*@\vdmnotcovered{webSummit}@*).(*@\vdmnotcovered{GetConferences}@*)());
   
-  assertEqual(4, card conference1.GetTalks());
-  assertEqual({talk1, talk2, talk3, talk4}, conference1.GetTalks());
+  assertEqual(4, (*@\vdmnotcovered{card}@*) (*@\vdmnotcovered{conference1}@*).(*@\vdmnotcovered{GetTalks}@*)());
+  assertEqual({talk1, talk2, talk3, talk4}, conference1.(*@\vdmnotcovered{GetTalks}@*)());
   
-  assertEqual(4, card conference2.GetTalks());
-  assertEqual({talk5, talk6, talk7, talk8}, conference2.GetTalks());
+  assertEqual(4, (*@\vdmnotcovered{card}@*) (*@\vdmnotcovered{conference2}@*).(*@\vdmnotcovered{GetTalks}@*)());
+  assertEqual({talk5, talk6, talk7, talk8}, conference2.(*@\vdmnotcovered{GetTalks}@*)());
   
-  assertEqual(2, len webSummit.GetSchedule(date1, mk_Utilities`Time(16,00)));
-  assertEqual([talk1, talk3], webSummit.GetSchedule(date1, mk_Utilities`Time(16,00)));
+  assertEqual(2, len webSummit.(*@\vdmnotcovered{GetSchedule}@*)(date1, (*@\vdmnotcovered{mk\_Utilities`Time}@*)(16,(*@\vdmnotcovered{00}@*))));
+  assertEqual([talk1, talk3], webSummit.GetSchedule(date1, mk_Utilities`Time(16,(*@\vdmnotcovered{00}@*))));
   
-  assertEqual(3, len webSummit.GetSchedule(date1, mk_Utilities`Time(15,00)));
-  assertEqual([talk2, talk5, talk1], webSummit.GetSchedule(date1, mk_Utilities`Time(15,00)));
+  assertEqual(3, len webSummit.(*@\vdmnotcovered{GetSchedule}@*)((*@\vdmnotcovered{date1}@*), mk_Utilities`Time(15,(*@\vdmnotcovered{00}@*))));
+  assertEqual([talk2, talk5, talk1], (*@\vdmnotcovered{webSummit}@*).(*@\vdmnotcovered{GetSchedule}@*)(date1, mk_Utilities`Time((*@\vdmnotcovered{15}@*),(*@\vdmnotcovered{00}@*))));
   
-  assertEqual(3, card dom webSummit.GetSchedule(conference1));
-  assertEqual({date1|->[talk2, talk1, talk3], Utilities`nextDay(date1)|->[], date2|->[talk4]}, webSummit.GetSchedule(conference1));
+  assertEqual(3, card dom webSummit.GetSchedule((*@\vdmnotcovered{conference1}@*)));
+  assertEqual({date1|->[talk2, talk1, talk3], Utilities`nextDay(date1)|->[], date2|->[talk4]}, webSummit.(*@\vdmnotcovered{GetSchedule}@*)((*@\vdmnotcovered{conference1}@*)));
   
-  assertEqual(3, card dom webSummit.GetSchedule(conference2));
-  assertEqual({date1|->[talk5], Utilities`nextDay(date1)|->[], date2|->[talk8, talk6, talk7]}, webSummit.GetSchedule(conference2));
+  assertEqual(3, card dom webSummit.(*@\vdmnotcovered{GetSchedule}@*)((*@\vdmnotcovered{conference2}@*)));
+  (*@\vdmnotcovered{assertEqual}@*)({date1|->[talk5], Utilities`nextDay(date1)|->[], date2|->[talk8, talk6, talk7]}, webSummit.(*@\vdmnotcovered{GetSchedule}@*)((*@\vdmnotcovered{conference2}@*)));
   
-  assertEqual(3, card dom webSummit.GetSchedule());
-  assertEqual({date1|->[talk2, talk5, talk1, talk3], Utilities`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
+  assertEqual(3, card dom (*@\vdmnotcovered{webSummit}@*).(*@\vdmnotcovered{GetSchedule}@*)());
+  assertEqual({date1|->[talk2, talk5, talk1, talk3], Utilities`nextDay(date1)(*@\vdmnotcovered{|->}@*)[], (*@\vdmnotcovered{date2}@*)(*@\vdmnotcovered{|->}@*)(*@\vdmnotcovered{[}@*)(*@\vdmnotcovered{talk8}@*), (*@\vdmnotcovered{talk6}@*), (*@\vdmnotcovered{talk7}@*), talk4]}, webSummit.(*@\vdmnotcovered{GetSchedule}@*)());
   
   -- this test is supposed to fail (2 first talks badly sorted, talk 2 takes place before talk5)
-  /*assertEqual({date1|->[talk5, talk2, talk1, talk3], Utils`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
+  /*assertEqual({date1|->[talk5, talk2, talk1, talk3], Utilities`nextDay(date1)|->[], date2|->[talk8, talk6, talk7, talk4]}, webSummit.GetSchedule());
   */
   
+(*@
+\label{testCreateAndAddCompany:243}
+@*)
   -- this test is supposed to fail (talk that starts at 15:20 and finishes at 15:40)
-  /*assertEqual(3, len webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));
-   assertEqual([talk2, talk1, talk3], webSummit.GetSchedule(date1, mk_Utils`Time(16,00)));*/
+  /*assertEqual(3, len webSummit.GetSchedule(date1, mk_Utilities`Time(16,00)));
+   assertEqual([talk2, talk1, talk3], webSummit.GetSchedule(date1, mk_Utilities`Time(16,00)));*/
  );
  
   -- test if the creation of companies is working correctly
-(*@
-\label{testCreateAndAddCompany:252}
-@*)
  private testCreateAndAddCompany: () ==> ()
- testCreateAndAddCompany() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
-  dcl company1 : Company := new Company("Comp1");
+ testCreateAndAddCompany() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := WebSummit`ClearInstance((*@\vdmnotcovered{date1}@*),(*@\vdmnotcovered{date2}@*));
+  dcl conference1 : Conference := (*@\vdmnotcovered{new}@*) (*@\vdmnotcovered{Conference}@*)((*@\vdmnotcovered{"Conference 1"}@*), (*@\vdmnotcovered{"Conference 1 details"}@*));
+  dcl company1 : Company := new Company((*@\vdmnotcovered{"Comp1"}@*));
   
   -- for tests supposed to fail
   /*dcl company2 : Company := new Company("Company 1");*/
   
-  webSummit.SetDates(date1, date2);
-  AddConference(conference1);
+  AddConference((*@\vdmnotcovered{conference1}@*));
   
-  AddCompany(conference1,company1);
+  AddCompany((*@\vdmnotcovered{conference1}@*),(*@\vdmnotcovered{company1}@*));
   
   -- tests gets and sets
-  assertEqual("Comp1", company1.GetName());
-  company1.SetName("Company 1");
-  assertEqual("Company 1", company1.GetName());
+  (*@\vdmnotcovered{assertEqual}@*)((*@\vdmnotcovered{"Comp1"}@*), (*@\vdmnotcovered{company1}@*).(*@\vdmnotcovered{GetName}@*)());
+  company1.SetName((*@\vdmnotcovered{"Company 1"}@*));
+  assertEqual("Company 1", (*@\vdmnotcovered{company1}@*).(*@\vdmnotcovered{GetName}@*)());
   
-  assertEqual(1, card conference1.GetCompanies());
-  assertEqual({company1}, conference1.GetCompanies());
+  assertEqual(1, (*@\vdmnotcovered{card}@*) (*@\vdmnotcovered{conference1}@*).(*@\vdmnotcovered{GetCompanies}@*)());
+  (*@\vdmnotcovered{assertEqual}@*)({(*@\vdmnotcovered{company1}@*)}, (*@\vdmnotcovered{conference1}@*).(*@\vdmnotcovered{GetCompanies}@*)());
   
   -- this test is supposed to fail (can't create companies with empty name)
   /*AddCompany(conference1,company2);*/
+(*@
+\label{testRemoveCompany:272}
+@*)
   
   -- this test is supposed to fail (there can't be two companies with the same name)
   /*AddCompany(conference1, new Company("Company 1"));*/
  );
  
  -- test if the removal of companies from conferences is working correctly
-(*@
-\label{testRemoveCompany:282}
-@*)
  private testRemoveCompany: () ==> ()
- testRemoveCompany() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
-  dcl company1 : Company := new Company("Company 1");
+ testRemoveCompany() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := (*@\vdmnotcovered{WebSummit`ClearInstance}@*)(date1,(*@\vdmnotcovered{date2}@*));
+  dcl conference1 : Conference := new Conference("Conference 1", (*@\vdmnotcovered{"Conference 1 details"}@*));
+  dcl company1 : Company := new Company((*@\vdmnotcovered{"Company 1"}@*));
   
   -- for tests supposed to fail
   /*dcl company2 : Company := new Company("Company 2");*/
   
-  webSummit.SetDates(date1, date2);
-  AddConference(conference1);
+  (*@\vdmnotcovered{AddConference}@*)((*@\vdmnotcovered{conference1}@*));
 
-  AddCompany(conference1,company1);
+  AddCompany(conference1,(*@\vdmnotcovered{company1}@*));
   
-  assertEqual(1, card conference1.GetCompanies());
-  assertEqual({company1}, conference1.GetCompanies());
+  assertEqual(1, card conference1.(*@\vdmnotcovered{GetCompanies}@*)());
+  (*@\vdmnotcovered{assertEqual}@*)({company1}, (*@\vdmnotcovered{conference1}@*).(*@\vdmnotcovered{GetCompanies}@*)());
   
-  RemoveCompany(conference1,company1);
+  (*@\vdmnotcovered{RemoveCompany}@*)(conference1,(*@\vdmnotcovered{company1}@*));
   
-  assertEqual(0, card conference1.GetCompanies());
-  assertEqual({}, conference1.GetCompanies());
+  assertEqual(0, card conference1.(*@\vdmnotcovered{GetCompanies}@*)());
+  (*@\vdmnotcovered{assertEqual}@*)((*@\vdmnotcovered{\{}@*)}, (*@\vdmnotcovered{conference1}@*).(*@\vdmnotcovered{GetCompanies}@*)());
+(*@
+\label{testRemoveTalk:298}
+@*)
   
   -- this test is supposed to fail (can't remove companies from a conference if they are not attending it)
   /*RemoveCompany(conference1,company2); */
  );
  
   -- test if the removal of talks from conferences is working correctly
-(*@
-\label{testRemoveTalk:309}
-@*)
  private testRemoveTalk: () ==> ()
- testRemoveTalk() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl conference1 : Conference := new Conference("Conference 1", "Conference 1 details");
-  dcl talk1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, time2, 40);
+ testRemoveTalk() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := WebSummit`ClearInstance(date1,(*@\vdmnotcovered{date2}@*));
+  dcl conference1 : Conference := (*@\vdmnotcovered{new}@*) Conference("Conference 1", (*@\vdmnotcovered{"Conference 1 details"}@*));
+  dcl talk1 : Talk := new Talk("Talk 1", "Talk 1 description", date1, (*@\vdmnotcovered{time2}@*), (*@\vdmnotcovered{40}@*));
   
   -- for tests supposed to fail
   /*dcl talk2 : Talk := new Talk("Talk 2", "Talk 2 description", date1, time1, 20);*/
   
-  webSummit.SetDates(date1, date2);
-  AddConference(conference1);
+  AddConference((*@\vdmnotcovered{conference1}@*));
   
-  AddTalk(conference1,talk1);
+  (*@\vdmnotcovered{AddTalk}@*)(conference1,(*@\vdmnotcovered{talk1}@*));
   
-  assertEqual(1, card conference1.GetTalks());
-  assertEqual({talk1}, conference1.GetTalks());
+  assertEqual(1, card conference1.(*@\vdmnotcovered{GetTalks}@*)());
+  (*@\vdmnotcovered{assertEqual}@*)({talk1}, conference1.(*@\vdmnotcovered{GetTalks}@*)());
   
-  RemoveTalk(conference1,talk1);
+  RemoveTalk((*@\vdmnotcovered{conference1}@*),(*@\vdmnotcovered{talk1}@*));
   
-  assertEqual(0, card conference1.GetTalks());
-  assertEqual({}, conference1.GetTalks());
+  assertEqual(0, (*@\vdmnotcovered{card}@*) (*@\vdmnotcovered{conference1}@*).(*@\vdmnotcovered{GetTalks}@*)());
+  (*@\vdmnotcovered{assertEqual}@*)({}, (*@\vdmnotcovered{conference1}@*).(*@\vdmnotcovered{GetTalks}@*)());
+(*@
+\label{testCreateAndAddAttendee:324}
+@*)
   
   -- this test is supposed to fail (can't remove talks from a conference if they don't exist)
   /*RemoveTalk(conference1,talk2); */
  );
  
  -- test if the creation of attendees is working correctly
-(*@
-\label{testCreateAndAddAttendee:336}
-@*)
  private testCreateAndAddAttendee: () ==> ()
- testCreateAndAddAttendee() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl conference : Conference := new Conference("Conference 1", "Conference 1 details");
-  dcl talk : Talk := new Talk("Talk 1", "Talk 1 description", date2, time2, 30);
-  dcl attendee1 : Common := new Common("Ines");
-  dcl attendee2 : Influential := new Influential("Andreia Rodrigues", "STUDENT", new Company("feup"), "STUDENT AT FEUP", "PT");
- 
-  -- for tests supposed to fail
-  /*dcl conference2 : Conference := new Conference("Conference 2", "Conference 2 details");*/
- 
-  webSummit.SetDates(date1, date2);
-  AddConference(conference);
-  AddTalk(conference, talk);
+ testCreateAndAddAttendee() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := (*@\vdmnotcovered{WebSummit`ClearInstance}@*)(date1,(*@\vdmnotcovered{date2}@*));
+  dcl attendee1 : Common := (*@\vdmnotcovered{new}@*) Common((*@\vdmnotcovered{"Ines"}@*));
+  dcl attendee2 : Influential := new Influential("Andreia Rodrigues", "STUDENT", new Company("feup"), (*@\vdmnotcovered{"STUDENT AT FEUP"}@*), (*@\vdmnotcovered{"PT"}@*));
   
   -- tests gets and sets
-  assertEqual("Ines", attendee1.GetName());
-  attendee1.SetName("Ines Gomes");
-  assertEqual("Ines Gomes", attendee1.GetName());
+  assertEqual((*@\vdmnotcovered{"Ines"}@*), attendee1.(*@\vdmnotcovered{GetName}@*)());
+  (*@\vdmnotcovered{attendee1}@*).SetName((*@\vdmnotcovered{"Ines Gomes"}@*));
+  assertEqual((*@\vdmnotcovered{"Ines Gomes"}@*), (*@\vdmnotcovered{attendee1}@*).(*@\vdmnotcovered{GetName}@*)());
  
-  AddAttendee(talk,attendee1);
+  AddAttendee(attendee1);
   
-  assertEqual(1, GetTotalAttendeesByTalk(talk));
-  assertEqual({attendee1}, talk.GetAttendees());
+  assertEqual(1, (*@\vdmnotcovered{GetTotalAttendees}@*)());
+  assertEqual({(*@\vdmnotcovered{attendee1}@*)}, webSummit.(*@\vdmnotcovered{GetAttendees}@*)());
+  assertEqual(attendee1, (*@\vdmnotcovered{webSummit}@*).GetAttendee((*@\vdmnotcovered{"Ines Gomes"}@*)));
   
-  AddAttendee(talk,attendee2);
+  (*@\vdmnotcovered{AddAttendee}@*)((*@\vdmnotcovered{attendee2}@*));
   
   -- tests gets and sets
-  assertEqual("STUDENT", attendee2.GetJobPosition());
-  attendee2.SetJobPosition("Student");
-  assertEqual("Student", attendee2.GetJobPosition());
+  assertEqual((*@\vdmnotcovered{"STUDENT"}@*), attendee2.(*@\vdmnotcovered{GetJobPosition}@*)());
+  (*@\vdmnotcovered{attendee2}@*).SetJobPosition((*@\vdmnotcovered{"Student"}@*));
+  assertEqual((*@\vdmnotcovered{"Student"}@*), attendee2.(*@\vdmnotcovered{GetJobPosition}@*)());
   
-  assertEqual("feup", attendee2.GetCompany().GetName());
-  attendee2.SetCompany(new Company("FEUP"));
-  assertEqual("FEUP", attendee2.GetCompany().GetName());
+  assertEqual((*@\vdmnotcovered{"feup"}@*), attendee2.(*@\vdmnotcovered{GetCompany}@*)().(*@\vdmnotcovered{GetName}@*)());
+  (*@\vdmnotcovered{attendee2}@*).SetCompany((*@\vdmnotcovered{new}@*) (*@\vdmnotcovered{Company}@*)((*@\vdmnotcovered{"FEUP"}@*)));
+  assertEqual((*@\vdmnotcovered{"FEUP"}@*), attendee2.(*@\vdmnotcovered{GetCompany}@*)().(*@\vdmnotcovered{GetName}@*)());
   
-  assertEqual("STUDENT AT FEUP", attendee2.GetDescription());
-  attendee2.SetDescription("Student At FEUP");
-  assertEqual("Student At FEUP", attendee2.GetDescription());
+  assertEqual((*@\vdmnotcovered{"STUDENT AT FEUP"}@*), (*@\vdmnotcovered{attendee2}@*).(*@\vdmnotcovered{GetDescription}@*)());
+  (*@\vdmnotcovered{attendee2}@*).SetDescription((*@\vdmnotcovered{"Student At FEUP"}@*));
+  (*@\vdmnotcovered{assertEqual}@*)("Student At FEUP", (*@\vdmnotcovered{attendee2}@*).(*@\vdmnotcovered{GetDescription}@*)());
   
-  assertEqual("PT", attendee2.GetCountry());
-  attendee2.SetCountry("Portugal");
-  assertEqual("Portugal", attendee2.GetCountry());
+  assertEqual((*@\vdmnotcovered{"PT"}@*), (*@\vdmnotcovered{attendee2}@*).(*@\vdmnotcovered{GetCountry}@*)());
+  (*@\vdmnotcovered{attendee2}@*).SetCountry((*@\vdmnotcovered{"Portugal"}@*));
+  (*@\vdmnotcovered{assertEqual}@*)("Portugal", (*@\vdmnotcovered{attendee2}@*).(*@\vdmnotcovered{GetCountry}@*)());
   
   -- get total attendees
-  assertEqual(2, GetTotalAttendeesByTalk(talk));
+(*@
+\label{testCreateAndAddStartup:367}
+@*)
+  (*@\vdmnotcovered{assertEqual}@*)((*@\vdmnotcovered{2}@*), (*@\vdmnotcovered{GetTotalAttendees}@*)());
   
   -- this test is supposed to fail (can't add an already existing attendee to a talk)
-  /*AddAttendee(talk,attendee2);*/
+  /*AddAttendee(attendee2);*/
  );
 
-(*@
-\label{testCreateAndAddStartup:387}
-@*)
  private testCreateAndAddStartup : () ==> ()
- testCreateAndAddStartup() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl startup1: Startup := new Startup("Startup Name","Startup Description","www.startup.pt","PT");
+ testCreateAndAddStartup() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := WebSummit`ClearInstance((*@\vdmnotcovered{date1}@*),(*@\vdmnotcovered{date2}@*));
+  dcl startup1: Startup := new Startup((*@\vdmnotcovered{"Startup Name"}@*),(*@\vdmnotcovered{"Startup Description"}@*),"www.startup.pt",(*@\vdmnotcovered{"PT"}@*));
   
   -- for tests supposed to fail
   /*dcl startup2: Startup := new Startup("Emitu","Startup Description","www.startup.pt","PT");*/
   
-  webSummit.SetDates(date1, date2);
-  
   -- tests gets and sets
-  assertEqual("Startup Name", startup1.GetName());
-  startup1.SetName("Emitu");
-  assertEqual("Emitu", startup1.GetName());
+  assertEqual((*@\vdmnotcovered{"Startup Name"}@*), startup1.(*@\vdmnotcovered{GetName}@*)());
+  (*@\vdmnotcovered{startup1}@*).SetName((*@\vdmnotcovered{"Emitu"}@*));
+  assertEqual("Emitu", startup1.(*@\vdmnotcovered{GetName}@*)());
   
-  assertEqual("Startup Description", startup1.GetDescription());
-  startup1.SetDescription("New Description");
-  assertEqual("New Description", startup1.GetDescription());
+  assertEqual((*@\vdmnotcovered{"Startup Description"}@*), startup1.(*@\vdmnotcovered{GetDescription}@*)());
+  (*@\vdmnotcovered{startup1}@*).SetDescription((*@\vdmnotcovered{"New Description"}@*));
+  assertEqual("New Description", (*@\vdmnotcovered{startup1}@*).(*@\vdmnotcovered{GetDescription}@*)());
   
-  assertEqual("www.startup.pt", startup1.GetWebsite());
-  startup1.SetWebsite("www.startup.en");
-  assertEqual("www.startup.en", startup1.GetWebsite());
+  assertEqual("www.startup.pt", (*@\vdmnotcovered{startup1}@*).(*@\vdmnotcovered{GetWebsite}@*)());
+  (*@\vdmnotcovered{startup1}@*).SetWebsite((*@\vdmnotcovered{"www.startup.en"}@*));
+  assertEqual((*@\vdmnotcovered{"www.startup.en"}@*), startup1.(*@\vdmnotcovered{GetWebsite}@*)());
   
-  assertEqual("PT", startup1.GetCountry());
-  startup1.SetCountry("EN");
-  assertEqual("EN", startup1.GetCountry());
+  assertEqual("PT", startup1.(*@\vdmnotcovered{GetCountry}@*)());
+  (*@\vdmnotcovered{startup1}@*).SetCountry((*@\vdmnotcovered{"EN"}@*));
+  assertEqual((*@\vdmnotcovered{"EN"}@*), startup1.(*@\vdmnotcovered{GetCountry}@*)());
   
   -- test add
-  assertEqual({}, GetStartups());
-  AddStartup(startup1);
-  assertEqual({startup1}, GetStartups());
+  assertEqual((*@\vdmnotcovered{\{}@*)}, (*@\vdmnotcovered{GetStartups}@*)());
+  (*@\vdmnotcovered{AddStartup}@*)((*@\vdmnotcovered{startup1}@*));
+  assertEqual({(*@\vdmnotcovered{startup1}@*)}, (*@\vdmnotcovered{GetStartups}@*)());
+  assertEqual(startup1, (*@\vdmnotcovered{webSummit}@*).GetStartup((*@\vdmnotcovered{"Emitu"}@*)));
+(*@
+\label{testRemoveStartup:403}
+@*)
   
   -- test to fail : add startup with the same name
   /*AddStartup(startup2);*/
   
  );
  
-(*@
-\label{testRemoveStartup:424}
-@*)
  private testRemoveStartup : () ==> ()
- testRemoveStartup() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl startup1: Startup := new Startup("Startup Name","Startup Description","www.startup.pt","PT");
+ testRemoveStartup() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := (*@\vdmnotcovered{WebSummit`ClearInstance}@*)(date1,(*@\vdmnotcovered{date2}@*));
+  dcl startup1: Startup := new Startup("Startup Name",(*@\vdmnotcovered{"Startup Description"}@*),"www.startup.pt",(*@\vdmnotcovered{"PT"}@*));
   
   --prepare test
-  webSummit.SetDates(date1, date2);
-  AddStartup(startup1);
+  AddStartup((*@\vdmnotcovered{startup1}@*));
   
   -- test remove
-  RemoveStartup(startup1);
-  assertEqual({}, GetStartups());
+  (*@\vdmnotcovered{RemoveStartup}@*)((*@\vdmnotcovered{startup1}@*));
+(*@
+\label{testCreateAndAddInvestors:419}
+@*)
+  assertEqual({}, (*@\vdmnotcovered{GetStartups}@*)());
   
   -- test to fail : remove startup that doesn't exist
   /*RemoveStartup(startup1);*/
  );
  
-(*@
-\label{testCreateAndAddInvestors:441}
-@*)
  private testCreateAndAddInvestors : () ==> ()
- testCreateAndAddInvestors() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl investor : Influential := new Influential("Mark Zuckerberg","CEO",new Company("facebook"),"Speaker Description","EN");
-  
-  webSummit.SetDates(date1, date2);
-  
-  assertEqual({}, GetInvestors());
-  AddInvestor(investor);
-  assertEqual({investor}, GetInvestors());
+ testCreateAndAddInvestors() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := WebSummit`ClearInstance((*@\vdmnotcovered{date1}@*),(*@\vdmnotcovered{date2}@*));
+  dcl investor : Influential := new Influential("Mark Zuckerberg","CEO",new Company((*@\vdmnotcovered{"facebook"}@*)),"Speaker Description",(*@\vdmnotcovered{"EN"}@*));
+(*@
+\label{testCreateAndAddNews:429}
+@*)
+
+  assertEqual({}, (*@\vdmnotcovered{GetInvestors}@*)());
+  AddInvestor((*@\vdmnotcovered{investor}@*));
+  assertEqual({(*@\vdmnotcovered{investor}@*)}, (*@\vdmnotcovered{GetInvestors}@*)());
  );
  
-(*@
-\label{testRemoveInvestors:453}
-@*)
- private testRemoveInvestors : () ==> ()
- testRemoveInvestors() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl investor : Influential := new Influential("Mark Zuckerberg","CEO",new Company("facebook"),"Speaker Description","EN");
-  
-  --prepare test
-  webSummit.SetDates(date1, date2);
-  AddInvestor(investor);
- 
-  --remove investor
-  RemoveInvestor(investor);
-  assertEqual({}, GetInvestors());
-  
-  -- test to fail : remove investor that doesn't exist
-  /*RemoveInvestor(investor);*/
- );
- 
-(*@
-\label{testCreateAndAddNews:470}
-@*)
  private testCreateAndAddNews: () ==> ()
- testCreateAndAddNews() == (
-  dcl webSummit: WebSummit := WebSummit`ClearInstance();
-  dcl new1: New := new New("Title","Body");
-  
-  webSummit.SetDates(date1, date2);
+ testCreateAndAddNews() == (*@\vdmnotcovered{(}@*)
+  dcl webSummit: WebSummit := WebSummit`ClearInstance((*@\vdmnotcovered{date1}@*),(*@\vdmnotcovered{date2}@*));
+  dcl new1: New := new New("Title",(*@\vdmnotcovered{"Body"}@*));
   
   -- tests gets and sets
-  assertEqual("Title", new1.GetTitle());
-  new1.SetTitle("New Title");
-  assertEqual("New Title", new1.GetTitle());  
+  assertEqual("Title", new1.(*@\vdmnotcovered{GetTitle}@*)());
+  new1.SetTitle((*@\vdmnotcovered{"New Title"}@*));
+  assertEqual("New Title", (*@\vdmnotcovered{new1}@*).(*@\vdmnotcovered{GetTitle}@*)());  
   
-  assertEqual("Body", new1.GetBody());
-  new1.SetBody("New Body");
-  assertEqual("New Body", new1.GetBody()); 
-  
-  assertEqual({}, GetNews());
-  AddNew(new1);
-  assertEqual({new1}, GetNews());
- );
- 
+  assertEqual("Body", new1.(*@\vdmnotcovered{GetBody}@*)());
+  new1.SetBody((*@\vdmnotcovered{"New Body"}@*));
+  (*@\vdmnotcovered{assertEqual}@*)("New Body", new1.(*@\vdmnotcovered{GetBody}@*)()); 
 (*@
-\label{AddConference:491}
+\label{AddConference:448}
 @*)
+  
+  (*@\vdmnotcovered{assertEqual}@*)({}, (*@\vdmnotcovered{GetNews}@*)());
+  AddNew((*@\vdmnotcovered{new1}@*));
+  assertEqual({new1}, (*@\vdmnotcovered{GetNews}@*)());
+ );
+(*@
+\label{AddTalk:453}
+@*)
+ 
  private AddConference: Conference ==> ()
- AddConference(c) == (
-  WebSummit`GetInstance().AddConference(c);
+ AddConference(c) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().AddConference((*@\vdmnotcovered{c}@*));
  );
- 
 (*@
-\label{AddTalk:496}
+\label{RemoveTalk:458}
 @*)
+ 
  private AddTalk: Conference * Talk ==> ()
- AddTalk(c, t) == (
-  WebSummit`GetInstance().AddTalk(c, t);
+ AddTalk(c, t) == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().AddTalk(c, (*@\vdmnotcovered{t}@*));
   );
- 
 (*@
-\label{RemoveTalk:501}
+\label{AddCompany:463}
 @*)
+ 
  private RemoveTalk: Conference * Talk ==> ()
- RemoveTalk(c, t) == (
-  WebSummit`GetInstance().RemoveTalk(c, t);
+ RemoveTalk(c, t) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().RemoveTalk(c, (*@\vdmnotcovered{t}@*));
  );
- 
 (*@
-\label{AddCompany:506}
+\label{RemoveCompany:468}
 @*)
+ 
  private AddCompany: Conference * Company ==> ()
- AddCompany(conf, c) == (
-  WebSummit`GetInstance().AddCompany(conf, c);
+ AddCompany(conf, c) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().AddCompany((*@\vdmnotcovered{conf}@*), (*@\vdmnotcovered{c}@*));
  );
- 
 (*@
-\label{RemoveCompany:511}
+\label{AddAttendee:473}
 @*)
+ 
  private RemoveCompany: Conference * Company ==> ()
- RemoveCompany(conf, c) == (
-  WebSummit`GetInstance().RemoveCompany(conf, c);
+ RemoveCompany(conf, c) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().RemoveCompany((*@\vdmnotcovered{conf}@*), (*@\vdmnotcovered{c}@*));
  );
  
+ private AddAttendee: Attendee ==> ()
+ AddAttendee(a) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().AddAttendee((*@\vdmnotcovered{a}@*));
+ );
 (*@
-\label{AddAttendee:516}
+\label{AddSpeaker:483}
 @*)
+ 
  private AddAttendee: Talk * Attendee ==> ()
- AddAttendee(t, a) == (
-  WebSummit`GetInstance().AddAttendee(t, a);
+ AddAttendee(t, a) == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().AddAttendee((*@\vdmnotcovered{t}@*), (*@\vdmnotcovered{a}@*));
  );
+(*@
+\label{RemoveSpeaker:488}
+@*)
 
-(*@
-\label{AddSpeaker:521}
-@*)
  private AddSpeaker: Talk * Influential ==> ()
- AddSpeaker(talk, s) == (
-  WebSummit`GetInstance().AddSpeaker(talk, s);
+ AddSpeaker(talk, s) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().AddSpeaker(talk, (*@\vdmnotcovered{s}@*));
  );
- 
 (*@
-\label{RemoveSpeaker:526}
+\label{AddStartup:493}
 @*)
+ 
  private RemoveSpeaker: Talk * Influential ==> ()
- RemoveSpeaker(talk, s) == (
-  WebSummit`GetInstance().RemoveSpeaker(talk, s);
+ RemoveSpeaker(talk, s) == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().RemoveSpeaker((*@\vdmnotcovered{talk}@*), (*@\vdmnotcovered{s}@*));
  ); 
+(*@
+\label{RemoveStartup:498}
+@*)
   
-(*@
-\label{AddStartup:531}
-@*)
  private AddStartup: Startup ==> ()
- AddStartup(s) == (
-  WebSummit`GetInstance().AddStartup(s);
+ AddStartup(s) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().AddStartup((*@\vdmnotcovered{s}@*));
  );
- 
 (*@
-\label{RemoveStartup:536}
+\label{GetStartups:503}
 @*)
+ 
  private RemoveStartup: Startup ==> ()
- RemoveStartup(s) == (
-  WebSummit`GetInstance().RemoveStartup(s);
+ RemoveStartup(s) == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().RemoveStartup((*@\vdmnotcovered{s}@*));
  ); 
- 
 (*@
-\label{GetStartups:541}
+\label{AddInvestor:508}
 @*)
+ 
  private GetStartups: () ==> set of Startup
- GetStartups() == (
-  WebSummit`GetInstance().GetStartups();
- ); 
- 
+ GetStartups() == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().GetStartups();
+ );  
 (*@
-\label{AddInvestor:546}
+\label{GetInvestors:513}
 @*)
+ 
  private AddInvestor: Influential ==> ()
- AddInvestor(i) == (
-  WebSummit`GetInstance().AddInvestor(i);
+ AddInvestor(i) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().AddInvestor((*@\vdmnotcovered{i}@*));
  );
- 
 (*@
-\label{RemoveInvestor:551}
+\label{AddNew:518}
 @*)
- private RemoveInvestor: Influential ==> ()
- RemoveInvestor(i) == (
-  WebSummit`GetInstance().RemoveInvestor(i);
- );
  
-(*@
-\label{GetInvestors:556}
-@*)
  private GetInvestors: () ==> set of Influential
- GetInvestors() == (
-  WebSummit`GetInstance().GetInvestors();
+ GetInvestors() == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().GetInvestors();
  );
- 
 (*@
-\label{AddNew:561}
+\label{GetNews:523}
 @*)
+ 
  private AddNew: New ==> ()
- AddNew(n) == (
-  WebSummit`GetInstance().AddNew(n);
+ AddNew(n) == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().AddNew((*@\vdmnotcovered{n}@*));
  ); 
- 
 (*@
-\label{GetNews:566}
+\label{GetTotalAttendees:528}
 @*)
+ 
  private GetNews: () ==> set of New
- GetNews() == (
-  WebSummit`GetInstance().GetNews();
+ GetNews() == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().GetNews();
+ );
+(*@
+\label{GetTotalAttendeesByTalk:533}
+@*)
+ 
+ private GetTotalAttendees: () ==> int
+ GetTotalAttendees() == (*@\vdmnotcovered{(}@*)
+  (*@\vdmnotcovered{WebSummit`GetInstance}@*)().GetTotalAttendees();
  );
  
-(*@
-\label{GetTotalAttendeesByTalk:571}
-@*)
  private GetTotalAttendeesByTalk: Talk ==> int
- GetTotalAttendeesByTalk(talk) == (
-  WebSummit`GetInstance().GetTotalAttendeesByTalk(talk);
+ GetTotalAttendeesByTalk(talk) == (*@\vdmnotcovered{(}@*)
+  WebSummit`GetInstance().GetTotalAttendeesByTalk((*@\vdmnotcovered{talk}@*));
  ); 
  
 functions
@@ -670,3 +635,72 @@ traces
 
 end WebSummitTest
 \end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[AddAttendee:473]{AddAttendee} & 473&0.0\% & 0 \\
+\hline
+\hyperref[AddCompany:463]{AddCompany} & 463&0.0\% & 0 \\
+\hline
+\hyperref[AddConference:448]{AddConference} & 448&0.0\% & 0 \\
+\hline
+\hyperref[AddInvestor:508]{AddInvestor} & 508&0.0\% & 0 \\
+\hline
+\hyperref[AddNew:518]{AddNew} & 518&0.0\% & 0 \\
+\hline
+\hyperref[AddSpeaker:483]{AddSpeaker} & 483&0.0\% & 0 \\
+\hline
+\hyperref[AddStartup:493]{AddStartup} & 493&0.0\% & 0 \\
+\hline
+\hyperref[AddTalk:453]{AddTalk} & 453&0.0\% & 0 \\
+\hline
+\hyperref[GetInvestors:513]{GetInvestors} & 513&0.0\% & 0 \\
+\hline
+\hyperref[GetNews:523]{GetNews} & 523&0.0\% & 0 \\
+\hline
+\hyperref[GetStartups:503]{GetStartups} & 503&0.0\% & 0 \\
+\hline
+\hyperref[GetTotalAttendees:528]{GetTotalAttendees} & 528&0.0\% & 0 \\
+\hline
+\hyperref[GetTotalAttendeesByTalk:533]{GetTotalAttendeesByTalk} & 533&0.0\% & 0 \\
+\hline
+\hyperref[RemoveCompany:468]{RemoveCompany} & 468&0.0\% & 0 \\
+\hline
+\hyperref[RemoveSpeaker:488]{RemoveSpeaker} & 488&0.0\% & 0 \\
+\hline
+\hyperref[RemoveStartup:498]{RemoveStartup} & 498&0.0\% & 0 \\
+\hline
+\hyperref[RemoveTalk:458]{RemoveTalk} & 458&0.0\% & 0 \\
+\hline
+\hyperref[main:17]{main} & 17&100.0\% & 3 \\
+\hline
+\hyperref[testCreateAndAddAttendee:324]{testCreateAndAddAttendee} & 324&13.3\% & 0 \\
+\hline
+\hyperref[testCreateAndAddCompany:243]{testCreateAndAddCompany} & 243&5.5\% & 0 \\
+\hline
+\hyperref[testCreateAndAddConference:68]{testCreateAndAddConference} & 68&100.0\% & 3 \\
+\hline
+\hyperref[testCreateAndAddInvestors:419]{testCreateAndAddInvestors} & 419&9.0\% & 0 \\
+\hline
+\hyperref[testCreateAndAddNews:429]{testCreateAndAddNews} & 429&8.1\% & 0 \\
+\hline
+\hyperref[testCreateAndAddStartup:367]{testCreateAndAddStartup} & 367&10.9\% & 0 \\
+\hline
+\hyperref[testCreateAndAddTalk:107]{testCreateAndAddTalk} & 107&88.1\% & 3 \\
+\hline
+\hyperref[testRemoveCompany:272]{testRemoveCompany} & 272&10.5\% & 1 \\
+\hline
+\hyperref[testRemoveStartup:403]{testRemoveStartup} & 403&0.0\% & 0 \\
+\hline
+\hyperref[testRemoveTalk:298]{testRemoveTalk} & 298&9.5\% & 0 \\
+\hline
+\hyperref[testSchedules:179]{testSchedules} & 179&42.9\% & 0 \\
+\hline
+\hline
+WebSummitTest.vdmpp & & 43.5\% & 10 \\
+\hline
+\end{longtable}
+

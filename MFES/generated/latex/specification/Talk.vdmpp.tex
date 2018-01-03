@@ -15,8 +15,8 @@ instance variables
  private speakers : set of Influential := {};
  private attendees : set of Attendee := {};
  
- inv not exists s1, s2 in set speakers & s1 <> s2 and s1.GetID() = s2.GetID();
- inv not exists a1, a2 in set attendees & a1 <> a2 and a1.GetID() = a2.GetID();
+ inv not exists s1, s2 in set speakers & s1 <> s2 and s1.GetID() (*@\vdmnotcovered{=}@*) s2.(*@\vdmnotcovered{GetID}@*)();
+ inv not exists a1, a2 in set attendees & a1 <> a2 and a1.GetID() = a2.(*@\vdmnotcovered{GetID}@*)();
  
 operations
 
@@ -209,3 +209,52 @@ traces
 
 end Talk
 \end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[AddAttendee:135]{AddAttendee} & 135&100.0\% & 1 \\
+\hline
+\hyperref[AddSpeaker:119]{AddSpeaker} & 119&100.0\% & 3 \\
+\hline
+\hyperref[GetAttendees:113]{GetAttendees} & 113&100.0\% & 4 \\
+\hline
+\hyperref[GetConference:95]{GetConference} & 95&100.0\% & 13 \\
+\hline
+\hyperref[GetDate:59]{GetDate} & 59&100.0\% & 972 \\
+\hline
+\hyperref[GetDescription:47]{GetDescription} & 47&100.0\% & 6 \\
+\hline
+\hyperref[GetDuration:83]{GetDuration} & 83&100.0\% & 66 \\
+\hline
+\hyperref[GetName:35]{GetName} & 35&100.0\% & 324 \\
+\hline
+\hyperref[GetSpeakers:107]{GetSpeakers} & 107&100.0\% & 9 \\
+\hline
+\hyperref[GetTime:71]{GetTime} & 71&100.0\% & 1290 \\
+\hline
+\hyperref[GetTotalAttendees:143]{GetTotalAttendees} & 143&100.0\% & 1 \\
+\hline
+\hyperref[RemoveSpeaker:127]{RemoveSpeaker} & 127&100.0\% & 6 \\
+\hline
+\hyperref[SetConference:101]{SetConference} & 101&100.0\% & 30 \\
+\hline
+\hyperref[SetDate:65]{SetDate} & 65&100.0\% & 3 \\
+\hline
+\hyperref[SetDescription:53]{SetDescription} & 53&100.0\% & 3 \\
+\hline
+\hyperref[SetDuration:89]{SetDuration} & 89&100.0\% & 3 \\
+\hline
+\hyperref[SetName:41]{SetName} & 41&100.0\% & 3 \\
+\hline
+\hyperref[SetTime:77]{SetTime} & 77&100.0\% & 3 \\
+\hline
+\hyperref[Talk:23]{Talk} & 23&100.0\% & 30 \\
+\hline
+\hline
+Talk.vdmpp & & 95.4\% & 2770 \\
+\hline
+\end{longtable}
+

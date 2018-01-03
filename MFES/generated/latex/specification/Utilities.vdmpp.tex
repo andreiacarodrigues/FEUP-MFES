@@ -57,11 +57,11 @@ functions
 (*@
 \label{IsLeapYear:50}
 @*)
- public IsLeapYear: nat1 +> bool IsLeapYear(year) == year mod 4 = 0 and year mod 100 <> 0 or year mod 400 = 0;
+ public IsLeapYear: nat1 +> bool IsLeapYear(year) == year mod 4 = 0 and year mod 100 <> 0 or year mod (*@\vdmnotcovered{400}@*) = (*@\vdmnotcovered{0}@*);
 (*@
 \label{DaysOfMonth:51}
 @*)
- public DaysOfMonth: nat1 * nat1 -> nat1 DaysOfMonth(year, month) == ( cases month : 1, 3, 5, 7, 8, 10, 12 -> 31, 4, 6, 9, 11 -> 30, 2 -> if IsLeapYear(year) then 29 else 28 end ) pre month >= 1 and month <= 12;
+ public DaysOfMonth: nat1 * nat1 -> nat1 DaysOfMonth(year, month) == ( cases month : 1, 3, 5, 7, 8, 10, 12 -> 31, 4, 6, 9, 11 -> 30, 2 -> (*@\vdmnotcovered{if}@*) (*@\vdmnotcovered{IsLeapYear}@*)((*@\vdmnotcovered{year}@*)) then 29 else (*@\vdmnotcovered{28}@*) end ) pre month >= 1 and month <= 12;
  
 (*@
 \label{mergeSortTalks:53}
@@ -87,10 +87,10 @@ functions
   nextDay(d) ==
   (
    if (d.day = DaysOfMonth(d.year,d.month))
-   then if(d.month < 12)
-      then mk_Date(d.year, d.month + 1, 1)
+   then (*@\vdmnotcovered{if}@*)(d.month (*@\vdmnotcovered{<}@*) (*@\vdmnotcovered{12}@*))
+      then mk_Date(d.year, d.month + 1, (*@\vdmnotcovered{1}@*))
       else
-      mk_Date(d.year + 1, 1, 1)
+      mk_Date(d.year + 1, 1, (*@\vdmnotcovered{1}@*))
     else
     mk_Date(d.year, d.month, d.day + 1)
   );
@@ -102,7 +102,7 @@ functions
  public isSetBetweenDates: Date * Date * Date -> bool
   isSetBetweenDates(dToCompare, dinit, dfinal) == (
    if(dinit = nextDay(dfinal))
-   then false
+   then (*@\vdmnotcovered{false}@*)
    else if (dToCompare = dinit)
    then true
    else isSetBetweenDates(dToCompare, nextDay(dinit), dfinal)
@@ -117,31 +117,58 @@ functions
    if (time1.hour < time2.hour)
    then if (time1.minute + dur1 <= 60)
      then true
-     else if(time1.minute + dur1 - 60 <= time2.minute)
-        then true
-        else false
+     else (*@\vdmnotcovered{if}@*)((*@\vdmnotcovered{time1}@*).(*@\vdmnotcovered{minute}@*) (*@\vdmnotcovered{+}@*) (*@\vdmnotcovered{dur1}@*) (*@\vdmnotcovered{-}@*) (*@\vdmnotcovered{60}@*) (*@\vdmnotcovered{<=}@*) (*@\vdmnotcovered{time2}@*).(*@\vdmnotcovered{minute}@*))
+        then (*@\vdmnotcovered{true}@*)
+        else (*@\vdmnotcovered{false}@*)
  
    elseif  (time1.hour = time2.hour)
    then if(time1.minute < time2.minute)
       then if(time1.minute + dur1 <= time2.minute)
          then true
-         else false
-      elseif(time2.minute < time1.minute)
-      then if(time2.minute + dur2 <= time1.minute)
-         then true
-         else false
-       else false
+         else (*@\vdmnotcovered{false}@*)
+      elseif(time2.(*@\vdmnotcovered{minute}@*) < (*@\vdmnotcovered{time1}@*).(*@\vdmnotcovered{minute}@*))
+      then if(time2.(*@\vdmnotcovered{minute}@*) + (*@\vdmnotcovered{dur2}@*) (*@\vdmnotcovered{<=}@*) (*@\vdmnotcovered{time1}@*).(*@\vdmnotcovered{minute}@*))
+         then (*@\vdmnotcovered{true}@*)
+         else (*@\vdmnotcovered{false}@*)
+       else (*@\vdmnotcovered{false}@*)
        
    elseif (time2.hour < time1.hour)
    then if (time2.minute + dur2 <= 60)
      then true
      else if(time2.minute + dur2 - 60 <= time1.minute)
         then true
-        else false
-   else false
+        else (*@\vdmnotcovered{false}@*)
+   else (*@\vdmnotcovered{false}@*)
   );
   
 traces
 
 end Utilities
 \end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[DaysOfMonth:51]{DaysOfMonth} & 51&68.7\% & 1368 \\
+\hline
+\hyperref[DoesntOverlap:90]{DoesntOverlap} & 90&65.2\% & 6 \\
+\hline
+\hyperref[IsLeapYear:50]{IsLeapYear} & 50&33.3\% & 1368 \\
+\hline
+\hyperref[isBefore:24]{isBefore} & 24&100.0\% & 1176 \\
+\hline
+\hyperref[isSetBetweenDates:80]{isSetBetweenDates} & 80&93.7\% & 60 \\
+\hline
+\hyperref[lmergeSort:36]{lmergeSort} & 36&100.0\% & 144 \\
+\hline
+\hyperref[mergeSortTalks:53]{mergeSortTalks} & 53&100.0\% & 642 \\
+\hline
+\hyperref[nextDay:67]{nextDay} & 67&47.3\% & 645 \\
+\hline
+\hline
+Utilities.vdmpp & & 75.0\% & 5409 \\
+\hline
+\end{longtable}
+

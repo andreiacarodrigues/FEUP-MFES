@@ -26,131 +26,133 @@ operations
 (*@
 \label{WebSummit:25}
 @*)
- public WebSummit :  () ==> WebSummit
-    WebSummit () == (
+ public WebSummit :  Utilities`Date * Utilities`Date ==> WebSummit
+    WebSummit (initDate, endDate) == (
+     initialDate := initDate;
+     finalDate := endDate;
      return self
     );
     
  -- singleton - return the existent instance
 (*@
-\label{GetInstance:31}
+\label{GetInstance:33}
 @*)
  public pure static GetInstance: () ==> WebSummit 
    GetInstance() == (
     return websummit;
    );
-(*@
-\label{ClearInstance:35}
-@*)
     
  -- singleton - reset the instance
- public static ClearInstance: () ==> WebSummit
-  ClearInstance() == (
-   websummit := new WebSummit();
+(*@
+\label{ClearInstance:39}
+@*)
+ public static ClearInstance: Utilities`Date * Utilities`Date ==> WebSummit
+  ClearInstance(initDate, endDate) == (
+   websummit := new WebSummit(initDate, endDate);
    return GetInstance();
   )
   post RESULT.conferences = {} and RESULT.exhibit.GetStartups() = {}
     and RESULT.exhibit.GetInvestors() = {} and RESULT.attendees = {};  
-(*@
-\label{SetDates:44}
-@*)
     
   -- sets websummit dates
-  public SetDates : Utilities`Date * Utilities`Date ==> ()
-    SetDates (d1, d2) == (
-     initialDate := d1;
-     finalDate := d2;
-    )
-    post initialDate = d1 and finalDate = d2;
 (*@
-\label{GetInitialDate:52}
+\label{SetDates:48}
 @*)
+  public SetDates : Utilities`Date * Utilities`Date ==> ()
+    SetDates (d1, d2) == (*@\vdmnotcovered{(}@*)
+     (*@\vdmnotcovered{initialDate}@*) := (*@\vdmnotcovered{d1}@*);
+     finalDate := (*@\vdmnotcovered{d2}@*);
+    )
+    post initialDate = d1 and (*@\vdmnotcovered{finalDate}@*) (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{d2}@*);
     
   --  returns websummit initial date
+(*@
+\label{GetInitialDate:56}
+@*)
   pure public GetInitialDate : () ==> Utilities`Date
     GetInitialDate () == (
      return initialDate
     );
-(*@
-\label{GetFinalDate:58}
-@*)
     
   -- returns websummit final date
+(*@
+\label{GetFinalDate:62}
+@*)
   pure public GetFinalDate : () ==> Utilities`Date
     GetFinalDate () == (
      return finalDate
     ); 
-(*@
-\label{AddConference:64}
-@*)
    
    -- creates a new conference
+(*@
+\label{AddConference:68}
+@*)
   public AddConference : Conference ==> ()
     AddConference (conference) == (
      conferences := conferences union {conference};
     )
     pre conference not in set conferences and notAlreadyExistent(conference) = true
    post conferences = conferences~ union {conference};
-(*@
-\label{AddTalk:72}
-@*)
    
   -- adds a new talk to an existing conference
+(*@
+\label{AddTalk:76}
+@*)
   public AddTalk : Conference * Talk ==> ()
     AddTalk (conference, talk) == (
      conference.AddTalk(talk);
     )
     pre conference in set conferences and
       Utilities`isSetBetweenDates(talk.GetDate(), initialDate, finalDate);
-(*@
-\label{RemoveTalk:80}
-@*)
       
   -- removes a talk from an existing conference
+(*@
+\label{RemoveTalk:84}
+@*)
    public RemoveTalk : Conference * Talk ==> ()
     RemoveTalk (conference, talk) == (
      conference.RemoveTalk(talk);
     )
     pre conference in set conferences;
-(*@
-\label{AddCompany:87}
-@*)
       
   -- adds a new company to an existing conference
+(*@
+\label{AddCompany:91}
+@*)
    public AddCompany : Conference * Company ==> ()
     AddCompany (conference, company) == (
      conference.AddCompany(company);
     )
     pre conference in set conferences;
-(*@
-\label{RemoveCompany:94}
-@*)
     
    -- removes a company from an existing conference
+(*@
+\label{RemoveCompany:98}
+@*)
    public RemoveCompany : Conference * Company ==> ()
     RemoveCompany (conference, company) == (
      conference.RemoveCompany(company);
     )
     pre conference in set conferences;
     
-(*@
-\label{AddSpeaker:102}
-@*)
     
    -- adds a speaker no an existent talk
+(*@
+\label{AddSpeaker:106}
+@*)
    public AddSpeaker: Talk * Influential ==> ()
     AddSpeaker (talk, speaker) == (
      talk.AddSpeaker(speaker);
      if(speaker not in set attendees)
       then attendees := attendees union {speaker}
     )
-    pre GetConference(talk.GetConference()) in set conferences  --todas as talks de todas as conferences
-    post speaker in set attendees;  -- todos os influentials estao inscritos
-(*@
-\label{RemoveSpeaker:112}
-@*)
+    pre GetConference(talk.GetConference()) in set conferences 
+    post speaker in set attendees;  
    
    -- removes a speaker from an existent conference
+(*@
+\label{RemoveSpeaker:116}
+@*)
    public RemoveSpeaker: Talk * Influential ==> ()
     RemoveSpeaker (talk, speaker) == (
      talk.RemoveSpeaker(speaker);
@@ -158,20 +160,20 @@ operations
     -- all talks from all conferences 
     pre GetConference(talk.GetConference()) in set conferences 
     post speaker in set attendees;
-(*@
-\label{GetConferences:121}
-@*)
     
   -- returns all confereces
+(*@
+\label{GetConferences:125}
+@*)
   pure public GetConferences : () ==> set of Conference
     GetConferences () == (
      return conferences
     );
-(*@
-\label{GetConference:127}
-@*)
     
   -- returns a specific conferece by it's name
+(*@
+\label{GetConference:131}
+@*)
   public pure GetConference : Utilities`String ==> [Conference]
     GetConference (conferenceName) == (
      for all conference in set conferences do (
@@ -179,14 +181,14 @@ operations
       then return conference
      );
      
-     return nil
+     (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{nil}@*)
     )
   pre len conferenceName > 0;
-(*@
-\label{GetSchedule:139}
-@*)
   
   -- returns the full schedule of a conference
+(*@
+\label{GetSchedule:143}
+@*)
   public GetSchedule : Conference ==> map Utilities`Date to seq of Talk
     GetSchedule (c) == (
      return c.GetSchedule();
@@ -249,10 +251,19 @@ operations
     temp := Utilities`mergeSortTalks(temp);
           
      return temp;
-    );   
+    )
+    pre forall conference in set conferences & date in set (dom (conference.GetSchedule)()) ;   
+    
+  -- adds a new attendee to event
 (*@
-\label{AddAttendee:204}
+\label{AddAttendee:209}
 @*)
+  public AddAttendee : Attendee ==> ()
+    AddAttendee (attendee) == (
+     attendees := attendees union {attendee}
+    )
+    pre attendee not in set attendees
+    post attendee in set attendees;   
     
   -- adds a new attendee to an existing talk
   public AddAttendee : Talk * Attendee ==> ()
@@ -263,117 +274,140 @@ operations
     )
     pre GetConference(talk.GetConference()) in set conferences
     post attendee in set attendees; 
-(*@
-\label{notAlreadyExistent:214}
-@*)
   
   -- checks if a conference with the same name doesn't exist already: for precondition of AddConference
+(*@
+\label{notAlreadyExistent:227}
+@*)
     pure private notAlreadyExistent : Conference ==> bool
     notAlreadyExistent (newConference) == (
     dcl doesntExist : bool := true;
     for all conference in set conferences do (
      if(conference.GetName() = newConference.GetName())
-     then(
-        doesntExist := false;
-        return doesntExist
+     then(*@\vdmnotcovered{(}@*)
+        doesntExist := (*@\vdmnotcovered{false}@*);
+        (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{doesntExist}@*)
        )
      );
      
      return doesntExist;
     )
     pre newConference not in set conferences;
-(*@
-\label{GetAttendees:230}
-@*)
     
- -- returns all websummit attendees
+  -- returns all websummit attendees
+(*@
+\label{GetAttendees:243}
+@*)
   public GetAttendees : () ==> set of Attendee
     GetAttendees () == (
      return attendees;
     );  
+    
+   -- returns all websummit attendees
+(*@
+\label{GetAttendee:249}
+@*)
+   public GetAttendee : Utilities`String ==> [Attendee]
+    GetAttendee (name) == (
+     for all a in set attendees do (
+     if (a.GetName() = name)
+      then return a
+     );
+     (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{nil}@*)
+    )
+    pre len name > 0; 
  
   --returns all startups
+(*@
+\label{GetStartups:260}
+@*)
   public GetStartups: () ==> set of Startup
     GetStartups () == (
      exhibit.GetStartups();
     );
+    
+   --get startup by name   
 (*@
-\label{GetStartups:242}
+\label{GetStartup:266}
 @*)
+  public GetStartup: Utilities`String ==> Startup
+    GetStartup (name) == (
+     return exhibit.GetStartup(name);
+    );
  
   --add new startup to exhibit
+(*@
+\label{AddStartup:272}
+@*)
   public AddStartup: Startup ==> ()
     AddStartup (s) == (
      exhibit.AddStartup(s);
     );
-(*@
-\label{AddStartup:248}
-@*)
  
   --remove startup from exhibit    
+(*@
+\label{RemoveStartup:278}
+@*)
   public RemoveStartup: Startup ==> ()
     RemoveStartup (s) == (
      exhibit.RemoveStartup(s);
     );
-(*@
-\label{RemoveStartup:254}
-@*)
     
   --add investor to exhibit
+(*@
+\label{AddInvestor:284}
+@*)
   public AddInvestor: Influential ==> ()
    AddInvestor(i) == (
     exhibit.AddInvestor(i);
    );
-(*@
-\label{AddInvestor:260}
-@*)
-  
-  --remove investor from exhibit
-  public RemoveInvestor: Influential ==> ()
-   RemoveInvestor(i) == (
-    exhibit.RemoveInvestor(i);
-   );
-(*@
-\label{RemoveInvestor:266}
-@*)
   
   --return all investors
+(*@
+\label{GetInvestors:290}
+@*)
   public GetInvestors: () ==> set of Influential
    GetInvestors() == (
     exhibit.GetInvestors();
    ); 
-(*@
-\label{GetInvestors:272}
-@*)
   
   -- add a new
+(*@
+\label{AddNew:296}
+@*)
   public AddNew: New ==> ()
    AddNew(n) == (
     news := news union {n};
     )
-(*@
-\label{AddNew:278}
-@*)
     pre n not in set news
    post news = news~ union {n};
   
   --return all news
+(*@
+\label{GetNews:304}
+@*)
   public GetNews: () ==> set of New
    GetNews() == (
     return news;
    );
-(*@
-\label{GetNews:286}
-@*)
    
   -- get total attendees by talk 
+(*@
+\label{GetTotalAttendeesByTalk:310}
+@*)
   public GetTotalAttendeesByTalk : Talk ==> int
    GetTotalAttendeesByTalk (talk) == (
     return talk.GetTotalAttendees();
    );  
+   
+  -- get total attendees at the event 
 (*@
-\label{GetTotalAttendeesByTalk:292}
+\label{GetTotalAttendees:316}
 @*)
+  public GetTotalAttendees : () ==> int
+   GetTotalAttendees () == (
+    return card attendees;
+   );
   
 functions
 
@@ -381,3 +415,74 @@ traces
 
 end WebSummit
 \end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[AddAttendee:209]{AddAttendee} & 209&100.0\% & 1 \\
+\hline
+\hyperref[AddCompany:91]{AddCompany} & 91&100.0\% & 6 \\
+\hline
+\hyperref[AddConference:68]{AddConference} & 68&100.0\% & 21 \\
+\hline
+\hyperref[AddInvestor:284]{AddInvestor} & 284&100.0\% & 3 \\
+\hline
+\hyperref[AddNew:296]{AddNew} & 296&100.0\% & 3 \\
+\hline
+\hyperref[AddSpeaker:106]{AddSpeaker} & 106&100.0\% & 6 \\
+\hline
+\hyperref[AddStartup:272]{AddStartup} & 272&100.0\% & 6 \\
+\hline
+\hyperref[AddTalk:76]{AddTalk} & 76&100.0\% & 30 \\
+\hline
+\hyperref[ClearInstance:39]{ClearInstance} & 39&100.0\% & 33 \\
+\hline
+\hyperref[GetAttendee:249]{GetAttendee} & 249&88.2\% & 3 \\
+\hline
+\hyperref[GetAttendees:243]{GetAttendees} & 243&100.0\% & 3 \\
+\hline
+\hyperref[GetConference:131]{GetConference} & 131&88.2\% & 0 \\
+\hline
+\hyperref[GetConferences:125]{GetConferences} & 125&100.0\% & 12 \\
+\hline
+\hyperref[GetFinalDate:62]{GetFinalDate} & 62&100.0\% & 69 \\
+\hline
+\hyperref[GetInitialDate:56]{GetInitialDate} & 56&100.0\% & 75 \\
+\hline
+\hyperref[GetInstance:33]{GetInstance} & 33&100.0\% & 289 \\
+\hline
+\hyperref[GetInvestors:290]{GetInvestors} & 290&100.0\% & 6 \\
+\hline
+\hyperref[GetNews:304]{GetNews} & 304&100.0\% & 6 \\
+\hline
+\hyperref[GetSchedule:143]{GetSchedule} & 143&100.0\% & 18 \\
+\hline
+\hyperref[GetStartup:266]{GetStartup} & 266&100.0\% & 3 \\
+\hline
+\hyperref[GetStartups:260]{GetStartups} & 260&100.0\% & 9 \\
+\hline
+\hyperref[GetTotalAttendees:316]{GetTotalAttendees} & 316&100.0\% & 6 \\
+\hline
+\hyperref[GetTotalAttendeesByTalk:310]{GetTotalAttendeesByTalk} & 310&100.0\% & 1 \\
+\hline
+\hyperref[RemoveCompany:98]{RemoveCompany} & 98&100.0\% & 3 \\
+\hline
+\hyperref[RemoveSpeaker:116]{RemoveSpeaker} & 116&100.0\% & 3 \\
+\hline
+\hyperref[RemoveStartup:278]{RemoveStartup} & 278&100.0\% & 3 \\
+\hline
+\hyperref[RemoveTalk:84]{RemoveTalk} & 84&100.0\% & 3 \\
+\hline
+\hyperref[SetDates:48]{SetDates} & 48&0.0\% & 0 \\
+\hline
+\hyperref[WebSummit:25]{WebSummit} & 25&100.0\% & 33 \\
+\hline
+\hyperref[notAlreadyExistent:227]{notAlreadyExistent} & 227&76.1\% & 0 \\
+\hline
+\hline
+WebSummit.vdmpp & & 94.3\% & 654 \\
+\hline
+\end{longtable}
+
