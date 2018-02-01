@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Composite VDM Types" version="4">
+  <OBJECT>
+    <ID name="Composite VDM Types" mc="Standard.Package" uid="0c7954c1-577b-4373-8442-6509061c799a"/>
+    <PID name="mfes2" mc="Standard.Package" uid="fef48f3e-65b8-455b-87fd-c38cbe1bb97f"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[Composite VDM Types]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedElement">
+        <COMPID name="Seq&lt;T&gt;" mc="Standard.Class" uid="3580dc43-bb98-4047-831a-6b5464f5526d"/>
+        <COMPID name="Set&lt;T&gt;" mc="Standard.Class" uid="483cc7ba-9aff-49e5-9bea-2d45ef02cfc6"/>
+        <COMPID name="Map&lt;D,R&gt;" mc="Standard.Class" uid="2285f9df-af72-4d26-80f4-537b7ea35caa"/>
+        <COMPID name="Product&lt;A,B&gt;" mc="Standard.Class" uid="fbb17ad7-90bf-425f-aceb-efb4a91f1b1e"/>
+        <COMPID name="Optional&lt;T&gt;" mc="Standard.Class" uid="d8e0105f-9115-4410-a909-587dd0121f77"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

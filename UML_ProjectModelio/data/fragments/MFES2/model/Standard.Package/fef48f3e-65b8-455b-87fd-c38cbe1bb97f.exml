@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="mfes2" version="4">
+  <OBJECT>
+    <ID name="mfes2" mc="Standard.Package" uid="fef48f3e-65b8-455b-87fd-c38cbe1bb97f"/>
+    <PID name="MFES2" mc="Standard.Project" uid="bb32e570-831e-4c26-adac-e4ffc4d91c3a"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[mfes2]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedElement">
+        <COMPID name="Composite VDM Types" mc="Standard.Package" uid="0c7954c1-577b-4373-8442-6509061c799a"/>
+        <COMPID name="Attendee" mc="Standard.Class" uid="e80828ec-1df5-4eeb-9b24-574ad0cded43"/>
+        <COMPID name="Utils" mc="Standard.Class" uid="a49cca17-d310-4c5a-a9d4-2df47e1edef8"/>
+        <COMPID name="Common" mc="Standard.Class" uid="b5ac849a-2f79-4ccd-8f44-031fa3c0a9b4"/>
+        <COMPID name="Company" mc="Standard.Class" uid="2fc03864-03ad-4f7b-947a-71a8e013fb65"/>
+        <COMPID name="Conference" mc="Standard.Class" uid="742bcbe5-de39-4fef-9e28-18c754fa1b15"/>
+        <COMPID name="Talk" mc="Standard.Class" uid="c3c718ca-0383-4765-a2b2-99fa132cec6e"/>
+        <COMPID name="Exhibit" mc="Standard.Class" uid="d07129e7-3897-44e8-ad02-e8f4fb47f843"/>
+        <COMPID name="Influential" mc="Standard.Class" uid="582dc5ec-4bcb-4b28-b479-5eca81337da1"/>
+        <COMPID name="Startup" mc="Standard.Class" uid="fcde5b64-d35a-4b74-b2b3-d15db6fc3ec4"/>
+        <COMPID name="MyTestCase" mc="Standard.Class" uid="3f952471-7e47-42af-8e74-fd16b03b916b"/>
+        <COMPID name="New" mc="Standard.Class" uid="0e11adb8-ad20-46ce-8649-d63012dd0f47"/>
+        <COMPID name="WebSummit" mc="Standard.Class" uid="e5301596-aa16-485f-b047-b0ac28120051"/>
+        <COMPID name="WebSummitTest" mc="Standard.Class" uid="ea1752de-6507-43b6-bdfd-d708211dc727"/>
+        <COMPID name="IO" mc="Standard.Class" uid="7b6b8afe-f40f-4606-870b-497140b9f0f5"/>
+        <COMPID name="Binding classes" mc="Standard.Package" uid="3ca02827-bc82-429c-b9d6-c5a9494fd819"/>
+        <COMPID name="Basic VDM Types" mc="Standard.Package" uid="925b9cff-eb64-4a11-b4ff-215cfe3e6a6c"/>
+      </COMP>
+      <COMP relation="Product">
+        <COMPID name="mfes2 Class diagram" mc="Standard.ClassDiagram" uid="45356972-b379-47f5-9f33-bbd8c0407f71"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

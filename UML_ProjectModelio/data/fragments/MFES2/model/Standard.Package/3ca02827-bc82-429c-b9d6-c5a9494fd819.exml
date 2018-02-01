@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Binding classes" version="4">
+  <OBJECT>
+    <ID name="Binding classes" mc="Standard.Package" uid="3ca02827-bc82-429c-b9d6-c5a9494fd819"/>
+    <PID name="mfes2" mc="Standard.Package" uid="fef48f3e-65b8-455b-87fd-c38cbe1bb97f"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[Binding classes]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="TemplateInstanciation">
+        <OBJECT>
+          <ID name="" mc="Standard.TemplateBinding" uid="9a1124c8-4580-412b-aaa3-52ddbb807c99"/>
+          <ATTRIBUTES>
+            <ATT name="Name"></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="ParameterSubstitution">
+              <OBJECT>
+                <ID name="" mc="Standard.TemplateParameterSubstitution" uid="2ff06a00-0b57-4c87-949e-15f0735ec64a"/>
+                <ATTRIBUTES>
+                  <ATT name="Value"></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Actual">
+                    <ID name="Talk" mc="Standard.Class" uid="c3c718ca-0383-4765-a2b2-99fa132cec6e"/>
+                  </LINK>
+                  <LINK relation="FormalParameter">
+                    <REFOBJ>
+                      <ID name="" mc="Standard.TemplateParameter" uid="f6c1cd05-0461-4d37-9b37-76522cc361b6"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="OwnedElement">
+        <COMPID name="" mc="Standard.Class" uid="50880171-1062-40b1-9760-5105843e42df"/>
+        <COMPID name="Seq&lt;Talk&gt;" mc="Standard.Class" uid="e4d255e7-a1e6-4f72-8d35-fadaa6bc3ba9"/>
+        <COMPID name="Set&lt;Company&gt;" mc="Standard.Class" uid="cd2f6f47-2fa8-44b8-a5b4-bc0549eb2c47"/>
+        <COMPID name="Map&lt;Utils::Date,Seq&lt;Talk&gt;&gt;" mc="Standard.Class" uid="0ae8e435-3f13-44a0-a986-58a49d5ab81b"/>
+        <COMPID name="Set&lt;Startup&gt;" mc="Standard.Class" uid="5096c191-d4b0-498b-86de-9da7bf7aeae7"/>
+        <COMPID name="Seq&lt;Startup&gt;" mc="Standard.Class" uid="0248ec15-cb9b-4972-aa6a-482586fb15fc"/>
+        <COMPID name="Set&lt;Influential&gt;" mc="Standard.Class" uid="a8e618b8-d446-43e6-896e-d5bf0cac9550"/>
+        <COMPID name="Seq&lt;Influential&gt;" mc="Standard.Class" uid="6f72dddf-a2fb-4821-a878-744bb5c3aae6"/>
+        <COMPID name="Set&lt;Attendee&gt;" mc="Standard.Class" uid="e08e676f-5c75-4461-9274-d683ca25644a"/>
+        <COMPID name="Seq&lt;char&gt;" mc="Standard.Class" uid="926dd191-8820-4165-9320-0dbd22175641"/>
+        <COMPID name="Set&lt;Conference&gt;" mc="Standard.Class" uid="d0235585-5c93-46ea-a20a-135d87003808"/>
+        <COMPID name="Seq&lt;Conference&gt;" mc="Standard.Class" uid="6b6ff256-4b3f-4aca-9c3f-cdbddb923716"/>
+        <COMPID name="Set&lt;New&gt;" mc="Standard.Class" uid="76c2961a-4137-42ad-a1ad-83f79d8761be"/>
+        <COMPID name="Product&lt;bool,Optional&lt;p&gt;&gt;" mc="Standard.Class" uid="92aa5989-505b-46a1-bf90-ca9f77866b84"/>
+        <COMPID name="Optional&lt;IO::filedirective&gt;" mc="Standard.Class" uid="a23c199d-b655-4519-8a54-cb0fe13eba00"/>
+        <COMPID name="Seq&lt;Any&gt;" mc="Standard.Class" uid="d7615d1b-45e8-4be6-9e01-9347e4bd5f48"/>
+        <COMPID name="Optional&lt;p&gt;" mc="Standard.Class" uid="4b9998a7-b607-4138-8875-4aa05ea44d15"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>
